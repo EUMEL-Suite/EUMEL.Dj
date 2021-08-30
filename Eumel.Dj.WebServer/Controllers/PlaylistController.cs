@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Eumel.Dj.WebServer.Messages;
+using Microsoft.AspNetCore.Mvc;
 using TinyMessenger;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace WebApplication1.Controllers
+namespace Eumel.Dj.WebServer.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -20,90 +21,20 @@ namespace WebApplication1.Controllers
 
         // GET: api/<PlaylistController>
         [HttpGet]
-        public IEnumerable<EumelTrack> Get()
+        public IEnumerable<string> Get()
         {
-            var plm = new PlaylistMessage(this);
+            var plm = new GetPlaylistMessage(this);
             _hub.Publish(plm);
-
-            return plm.Playlist;
+            return plm.Response.Response;
         }
 
         // GET api/<PlaylistController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet("{name}")]
+        public IEnumerable<EumelTrack> Get(string name)
         {
-            return "value";
+            var plm = new GetPlaylistTrackMessage(this, name);
+            _hub.Publish(plm);
+            return plm.Response.Response;
         }
-
-        // POST api/<PlaylistController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-            _hub.Publish(new SomeMessage(this, value + " " + DateTime.Now.ToShortTimeString()));
-        }
-
-        // PUT api/<PlaylistController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<PlaylistController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
-
-        // POST api/<PlaylistController>/Play
-        [HttpPost("Play")]
-        public void Play([FromBody] string value)
-        {
-            _hub.Publish(new PlaysongMessage(this, value));
-        }
-    }
-
-    public class PlaysongMessage : ITinyMessage
-    {
-        public object Sender { get; }
-        public string Location { get; }
-
-        public PlaysongMessage(object sender, string location)
-        {
-            Sender = sender;
-            Location = location;
-        }
-    }
-
-    public class PlaylistMessage : ITinyMessage
-    {
-        public PlaylistMessage(object sender)
-        {
-            Sender = sender;
-        }
-
-        public object Sender { get; }
-
-        public IEnumerable<EumelTrack> Playlist { get; set; }
-    }
-
-    public class SomeMessage : ITinyMessage
-    {
-        public SomeMessage(object sender, string message)
-        {
-            Sender = sender;
-            Message = message;
-        }
-
-        public object Sender { get; }
-        public string Message { get; }
-    }
-
-    public class EumelTrack
-    {
-        public string Name { get; set; }
-        public string Album { get; set; }
-        public string Artist { get; set; }
-        public string AlbumArtist { get; set; }
-        public string Location { get; set; }
     }
 }
