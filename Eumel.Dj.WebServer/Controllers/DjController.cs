@@ -28,28 +28,26 @@ namespace Eumel.Dj.WebServer.Controllers
         }
 
         // GET: api/<SongController>
-        [HttpGet("UpVote")]
-        public bool UpVote(Song song)
+        [HttpPost("UpVote")]
+        public void UpVote([FromBody] Song song, string votersName)
         {
-            var plm = new VoteMessage(this, VoteMessage.UpDownVote.Up, song);
+            var plm = new VoteMessage(this, VoteMessage.UpDownVote.Up, song, votersName);
             _hub.Publish(plm);
-            return plm.Response.Response;
         }
 
         // GET: api/<SongController>
-        [HttpGet("DownVote")]
-        public bool DownVote(Song song)
+        [HttpPost("DownVote")]
+        public void DownVote([FromBody] Song song, string votersName)
         {
-            var plm = new VoteMessage(this, VoteMessage.UpDownVote.Down, song);
+            var plm = new VoteMessage(this, VoteMessage.UpDownVote.Down, song, votersName);
             _hub.Publish(plm);
-            return plm.Response.Response;
         }
 
         // GET: api/<SongController>
         [HttpGet("GetMyVotes")]
-        public IEnumerable<Song> GetMyVotes()
+        public IEnumerable<Song> GetMyVotes(string votersName)
         {
-            var plm = new GetMyVotesMessage(this);
+            var plm = new GetMyVotesMessage(this, votersName);
             _hub.Publish(plm);
             return plm.Response.Response;
         }
