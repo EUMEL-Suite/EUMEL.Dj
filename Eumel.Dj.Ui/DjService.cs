@@ -25,7 +25,11 @@ namespace Eumel.Dj.Ui
             hub.Subscribe((Action<GetMyVotesMessage>)GetMyVotes);
 
             _mediaPlayer = new MediaPlayer();
-            _mediaPlayer.MediaEnded += (sender, e) => { _mediaPlayer.Open(new Uri(_djList.GetTakeSong().Location)); };
+            _mediaPlayer.MediaEnded += (sender, e) =>
+            {
+                _mediaPlayer.Open(new Uri(_djList.GetTakeSong().Location));
+                _mediaPlayer.Play();
+            };
         }
 
         private void GetMyVotes(GetMyVotesMessage message)
