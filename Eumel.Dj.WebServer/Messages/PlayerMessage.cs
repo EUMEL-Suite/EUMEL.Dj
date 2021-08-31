@@ -2,12 +2,12 @@
 
 namespace Eumel.Dj.WebServer.Messages
 {
-    public class PlayerMessageRequest : MessageRequest<bool>
+    public class PlayerMessage : MessageRequest<bool>
     {
         public PlayerControl PlayerAction { get; }
         public string Location { get; }
 
-        public PlayerMessageRequest(object sender, PlayerControl playerAction, string location = null)
+        public PlayerMessage(object sender, PlayerControl playerAction, string location = null)
             : base(sender)
         {
             PlayerAction = playerAction;
@@ -18,7 +18,8 @@ namespace Eumel.Dj.WebServer.Messages
         {
             Play,
             Pause,
-            Continue
+            Continue,
+            Stop
         }
     }
 }

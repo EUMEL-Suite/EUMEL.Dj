@@ -29,4 +29,8 @@
     <PackageReference Include="TinyMessengerStandard" Version="1.0.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Eumel.Dj.WebServer\Eumel.Dj.WebServer.csproj" />
+  </ItemGroup>
+
 </Project>

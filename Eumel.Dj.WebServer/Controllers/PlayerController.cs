@@ -17,9 +17,33 @@ namespace Eumel.Dj.WebServer.Controllers
         }
 
         [HttpGet("Play")]
-        public bool Play(string location)
+        public bool Play()
         {
-            var message = new PlayerMessageRequest(this, PlayerMessageRequest.PlayerControl.Play, location);
+            var message = new PlayerMessage(this, PlayerMessage.PlayerControl.Play);
+            _hub.Publish(message);
+
+            if (!message.Response.Success)
+                throw new Exception(message.Response.ErrorMessage);
+
+            return true;
+        }
+
+        [HttpGet("Open")]
+        public bool Open(string location)
+        {
+            var message = new PlayerMessage(this, PlayerMessage.PlayerControl.Play, location);
+            _hub.Publish(message);
+
+            if (!message.Response.Success)
+                throw new Exception(message.Response.ErrorMessage);
+
+            return true;
+        }
+
+        [HttpGet("Stop")]
+        public bool Stop()
+        {
+            var message = new PlayerMessage(this, PlayerMessage.PlayerControl.Stop);
             _hub.Publish(message);
 
             if (!message.Response.Success)
@@ -31,7 +55,7 @@ namespace Eumel.Dj.WebServer.Controllers
         [HttpGet("Pause")]
         public bool Pause()
         {
-            var message = new PlayerMessageRequest(this, PlayerMessageRequest.PlayerControl.Pause);
+            var message = new PlayerMessage(this, PlayerMessage.PlayerControl.Pause);
             _hub.Publish(message);
 
             if (!message.Response.Success)
@@ -43,7 +67,7 @@ namespace Eumel.Dj.WebServer.Controllers
         [HttpGet("Continue")]
         public bool Continue()
         {
-            var message = new PlayerMessageRequest(this, PlayerMessageRequest.PlayerControl.Continue);
+            var message = new PlayerMessage(this, PlayerMessage.PlayerControl.Continue);
             _hub.Publish(message);
 
             if (!message.Response.Success)

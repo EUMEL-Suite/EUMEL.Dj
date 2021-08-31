@@ -1,6 +1,6 @@
-﻿namespace Eumel.Dj.WebServer.Controllers
+﻿namespace Eumel.Dj.WebServer.Models
 {
-    public class EumelTrack
+    public class Track
     {
         public string Name { get; set; }
         public string Album { get; set; }

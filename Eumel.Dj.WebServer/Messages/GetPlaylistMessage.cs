@@ -1,12 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using Eumel.Dj.WebServer.Controllers;
 
 namespace Eumel.Dj.WebServer.Messages
 {
-    public class GetPlaylistMessage : MessageRequest<IEnumerable<string>>
+    public class GetPlaylistMessage : MessageRequest<DjPlaylist>
     {
-        public GetPlaylistMessage(object sender)
-            : base(sender)
-        {
-        }
+        public GetPlaylistMessage(object sender) : base(sender) { }
     }
 }

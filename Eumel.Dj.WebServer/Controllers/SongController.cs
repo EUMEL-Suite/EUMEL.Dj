@@ -1,38 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
 using Eumel.Dj.WebServer.Messages;
+using Eumel.Dj.WebServer.Models;
 using Microsoft.AspNetCore.Mvc;
 using TinyMessenger;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Eumel.Dj.WebServer.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PlaylistController : ControllerBase
+    public class SongController : ControllerBase
     {
         private readonly ITinyMessengerHub _hub;
 
-        public PlaylistController(ITinyMessengerHub hub)
+        public SongController(ITinyMessengerHub hub)
         {
             _hub = hub ?? throw new ArgumentNullException(nameof(hub));
         }
 
-        // GET: api/<PlaylistController>
-        [HttpGet]
-        public IEnumerable<string> Get()
+        // GET: api/<SongController>
+        [HttpGet("GetSongsSource")]
+        public SongsSource GetSongsSource()
         {
-            var plm = new GetPlaylistMessage(this);
+            var plm = new GetSongsSourceMessage(this);
             _hub.Publish(plm);
             return plm.Response.Response;
         }
 
-        // GET api/<PlaylistController>/5
-        [HttpGet("{name}")]
-        public IEnumerable<EumelTrack> Get(string name)
+        // GET: api/<SongController>
+        [HttpGet("GetSongs")]
+        public IEnumerable<Song> GetSongs(int skip, int take)
         {
-            var plm = new GetPlaylistTrackMessage(this, name);
+            var plm = new GetSongsMessage(this, skip, take);
             _hub.Publish(plm);
             return plm.Response.Response;
         }

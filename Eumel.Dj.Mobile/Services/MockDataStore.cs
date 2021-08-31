@@ -18,8 +18,8 @@ namespace Eumel.Dj.Mobile.Services
             cl.ServerCertificateCustomValidationCallback = (message, certificate2, arg3, arg4) => true;
             var client = new HttpClient(cl);
 
-            var svc = new swaggerClient("https://192.168.178.37:443", client);
-            items = svc.PlaylistAllAsync().Result
+            var svc = new EumelDjServiceClient("https://192.168.178.37:443", client);
+            items = svc.GetSongsAsync(0, int.MaxValue).Result
                 //.Select(x => new Item() { Id = x, Description = x, Text = x.Substring(x.LastIndexOf("\\" + 1, StringComparison.Ordinal)).Replace(".mp3", "") }).ToList();
                 .Select(x => new Item() { Id = Guid.NewGuid().ToString(), Description = $"{x.Artist} - {x.Name}\r\n{x.Album}", Text = $"{x.Artist} - {x.Name}", Location = x.Location }).ToArray().ToList();
         }

@@ -24,6 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <OpenApiReference Include="..\..\swagger.json" CodeGenerator="NSwagCSharp" Link="OpenAPIs\swagger.json" />
+    <OpenApiReference Include="..\EumelDjService.json" CodeGenerator="NSwagCSharp" Link="OpenAPIs\EumelDjService.json" />
   </ItemGroup>
 </Project>
