@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Eumel.Dj.Mobile.Models
+﻿namespace Eumel.Dj.Mobile.Models
 {
     public class Item
     {

@@ -1,8 +1,5 @@
 ﻿using Eumel.Dj.Mobile.Services;
-using Eumel.Dj.Mobile.Views;
-using System;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 
 namespace Eumel.Dj.Mobile
 {

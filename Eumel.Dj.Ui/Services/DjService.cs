@@ -1,28 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Media;
-using Eumel.Dj.WebServer.Controllers;
 using Eumel.Dj.WebServer.Messages;
 using Eumel.Dj.WebServer.Models;
 using TinyMessenger;
 
-namespace Eumel.Dj.Ui
+namespace Eumel.Dj.Ui.Services
 {
     public class DjService : IDisposable
     {
+        private readonly ITinyMessengerHub _hub;
         private readonly IPlaylistProviderService _playlistService;
         private readonly MediaPlayer _mediaPlayer;
         private readonly DjList _djList;
+        private readonly List<TinyMessageSubscriptionToken> _tinyMessageSubscriptions;
 
         public DjService(ITinyMessengerHub hub, IPlaylistProviderService playlistService)
         {
+            _hub = hub;
             _playlistService = playlistService;
             _djList = new DjList(playlistService);
-
-            hub.Subscribe((Action<PlayerMessage>)PlayerRequest);
-            hub.Subscribe((Action<VoteMessage>)Vote);
-            hub.Subscribe((Action<GetPlaylistMessage>)GetPlaylist);
-            hub.Subscribe((Action<GetMyVotesMessage>)GetMyVotes);
+            _tinyMessageSubscriptions = new List<TinyMessageSubscriptionToken>(new []
+            {
+                hub.Subscribe((Action<PlayerMessage>)PlayerRequest),
+                hub.Subscribe((Action<VoteMessage>)Vote),
+                hub.Subscribe((Action<GetPlaylistMessage>)GetPlaylist),
+                hub.Subscribe((Action<GetMyVotesMessage>)GetMyVotes)
+            });
 
             _mediaPlayer = new MediaPlayer();
             _mediaPlayer.MediaEnded += (sender, e) =>
@@ -93,8 +98,12 @@ namespace Eumel.Dj.Ui
 
         public void Dispose()
         {
+            _tinyMessageSubscriptions.ForEach(x =>_hub.Unsubscribe(x));
+
             _mediaPlayer.Stop();
             _mediaPlayer.Close();
+
+            _djList.Dispose();
         }
     }
 }

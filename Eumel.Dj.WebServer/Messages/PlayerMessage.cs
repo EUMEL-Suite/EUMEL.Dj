@@ -1,6 +1,4 @@
-﻿using System.Net.Sockets;
-
-namespace Eumel.Dj.WebServer.Messages
+﻿namespace Eumel.Dj.WebServer.Messages
 {
     public class PlayerMessage : MessageRequest<bool>
     {

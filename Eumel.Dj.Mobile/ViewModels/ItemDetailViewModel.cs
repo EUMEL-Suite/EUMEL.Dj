@@ -1,7 +1,5 @@
-﻿using Eumel.Dj.Mobile.Models;
-using System;
+﻿using System;
 using System.Diagnostics;
-using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace Eumel.Dj.Mobile.ViewModels

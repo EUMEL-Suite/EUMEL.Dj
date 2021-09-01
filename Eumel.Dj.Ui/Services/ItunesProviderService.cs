@@ -6,20 +6,26 @@ using Eumel.Dj.WebServer.Models;
 using ITunesLibraryParser;
 using TinyMessenger;
 
-namespace Eumel.Dj.Ui
+namespace Eumel.Dj.Ui.Services
 {
-    public class ItunesProviderService : IPlaylistProviderService
+    public class ItunesProviderService : IPlaylistProviderService, IDisposable
     {
         private readonly Settings _settings;
+        private readonly ITinyMessengerHub _hub;
         private readonly ITunesLibrary _itunes;
+        private readonly List<TinyMessageSubscriptionToken> _tinyMessageSubscriptions;
 
         public ItunesProviderService(Settings settings, ITinyMessengerHub hub)
         {
             _settings = settings;
+            _hub = hub;
             _itunes = new ITunesLibrary(settings.ItunesLibrary);
 
-            hub.Subscribe((Action<GetSongsMessage>)GetSongs);
-            hub.Subscribe((Action<GetSongsSourceMessage>)GetSongsSource);
+            _tinyMessageSubscriptions = new List<TinyMessageSubscriptionToken>(new[]
+            {
+                hub.Subscribe((Action<GetSongsMessage>)GetSongs),
+                hub.Subscribe((Action<GetSongsSourceMessage>)GetSongsSource)
+            });
         }
 
         private void GetSongsSource(GetSongsSourceMessage message)
@@ -58,6 +64,11 @@ namespace Eumel.Dj.Ui
                         StringComparison.InvariantCulture)) // iTunes has an interesting format
                 }).ToArray();
             return songs;
+        }
+
+        public void Dispose()
+        {
+            _tinyMessageSubscriptions.ForEach(x => _hub.Unsubscribe(x));
         }
     }
 }

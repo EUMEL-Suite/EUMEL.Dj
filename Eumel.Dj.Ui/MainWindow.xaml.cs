@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Net;
 using System.Windows;
+using Eumel.Dj.Ui.Services;
 using Eumel.Dj.WebServer;
 using Eumel.Dj.WebServer.Messages;
 using Microsoft.AspNetCore.Hosting;
@@ -16,6 +18,7 @@ namespace Eumel.Dj.Ui
         private IWebHost _host;
         private readonly TinyMessengerHub _hub;
         private readonly DjService _djService;
+        private readonly List<TinyMessageSubscriptionToken> _tinyMessageSubscriptions;
 
         public MainWindow()
         {
@@ -23,7 +26,10 @@ namespace Eumel.Dj.Ui
 
             _hub = TinyMessengerHub.DefaultHub;
 
-            _hub.Subscribe((Action<ITinyMessage>)LogAllActions);
+            _tinyMessageSubscriptions = new List<TinyMessageSubscriptionToken>(new[]
+            {
+                _hub.Subscribe((Action<ITinyMessage>)LogAllActions)
+            });
 
             _djService = new DjService(_hub, new ItunesProviderService(Settings.Default, _hub));
 
@@ -71,6 +77,8 @@ namespace Eumel.Dj.Ui
         protected override void OnClosing(CancelEventArgs e)
         {
             _djService.Dispose();
+            _tinyMessageSubscriptions.ForEach(x => _hub.Unsubscribe(x));
+
             base.OnClosing(e);
         }
     }

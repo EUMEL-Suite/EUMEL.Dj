@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Eumel.Dj.WebServer.Models;
 
-namespace Eumel.Dj.Ui
+namespace Eumel.Dj.Ui.Services
 {
     public interface IPlaylistProviderService
     {

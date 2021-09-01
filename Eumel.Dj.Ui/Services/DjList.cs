@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Eumel.Dj.WebServer.Controllers;
 using Eumel.Dj.WebServer.Models;
 
-namespace Eumel.Dj.Ui
+namespace Eumel.Dj.Ui.Services
 {
-    public class DjList
+    public class DjList : IDisposable
     {
         private readonly IPlaylistProviderService _playlistService;
         private readonly IEnumerable<Song> _availableSongs;
@@ -85,6 +84,10 @@ namespace Eumel.Dj.Ui
             return new DjPlaylist(
                 _votedSongs.OrderByDescending(x => x.Voters.Count).Select(x => new WebServer.Models.VotedSong(x.Song, x.Voters.Count)),
                 _unvotedNext);
+        }
+
+        public void Dispose()
+        {
         }
     }
 }

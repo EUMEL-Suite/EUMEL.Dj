@@ -1,6 +1,5 @@
 ﻿using System;
 using Eumel.Dj.Mobile.ViewModels;
-using System.ComponentModel;
 using System.Net.Http;
 using Xamarin.Forms;
 

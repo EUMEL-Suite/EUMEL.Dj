@@ -1,7 +1,4 @@
-﻿using Eumel.Dj.Mobile.ViewModels;
-using Eumel.Dj.Mobile.Views;
-using System;
-using System.Collections.Generic;
+﻿using Eumel.Dj.Mobile.Views;
 using System.Net;
 using Xamarin.Forms;
 
