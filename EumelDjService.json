@@ -491,6 +491,16 @@
             },
             "nullable": true,
             "readOnly": true
+          },
+          "currentSong": {
+            "$ref": "#/components/schemas/Song"
+          },
+          "pastSongs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Song"
+            },
+            "nullable": true
           }
         },
         "additionalProperties": false

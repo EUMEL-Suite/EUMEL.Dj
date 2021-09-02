@@ -9,6 +9,7 @@ using Eumel.Dj.WebServer;
 using Eumel.Dj.WebServer.Messages;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using TinyMessenger;
 
 namespace Eumel.Dj.Ui
@@ -25,6 +26,7 @@ namespace Eumel.Dj.Ui
             InitializeComponent();
 
             _hub = TinyMessengerHub.DefaultHub;
+
 
             _tinyMessageSubscriptions = new List<TinyMessageSubscriptionToken>(new[]
             {
@@ -44,6 +46,7 @@ namespace Eumel.Dj.Ui
                     VoteMessage vote => @$"[Vote] ""{vote.VotersName}"" voted the song ""{vote.Song.Name}"" {vote.Direction.ToString().ToLower()}{Environment.NewLine}{Log.Text}",
                     GetMyVotesMessage getMyVotes => @$"[Get Votes] ""{getMyVotes.VotersName}"" requested his songs{Environment.NewLine}{Log.Text}",
                     PlayerMessage player => @$"[Player] Player was requested to {player.PlayerAction.ToString().ToLower()} {player.Location}{Environment.NewLine}{Log.Text}",
+                    LogMessage log => $@"[{log.Level}] {log.Message}",
                     _ => $"[Bus] {message.GetType().Name}{Environment.NewLine}{Log.Text}"
                 };
             });
@@ -66,11 +69,12 @@ namespace Eumel.Dj.Ui
                     .ConfigureServices((context, services) => { services.AddSingleton<ITinyMessengerHub>(_hub); })
                     .Build();
                 _host.RunAsync();
+                _hub.Publish(new LogMessage(this, $"Service started at *:443", LogLevel.Information));
             }
-            catch (Exception exception)
+            catch (Exception ex)
             {
-                Console.WriteLine(exception);
-                throw;
+                Console.WriteLine(ex);
+                _hub.Publish(new LogMessage(this, ex.Message, LogLevel.Error));
             }
         }
 
@@ -78,8 +82,10 @@ namespace Eumel.Dj.Ui
         {
             _djService.Dispose();
             _tinyMessageSubscriptions.ForEach(x => _hub.Unsubscribe(x));
+            _host.StopAsync();
 
             base.OnClosing(e);
+            _host.WaitForShutdown();
         }
     }
 }

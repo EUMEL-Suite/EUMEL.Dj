@@ -12,5 +12,7 @@ namespace Eumel.Dj.WebServer.Models
 
         public IEnumerable<VotedSong> VotedSongs { get; }
         public IEnumerable<Song> UnvotedNext { get; }
+        public Song CurrentSong { get; set; }
+        public IEnumerable<Song> PastSongs { get; set; }
     }
 }

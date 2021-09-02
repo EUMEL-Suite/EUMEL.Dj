@@ -1,21 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Eumel.Dj.WebServer.Messages;
 using Eumel.Dj.WebServer.Models;
+using Microsoft.Extensions.Logging;
+using TinyMessenger;
 
 namespace Eumel.Dj.Ui.Services
 {
     public class DjList : IDisposable
     {
         private readonly IPlaylistProviderService _playlistService;
+        private readonly ITinyMessengerHub _hub;
         private readonly IEnumerable<Song> _availableSongs;
         private readonly IList<VotedSong> _votedSongs;
         private readonly IList<Song> _unvotedNext;
         private readonly Random _random;
 
-        public DjList(IPlaylistProviderService playlistService)
+        public DjList(IPlaylistProviderService playlistService, ITinyMessengerHub hub)
         {
             _playlistService = playlistService;
+            _hub = hub;
             _availableSongs = playlistService.GetSongs();
             _votedSongs = new List<VotedSong>();
             _random = new Random();
@@ -88,6 +93,20 @@ namespace Eumel.Dj.Ui.Services
 
         public void Dispose()
         {
+        }
+
+        public Song FindSongByLocation(string location)
+        {
+            if (location == null)
+                return null;
+
+            var result = _availableSongs
+                .FirstOrDefault(x => string.Compare(x?.Location, location, StringComparison.InvariantCultureIgnoreCase) == 0);
+
+            if (result == null)
+                _hub.Publish(new LogMessage(this, "Cannot play requested song. Song not found in list if available songs", LogLevel.Warning));
+
+            return result;
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Media;
 using Eumel.Dj.WebServer.Messages;
 using Eumel.Dj.WebServer.Models;
@@ -11,7 +10,8 @@ namespace Eumel.Dj.Ui.Services
     public class DjService : IDisposable
     {
         private readonly ITinyMessengerHub _hub;
-        private readonly IPlaylistProviderService _playlistService;
+        private Song _currentSong;
+        private readonly FixedSizedQueue<Song> _pastSongs = new(5);
         private readonly MediaPlayer _mediaPlayer;
         private readonly DjList _djList;
         private readonly List<TinyMessageSubscriptionToken> _tinyMessageSubscriptions;
@@ -19,9 +19,8 @@ namespace Eumel.Dj.Ui.Services
         public DjService(ITinyMessengerHub hub, IPlaylistProviderService playlistService)
         {
             _hub = hub;
-            _playlistService = playlistService;
-            _djList = new DjList(playlistService);
-            _tinyMessageSubscriptions = new List<TinyMessageSubscriptionToken>(new []
+            _djList = new DjList(playlistService, hub);
+            _tinyMessageSubscriptions = new List<TinyMessageSubscriptionToken>(new[]
             {
                 hub.Subscribe((Action<PlayerMessage>)PlayerRequest),
                 hub.Subscribe((Action<VoteMessage>)Vote),
@@ -30,11 +29,20 @@ namespace Eumel.Dj.Ui.Services
             });
 
             _mediaPlayer = new MediaPlayer();
-            _mediaPlayer.MediaEnded += (sender, e) =>
-            {
-                _mediaPlayer.Open(new Uri(_djList.GetTakeSong().Location));
-                _mediaPlayer.Play();
-            };
+            _mediaPlayer.MediaEnded += (_, _) => PlayNextSong();
+        }
+
+        private void PlayNextSong(string directSongRequest = null)
+        {
+            if (_currentSong != null)
+                _pastSongs.Enqueue(_currentSong);
+
+            _currentSong = _djList.FindSongByLocation(directSongRequest)
+                               ?? _djList.GetTakeSong()
+                               ?? throw new Exception("cannot take song from list");
+
+            _mediaPlayer.Open(new Uri(_currentSong.Location));
+            _mediaPlayer.Play();
         }
 
         private void GetMyVotes(GetMyVotesMessage message)
@@ -47,6 +55,8 @@ namespace Eumel.Dj.Ui.Services
         private void GetPlaylist(GetPlaylistMessage message)
         {
             var result = _djList.GetPlaylist();
+            result.CurrentSong = _currentSong;
+            result.PastSongs = _pastSongs.ToArray();
 
             message.Response = new MessageResponse<DjPlaylist>(result);
         }
@@ -73,11 +83,8 @@ namespace Eumel.Dj.Ui.Services
                 switch (message.PlayerAction)
                 {
                     case PlayerMessage.PlayerControl.Play:
-                        if (!string.IsNullOrWhiteSpace(message.Location))
-                            _mediaPlayer.Open(new Uri(message.Location));
-                        if (!_mediaPlayer.HasAudio)
-                            _mediaPlayer.Open(new Uri(_djList.GetTakeSong().Location));
-                        _mediaPlayer.Play();
+                        // this needs to be changed to use the ID only!
+                        PlayNextSong(message.Location);
                         break;
                     case PlayerMessage.PlayerControl.Pause:
                         _mediaPlayer.Pause();
@@ -98,11 +105,10 @@ namespace Eumel.Dj.Ui.Services
 
         public void Dispose()
         {
-            _tinyMessageSubscriptions.ForEach(x =>_hub.Unsubscribe(x));
+            _tinyMessageSubscriptions.ForEach(x => _hub.Unsubscribe(x));
 
             _mediaPlayer.Stop();
             _mediaPlayer.Close();
-
             _djList.Dispose();
         }
     }
