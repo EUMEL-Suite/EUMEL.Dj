@@ -46,14 +46,14 @@ namespace Eumel.Dj.Mobile.ViewModels
 
         private async void OnSave()
         {
-            Item newItem = new Item()
+            SongItem newSongItem = new SongItem()
             {
                 Id = Guid.NewGuid().ToString(),
                 Text = Text,
-                Description = Description
+                Artist = Description
             };
 
-            await DataStore.AddItemAsync(newItem);
+            //await DataStore.AddItemAsync(newSongItem);
 
             // This will pop the current page off the navigation stack
             await Shell.Current.GoToAsync("..");

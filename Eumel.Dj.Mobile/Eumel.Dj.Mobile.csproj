@@ -20,10 +20,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Rest\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <OpenApiReference Include="..\EumelDjService.json" CodeGenerator="NSwagCSharp" Link="OpenAPIs\EumelDjService.json" />
   </ItemGroup>
 </Project>

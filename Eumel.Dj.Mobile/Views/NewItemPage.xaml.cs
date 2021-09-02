@@ -7,7 +7,7 @@ namespace Eumel.Dj.Mobile.Views
 {
     public partial class NewItemPage : ContentPage
     {
-        public Item Item { get; set; }
+        public SongItem SongItem { get; set; }
 
         public NewItemPage()
         {
@@ -18,8 +18,8 @@ namespace Eumel.Dj.Mobile.Views
             cl.ServerCertificateCustomValidationCallback = (message, certificate2, arg3, arg4) => true;
             var client = new HttpClient(cl);
 
-            var svc = new swaggerClient("https://192.168.178.37:443", client);
-             svc.PlaylistAsync("awesome mobile message");
+            var svc = new EumelDjServiceClient("https://192.168.178.37:443", client);
+             var source = svc.GetSongsSourceAsync();
         }
     }
 }

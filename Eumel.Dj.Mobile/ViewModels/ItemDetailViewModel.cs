@@ -51,7 +51,7 @@ namespace Eumel.Dj.Mobile.ViewModels
                 var item = await DataStore.GetItemAsync(itemId);
                 Id = item.Id;
                 Text = item.Text;
-                Description = item.Description;
+                Description = item.Artist;
                 Location = item.Location;
             }
             catch (Exception)

@@ -10,7 +10,7 @@ namespace Eumel.Dj.Mobile
         {
             InitializeComponent();
 
-            DependencyService.Register<ServiceDataStore>();
+            DependencyService.Register<SongItemDataStore>();
             MainPage = new AppShell();
         }
 

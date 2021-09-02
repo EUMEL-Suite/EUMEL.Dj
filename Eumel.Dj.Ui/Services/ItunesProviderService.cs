@@ -57,6 +57,7 @@ namespace Eumel.Dj.Ui.Services
                 .Select(x => new Song()
                 {
                     Name = x.Name,
+                    Id = x.PersistentId,
                     Album = x.Album,
                     Artist = x.Artist,
                     AlbumArtist = x.Album,

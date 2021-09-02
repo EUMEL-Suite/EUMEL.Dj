@@ -428,6 +428,11 @@
           },
           "location": {
             "type": "string",
+            "nullable": true,
+            "deprecated": true
+          },
+          "id": {
+            "type": "string",
             "nullable": true
           },
           "votes": {
@@ -457,6 +462,11 @@
             "nullable": true
           },
           "location": {
+            "type": "string",
+            "nullable": true,
+            "deprecated": true
+          },
+          "id": {
             "type": "string",
             "nullable": true
           }

@@ -20,8 +20,8 @@ namespace Eumel.Dj.Mobile.Views
             cl.ServerCertificateCustomValidationCallback = (message, certificate2, arg3, arg4) => true;
             var client = new HttpClient(cl);
 
-            var svc = new swaggerClient("https://192.168.178.37:443", client);
-            svc.PlayAsync(current.Location);
+            var svc = new EumelDjServiceClient("https://192.168.178.37:443", client);
+            svc.OpenAsync(current.Location);
         }
     }
 }

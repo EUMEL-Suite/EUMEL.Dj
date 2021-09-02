@@ -10,20 +10,20 @@ namespace Eumel.Dj.Mobile.ViewModels
 {
     public class ItemsViewModel : BaseViewModel
     {
-        private Item _selectedItem;
+        private SongItem _selectedSongItem;
 
-        public ObservableCollection<Item> Items { get; }
+        public ObservableCollection<SongItem> Items { get; }
         public Command LoadItemsCommand { get; }
         public Command AddItemCommand { get; }
-        public Command<Item> ItemTapped { get; }
+        public Command<SongItem> ItemTapped { get; }
 
         public ItemsViewModel()
         {
             Title = "Browse";
-            Items = new ObservableCollection<Item>();
+            Items = new ObservableCollection<SongItem>();
             LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
 
-            ItemTapped = new Command<Item>(OnItemSelected);
+            ItemTapped = new Command<SongItem>(OnItemSelected);
 
             AddItemCommand = new Command(OnAddItem);
         }
@@ -54,15 +54,15 @@ namespace Eumel.Dj.Mobile.ViewModels
         public void OnAppearing()
         {
             IsBusy = true;
-            SelectedItem = null;
+            SelectedSongItem = null;
         }
 
-        public Item SelectedItem
+        public SongItem SelectedSongItem
         {
-            get => _selectedItem;
+            get => _selectedSongItem;
             set
             {
-                SetProperty(ref _selectedItem, value);
+                SetProperty(ref _selectedSongItem, value);
                 OnItemSelected(value);
             }
         }
@@ -72,13 +72,13 @@ namespace Eumel.Dj.Mobile.ViewModels
             await Shell.Current.GoToAsync(nameof(NewItemPage));
         }
 
-        async void OnItemSelected(Item item)
+        async void OnItemSelected(SongItem songItem)
         {
-            if (item == null)
+            if (songItem == null)
                 return;
 
             // This will push the ItemDetailPage onto the navigation stack
-            await Shell.Current.GoToAsync($"{nameof(ItemDetailPage)}?{nameof(ItemDetailViewModel.ItemId)}={item.Id}");
+            await Shell.Current.GoToAsync($"{nameof(ItemDetailPage)}?{nameof(ItemDetailViewModel.ItemId)}={songItem.Id}");
         }
     }
 }
