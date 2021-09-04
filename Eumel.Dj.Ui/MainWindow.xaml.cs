@@ -45,7 +45,7 @@ namespace Eumel.Dj.Ui
                 {
                     VoteMessage vote => @$"[Vote] ""{vote.VotersName}"" voted the song ""{vote.Song.Name}"" {vote.Direction.ToString().ToLower()}{Environment.NewLine}{Log.Text}",
                     GetMyVotesMessage getMyVotes => @$"[Get Votes] ""{getMyVotes.VotersName}"" requested his songs{Environment.NewLine}{Log.Text}",
-                    PlayerMessage player => @$"[Player] Player was requested to {player.PlayerAction.ToString().ToLower()} {player.Location}{Environment.NewLine}{Log.Text}",
+                    PlayerMessage player => @$"[Player] Player was requested to {player.PlayerAction.ToString().ToLower()} {player.SongId}{Environment.NewLine}{Log.Text}",
                     LogMessage log => $@"[{log.Level}] {log.Message}",
                     _ => $"[Bus] {message.GetType().Name}{Environment.NewLine}{Log.Text}"
                 };

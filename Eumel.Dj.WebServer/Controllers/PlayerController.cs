@@ -29,9 +29,9 @@ namespace Eumel.Dj.WebServer.Controllers
         }
 
         [HttpGet("Open")]
-        public bool Open(string location)
+        public bool Open(string songId)
         {
-            var message = new PlayerMessage(this, PlayerMessage.PlayerControl.Play, location);
+            var message = new PlayerMessage(this, PlayerMessage.PlayerControl.Play, songId);
             _hub.Publish(message);
 
             if (!message.Response.Success)

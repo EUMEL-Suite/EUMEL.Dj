@@ -2,9 +2,9 @@
 
 namespace Eumel.Dj.Mobile.Views
 {
-    public partial class AboutPage : ContentPage
+    public partial class PlaylistPage : ContentPage
     {
-        public AboutPage()
+        public PlaylistPage()
         {
             InitializeComponent();
         }

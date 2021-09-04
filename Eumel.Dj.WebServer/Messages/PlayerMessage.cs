@@ -3,13 +3,13 @@
     public class PlayerMessage : MessageRequest<bool>
     {
         public PlayerControl PlayerAction { get; }
-        public string Location { get; }
+        public string SongId { get; }
 
-        public PlayerMessage(object sender, PlayerControl playerAction, string location = null)
+        public PlayerMessage(object sender, PlayerControl playerAction, string songId = null)
             : base(sender)
         {
             PlayerAction = playerAction;
-            Location = location;
+            SongId = songId;
         }
 
         public enum PlayerControl

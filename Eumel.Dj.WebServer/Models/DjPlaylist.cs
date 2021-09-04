@@ -4,15 +4,13 @@ namespace Eumel.Dj.WebServer.Models
 {
     public class DjPlaylist
     {
-        public DjPlaylist(IEnumerable<VotedSong> votedSongs, IEnumerable<Song> unvotedNext)
+        public DjPlaylist(IEnumerable<VotedSong> upcomingSongs)
         {
-            VotedSongs = votedSongs;
-            UnvotedNext = unvotedNext;
+            UpcomingSongs = upcomingSongs;
         }
 
-        public IEnumerable<VotedSong> VotedSongs { get; }
-        public IEnumerable<Song> UnvotedNext { get; }
-        public Song CurrentSong { get; set; }
-        public IEnumerable<Song> PastSongs { get; set; }
+        public IEnumerable<VotedSong> UpcomingSongs { get; }
+        public VotedSong CurrentSong { get; set; }
+        public IEnumerable<VotedSong> PastSongs { get; set; }
     }
 }

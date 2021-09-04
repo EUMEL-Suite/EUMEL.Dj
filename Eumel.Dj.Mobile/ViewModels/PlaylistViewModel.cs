@@ -4,14 +4,16 @@ using Xamarin.Forms;
 
 namespace Eumel.Dj.Mobile.ViewModels
 {
-    public class AboutViewModel : BaseViewModel
+    public class PlaylistViewModel : BaseViewModel
     {
-        public AboutViewModel()
+        public PlaylistViewModel()
         {
-            Title = "About";
+            Title = "Playlist";
             OpenWebCommand = new Command(async () => await Browser.OpenAsync("https://aka.ms/xamarin-quickstart"));
         }
 
         public ICommand OpenWebCommand { get; }
+
+        public ICommand VoteUpDown { get; }
     }
 }

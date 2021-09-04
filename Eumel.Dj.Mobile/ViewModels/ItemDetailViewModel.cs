@@ -10,7 +10,6 @@ namespace Eumel.Dj.Mobile.ViewModels
         private string itemId;
         private string text;
         private string description;
-        private string location;
         public string Id { get; set; }
 
         public string Text
@@ -23,12 +22,6 @@ namespace Eumel.Dj.Mobile.ViewModels
         {
             get => description;
             set => SetProperty(ref description, value);
-        }
-
-        public string Location
-        {
-            get => location;
-            set => SetProperty(ref location, value);
         }
 
         public string ItemId
@@ -52,7 +45,6 @@ namespace Eumel.Dj.Mobile.ViewModels
                 Id = item.Id;
                 Text = item.Text;
                 Description = item.Artist;
-                Location = item.Location;
             }
             catch (Exception)
             {

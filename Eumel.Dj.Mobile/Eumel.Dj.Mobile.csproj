@@ -22,4 +22,10 @@
   <ItemGroup>
     <OpenApiReference Include="..\EumelDjService.json" CodeGenerator="NSwagCSharp" Link="OpenAPIs\EumelDjService.json" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Views\PlaylistPage.xaml.cs">
+      <DependentUpon>PlaylistPage.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
 </Project>

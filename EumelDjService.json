@@ -200,7 +200,7 @@
         ],
         "parameters": [
           {
-            "name": "location",
+            "name": "songId",
             "in": "query",
             "schema": {
               "type": "string",
@@ -426,18 +426,40 @@
             "type": "string",
             "nullable": true
           },
-          "location": {
-            "type": "string",
-            "nullable": true,
-            "deprecated": true
-          },
           "id": {
             "type": "string",
             "nullable": true
           },
-          "votes": {
-            "type": "integer",
-            "format": "int32"
+          "voters": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "DjPlaylist": {
+        "type": "object",
+        "properties": {
+          "currentSong": {
+            "$ref": "#/components/schemas/VotedSong"
+          },
+          "upcomingSongs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/VotedSong"
+            },
+            "nullable": true,
+            "readOnly": true
+          },
+          "pastSongs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/VotedSong"
+            },
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -461,45 +483,8 @@
             "type": "string",
             "nullable": true
           },
-          "location": {
-            "type": "string",
-            "nullable": true,
-            "deprecated": true
-          },
           "id": {
             "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "DjPlaylist": {
-        "type": "object",
-        "properties": {
-          "votedSongs": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/VotedSong"
-            },
-            "nullable": true,
-            "readOnly": true
-          },
-          "unvotedNext": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Song"
-            },
-            "nullable": true,
-            "readOnly": true
-          },
-          "currentSong": {
-            "$ref": "#/components/schemas/Song"
-          },
-          "pastSongs": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Song"
-            },
             "nullable": true
           }
         },

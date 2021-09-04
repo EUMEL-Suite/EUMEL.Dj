@@ -8,7 +8,7 @@ using TinyMessenger;
 
 namespace Eumel.Dj.Ui.Services
 {
-    public class DjList : IDisposable
+    public class DjList
     {
         private readonly IPlaylistProviderService _playlistService;
         private readonly ITinyMessengerHub _hub;
@@ -27,28 +27,17 @@ namespace Eumel.Dj.Ui.Services
             _unvotedNext = Enumerable.Range(1, 10).Select(x => _availableSongs.Skip(_random.Next(0, _availableSongs.Count() - 1)).First()).ToList();
         }
 
-        public class VotedSong
-        {
-            public VotedSong(Song song)
-            {
-                Song = song;
-            }
-
-            public Song Song { get; }
-            public List<string> Voters { get; } = new();
-        }
-
-        public Song GetTakeSong()
+        public VotedSong GetTakeSong()
         {
             // take a voted song
-            var result = _votedSongs.OrderByDescending(x => x.Voters.Count).FirstOrDefault()?.Song;
+            var result = _votedSongs.OrderByDescending(x => x.Voters.Count).FirstOrDefault();
             if (result != null)
             {
                 _votedSongs.RemoveAt(0);
                 return result;
             }
             // take an unvoted song
-            result = _unvotedNext.First();
+            result = _unvotedNext.First().ToVotedSong();
             _unvotedNext.RemoveAt(0);
             _unvotedNext.Add(_availableSongs.Skip(_random.Next(0, _availableSongs.Count() - 1)).First());
             return result;
@@ -56,26 +45,22 @@ namespace Eumel.Dj.Ui.Services
 
         public IEnumerable<Song> GetVotesFor(string votersName)
         {
-            return _votedSongs.Where(x => x.Voters.Contains(votersName)).Select(x => x.Song).ToArray();
+            return _votedSongs.Where(x => x.Voters.Contains(votersName)).ToArray();
         }
 
         public void VoteUpFor(string votersName, Song song)
         {
-            var votedSong = _votedSongs.SingleOrDefault(x => x.Song.Location == song.Location);
+            var votedSong = _votedSongs.SingleOrDefault(x => x.Id == song.Id);
 
             if (votedSong == null)
-            {
-                var vs = new VotedSong(song);
-                vs.Voters.Add(votersName);
-                _votedSongs.Add(vs);
-            }
+                _votedSongs.Add(song.ToVotedSong(new[] { votersName }));
             else if (!votedSong.Voters.Contains(votersName))
                 votedSong.Voters.Add(votersName);
         }
 
         public void VoteDownFor(string votersName, Song song)
         {
-            var votedSong = _votedSongs.SingleOrDefault(x => x.Song.Location == song.Location);
+            var votedSong = _votedSongs.SingleOrDefault(x => x.Id == song.Id);
             if (votedSong == null) return;
 
             if (votedSong.Voters.Contains(votersName))
@@ -86,27 +71,7 @@ namespace Eumel.Dj.Ui.Services
 
         public DjPlaylist GetPlaylist()
         {
-            return new DjPlaylist(
-                _votedSongs.OrderByDescending(x => x.Voters.Count).Select(x => new WebServer.Models.VotedSong(x.Song, x.Voters.Count)),
-                _unvotedNext);
-        }
-
-        public void Dispose()
-        {
-        }
-
-        public Song FindSongByLocation(string location)
-        {
-            if (location == null)
-                return null;
-
-            var result = _availableSongs
-                .FirstOrDefault(x => string.Compare(x?.Location, location, StringComparison.InvariantCultureIgnoreCase) == 0);
-
-            if (result == null)
-                _hub.Publish(new LogMessage(this, "Cannot play requested song. Song not found in list if available songs", LogLevel.Warning));
-
-            return result;
+            return new DjPlaylist(_votedSongs.OrderByDescending(x => x.Voters.Count).ToArray());
         }
     }
 }

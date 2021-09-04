@@ -21,7 +21,7 @@ namespace Eumel.Dj.Mobile.Views
             var client = new HttpClient(cl);
 
             var svc = new EumelDjServiceClient("https://192.168.178.37:443", client);
-            svc.OpenAsync(current.Location);
+            svc.OpenAsync(current.Id);
         }
     }
 }

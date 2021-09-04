@@ -48,10 +48,9 @@ namespace Eumel.Dj.Mobile.Services
                 x => x.Id,
                 x => new SongItem()
                 {
-                    Id = Guid.NewGuid().ToString(),
+                    Id = x.Id,
                     Artist = $"{x.Artist}",
                     Text = $"{x.Artist} - {x.Name}",
-                    Location = x.Location
                 });
 
             return _songCache.Values;
