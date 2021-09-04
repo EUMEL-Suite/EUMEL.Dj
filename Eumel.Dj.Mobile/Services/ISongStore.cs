@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Eumel.Dj.Mobile.Services
 {
-    public interface IDataStore<T> :IReadOnlyDataStore<T>
+    public interface ISongStore<T> :IReadOnlySongStore<T>
     {
         Task<bool> AddItemAsync(T item);
         Task<bool> UpdateItemAsync(T item);

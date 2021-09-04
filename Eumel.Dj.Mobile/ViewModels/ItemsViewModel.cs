@@ -13,6 +13,7 @@ namespace Eumel.Dj.Mobile.ViewModels
         private SongItem _selectedSongItem;
 
         public ObservableCollection<SongItem> Items { get; }
+        public SongSourceItem Source { get; set; }
         public Command LoadItemsCommand { get; }
         public Command AddItemCommand { get; }
         public Command<SongItem> ItemTapped { get; }
@@ -21,7 +22,9 @@ namespace Eumel.Dj.Mobile.ViewModels
         {
             Title = "Browse";
             Items = new ObservableCollection<SongItem>();
-            LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
+            Source = new SongSourceItem() { Name = "<unknown>" };
+            ExecuteLoadSourceCommand();
+            LoadItemsCommand = new Command(async () => { await ExecuteLoadItemsCommand(); });
 
             ItemTapped = new Command<SongItem>(OnItemSelected);
 
@@ -35,7 +38,7 @@ namespace Eumel.Dj.Mobile.ViewModels
             try
             {
                 Items.Clear();
-                var items = await DataStore.GetItemsAsync(true);
+                var items = await SongStore.GetItemsAsync(true);
                 foreach (var item in items)
                 {
                     Items.Add(item);
@@ -48,6 +51,20 @@ namespace Eumel.Dj.Mobile.ViewModels
             finally
             {
                 IsBusy = false;
+            }
+        }
+
+        private void ExecuteLoadSourceCommand()
+        {
+            try
+            {
+                var source = SongStore.GetSourceAsync(true).Result;
+                Source = source;
+                Title = $"Browse '{source.Name}' [{source.NumberOfSongs}]";
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
             }
         }
 

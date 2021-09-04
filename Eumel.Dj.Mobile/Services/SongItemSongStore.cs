@@ -7,7 +7,7 @@ using Eumel.Dj.Mobile.Models;
 
 namespace Eumel.Dj.Mobile.Services
 {
-    public class SongItemDataStore : IReadOnlyDataStore<SongItem>
+    public class SongItemSongStore : IReadOnlySongStore<SongItem>
     {
         private IDictionary<string, SongItem> _songCache;
         private readonly Lazy<Task<SongsSource>> _songSource;
@@ -18,7 +18,7 @@ namespace Eumel.Dj.Mobile.Services
             return await _service.GetSongsSourceAsync();
         }
 
-        public SongItemDataStore()
+        public SongItemSongStore()
         {
             // this must be a factory and injected!
             var cl = new HttpClientHandler();
@@ -54,6 +54,12 @@ namespace Eumel.Dj.Mobile.Services
                 });
 
             return _songCache.Values;
+        }
+
+        public async Task<SongSourceItem> GetSourceAsync(bool forceRefresh = false)
+        {
+            var source = await _songSource.Value;
+            return new SongSourceItem() { Name = source.SourceName, NumberOfSongs = source.NumberOfSongs };
         }
     }
 }
