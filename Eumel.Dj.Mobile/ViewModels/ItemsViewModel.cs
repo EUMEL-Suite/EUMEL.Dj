@@ -4,6 +4,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using Eumel.Dj.Mobile.Services;
 using Xamarin.Forms;
 
 namespace Eumel.Dj.Mobile.ViewModels
@@ -18,12 +19,13 @@ namespace Eumel.Dj.Mobile.ViewModels
         public Command AddItemCommand { get; }
         public Command<SongItem> ItemTapped { get; }
 
+        public IReadOnlySongStore<SongItem> SongStore => DependencyService.Get<IReadOnlySongStore<SongItem>>();
         public ItemsViewModel()
         {
             Title = "Browse";
             Items = new ObservableCollection<SongItem>();
-            Source = new SongSourceItem() { Name = "<unknown>" };
-            ExecuteLoadSourceCommand();
+            Source = SongStore.GetSourceAsync(true).Result;
+            Title = $"Browse Playlist '{Source.Name}' [{Source.NumberOfSongs} Songs]";
             LoadItemsCommand = new Command(async () => { await ExecuteLoadItemsCommand(); });
 
             ItemTapped = new Command<SongItem>(OnItemSelected);
@@ -51,20 +53,6 @@ namespace Eumel.Dj.Mobile.ViewModels
             finally
             {
                 IsBusy = false;
-            }
-        }
-
-        private void ExecuteLoadSourceCommand()
-        {
-            try
-            {
-                var source = SongStore.GetSourceAsync(true).Result;
-                Source = source;
-                Title = $"Browse '{source.Name}' [{source.NumberOfSongs}]";
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex);
             }
         }
 

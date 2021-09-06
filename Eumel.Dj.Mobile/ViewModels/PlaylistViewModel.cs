@@ -1,19 +1,57 @@
-﻿using System.Windows.Input;
-using Xamarin.Essentials;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using Eumel.Dj.Mobile.Models;
+using Eumel.Dj.Mobile.Services;
 using Xamarin.Forms;
 
 namespace Eumel.Dj.Mobile.ViewModels
 {
     public class PlaylistViewModel : BaseViewModel
     {
+        protected IPlaylistService PlaylistService => DependencyService.Get<IPlaylistService>();
+
+        public ObservableCollection<VotedSong> Items { get; }
+
+        public Command LoadPlaylistCommand { get; }
+
         public PlaylistViewModel()
         {
             Title = "Playlist";
-            OpenWebCommand = new Command(async () => await Browser.OpenAsync("https://aka.ms/xamarin-quickstart"));
+            Items = new ObservableCollection<VotedSong>();
+            LoadPlaylistCommand = new Command(async () => { await ExecuteLoadPlaylistCommand(); });
         }
 
-        public ICommand OpenWebCommand { get; }
+        private async Task ExecuteLoadPlaylistCommand()
+        {
+            IsBusy = true;
 
-        public ICommand VoteUpDown { get; }
+            try
+            {
+                Items.Clear();
+                var playlist = await PlaylistService.Get();
+                var items = playlist.UpcomingSongs;
+                foreach (var item in items)
+                {
+                    Items.Add(item);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+        public void OnAppearing()
+        {
+            IsBusy = true;
+            //SelectedVotedSong = null;
+        }
+
     }
 }

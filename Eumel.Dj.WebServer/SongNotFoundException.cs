@@ -2,8 +2,13 @@
 
 namespace Eumel.Dj.WebServer
 {
-    public class SongNotFoundException : Exception
+    public class SongNotFoundDjException : EumelDjException
     {
-        public SongNotFoundException(string message) : base(message) { }
+        public SongNotFoundDjException(string message) : base(message) { }
+    }
+
+    public class EumelDjException : Exception
+    {
+        public EumelDjException(string message) : base(message) { }
     }
 }

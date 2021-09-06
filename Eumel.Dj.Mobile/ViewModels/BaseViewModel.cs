@@ -10,9 +10,6 @@ namespace Eumel.Dj.Mobile.ViewModels
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
-        public IReadOnlySongStore<SongItem> SongStore => DependencyService.Get<IReadOnlySongStore<SongItem>>();
-        public IPlaylistItemStore PlaylistStore => DependencyService.Get<IPlaylistItemStore>();
-
         private bool _isBusy;
 
         public bool IsBusy

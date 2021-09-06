@@ -52,7 +52,7 @@ namespace Eumel.Dj.Ui.Services
                                    ?? throw new Exception("cannot take song from list");
                     songLocation = _playlistService.GetLocationOfSongById(_currentSong.Id);
                 }
-                catch (SongNotFoundException ex)
+                catch (SongNotFoundDjException ex)
                 {
                     _hub.Publish(new LogMessage(this, ex.Message, LogLevel.Warning));
                     notFoundCounter++;

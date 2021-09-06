@@ -66,6 +66,7 @@ namespace Eumel.Dj.Ui
                     .UseContentRoot(Directory.GetCurrentDirectory())
                     .UseIISIntegration()
                     .UseStartup<Startup>()
+                    // this needs to be replaces with a "real DI container" which is provided by this app
                     .ConfigureServices((context, services) => { services.AddSingleton<ITinyMessengerHub>(_hub); })
                     .Build();
                 _host.RunAsync();

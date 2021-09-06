@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "WebApplication1",
+    "title": "EUMEL Dj",
     "version": "v1"
   },
   "paths": {
@@ -53,17 +53,32 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Song"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Song"
+                  }
+                ],
+                "nullable": true
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/Song"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Song"
+                  }
+                ],
+                "nullable": true
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/Song"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Song"
+                  }
+                ],
+                "nullable": true
               }
             }
           }
@@ -94,17 +109,32 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Song"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Song"
+                  }
+                ],
+                "nullable": true
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/Song"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Song"
+                  }
+                ],
+                "nullable": true
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/Song"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Song"
+                  }
+                ],
+                "nullable": true
               }
             }
           }
@@ -443,9 +473,6 @@
       "DjPlaylist": {
         "type": "object",
         "properties": {
-          "currentSong": {
-            "$ref": "#/components/schemas/VotedSong"
-          },
           "upcomingSongs": {
             "type": "array",
             "items": {
@@ -453,6 +480,14 @@
             },
             "nullable": true,
             "readOnly": true
+          },
+          "currentSong": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/VotedSong"
+              }
+            ],
+            "nullable": true
           },
           "pastSongs": {
             "type": "array",

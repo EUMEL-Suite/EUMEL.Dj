@@ -80,7 +80,7 @@ namespace Eumel.Dj.Ui.Services
                  .Where(x => string.Compare(x.PersistentId, songId, StringComparison.OrdinalIgnoreCase) == 0)
                  .Select(x => Uri.UnescapeDataString(x.Location.Replace("file://localhost/", "", StringComparison.InvariantCulture)))
                  .FirstOrDefault()
-                           ?? throw new SongNotFoundException($"Song {songId} was not found in playlist {playlist}");
+                           ?? throw new SongNotFoundDjException($"Song {songId} was not found in playlist {playlist}");
             return new Uri(location);
         }
 
@@ -104,7 +104,7 @@ namespace Eumel.Dj.Ui.Services
                     Artist = x.Artist,
                     AlbumArtist = x.Album
                 }).FirstOrDefault()
-                         ?? throw new SongNotFoundException($"Song {songId} was not found in playlist {playlist}"); ;
+                         ?? throw new SongNotFoundDjException($"Song {songId} was not found in playlist {playlist}"); ;
 
             return result;
         }

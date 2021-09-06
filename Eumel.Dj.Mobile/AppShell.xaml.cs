@@ -4,7 +4,7 @@ using Xamarin.Forms;
 
 namespace Eumel.Dj.Mobile
 {
-    public partial class AppShell : Xamarin.Forms.Shell
+    public partial class AppShell
     {
         public AppShell()
         {
@@ -12,6 +12,7 @@ namespace Eumel.Dj.Mobile
 
             ServicePointManager.ServerCertificateValidationCallback += (sender, certificate, chain, sslPolicyErrors) => true;
 
+            Routing.RegisterRoute(nameof(PlaylistPage), typeof(PlaylistPage));
             Routing.RegisterRoute(nameof(ItemDetailPage), typeof(ItemDetailPage));
             Routing.RegisterRoute(nameof(NewItemPage), typeof(NewItemPage));
         }

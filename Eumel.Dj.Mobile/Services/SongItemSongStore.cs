@@ -10,12 +10,13 @@ namespace Eumel.Dj.Mobile.Services
     public class SongItemSongStore : IReadOnlySongStore<SongItem>
     {
         private IDictionary<string, SongItem> _songCache;
-        private readonly Lazy<Task<SongsSource>> _songSource;
         private readonly EumelDjServiceClient _service;
+        private SongsSource Source;
 
-        private async Task<SongsSource> InitSongSource()
+        private async Task InitSongSource()
         {
-            return await _service.GetSongsSourceAsync();
+            if (Source != null) return;
+            Source = await _service.GetSongsSourceAsync();
         }
 
         public SongItemSongStore()
@@ -26,8 +27,6 @@ namespace Eumel.Dj.Mobile.Services
             var client = new HttpClient(cl);
 
             _service = new EumelDjServiceClient("https://192.168.178.37:443", client);
-
-            _songSource = new Lazy<Task<SongsSource>>(InitSongSource);
         }
 
         public Task<SongItem> GetItemAsync(string id)
@@ -38,9 +37,9 @@ namespace Eumel.Dj.Mobile.Services
         public async Task<IEnumerable<SongItem>> GetItemsAsync(bool forceRefresh = false)
         {
             if (_songCache != null) return _songCache.Values;
+            await InitSongSource();
 
-            var songSource = await _songSource.Value;
-            var numOfSongs = songSource.NumberOfSongs;
+            var numOfSongs = Source.NumberOfSongs;
 
             var songs = await _service.GetSongsAsync(0, int.MaxValue);
 
@@ -58,8 +57,8 @@ namespace Eumel.Dj.Mobile.Services
 
         public async Task<SongSourceItem> GetSourceAsync(bool forceRefresh = false)
         {
-            var source = await _songSource.Value;
-            return new SongSourceItem() { Name = source.SourceName, NumberOfSongs = source.NumberOfSongs };
+            Source = _service.GetSongsSourceAsync().Result;
+            return new SongSourceItem() { Name = Source.SourceName, NumberOfSongs = Source.NumberOfSongs };
         }
     }
 }

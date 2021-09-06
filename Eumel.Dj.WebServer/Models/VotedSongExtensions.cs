@@ -7,6 +7,8 @@ namespace Eumel.Dj.WebServer.Models
     {
         public static VotedSong ToVotedSong(this Song song, IEnumerable<string> voters = null)
         {
+            if (song == null) return null;
+
             return new VotedSong()
             {
                 Id = song.Id,

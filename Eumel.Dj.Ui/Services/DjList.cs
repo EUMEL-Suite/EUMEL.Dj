@@ -14,7 +14,7 @@ namespace Eumel.Dj.Ui.Services
         private readonly ITinyMessengerHub _hub;
         private readonly IEnumerable<Song> _availableSongs;
         private readonly IList<VotedSong> _votedSongs;
-        private readonly IList<Song> _unvotedNext;
+        private readonly IList<VotedSong> _unvotedNext;
         private readonly Random _random;
 
         public DjList(IPlaylistProviderService playlistService, ITinyMessengerHub hub)
@@ -24,7 +24,7 @@ namespace Eumel.Dj.Ui.Services
             _availableSongs = playlistService.GetSongs();
             _votedSongs = new List<VotedSong>();
             _random = new Random();
-            _unvotedNext = Enumerable.Range(1, 10).Select(x => _availableSongs.Skip(_random.Next(0, _availableSongs.Count() - 1)).First()).ToList();
+            _unvotedNext = Enumerable.Range(1, 10).Select(x => _availableSongs.Skip(_random.Next(0, _availableSongs.Count() - 1)).First().ToVotedSong()).ToList();
         }
 
         public VotedSong GetTakeSong()
@@ -39,7 +39,7 @@ namespace Eumel.Dj.Ui.Services
             // take an unvoted song
             result = _unvotedNext.First().ToVotedSong();
             _unvotedNext.RemoveAt(0);
-            _unvotedNext.Add(_availableSongs.Skip(_random.Next(0, _availableSongs.Count() - 1)).First());
+            _unvotedNext.Add(_availableSongs.Skip(_random.Next(0, _availableSongs.Count() - 1)).First().ToVotedSong());
             return result;
         }
 
@@ -53,7 +53,11 @@ namespace Eumel.Dj.Ui.Services
             var votedSong = _votedSongs.SingleOrDefault(x => x.Id == song.Id);
 
             if (votedSong == null)
-                _votedSongs.Add(song.ToVotedSong(new[] { votersName }));
+                _availableSongs.Where(x => x.Id == song.Id).ToList().ForEach(v =>
+                {
+                    var w = v.ToVotedSong(new[] { votersName });
+                    _votedSongs.Add(w);
+                });
             else if (!votedSong.Voters.Contains(votersName))
                 votedSong.Voters.Add(votersName);
         }
@@ -71,7 +75,7 @@ namespace Eumel.Dj.Ui.Services
 
         public DjPlaylist GetPlaylist()
         {
-            return new DjPlaylist(_votedSongs.OrderByDescending(x => x.Voters.Count).ToArray());
+            return new DjPlaylist(_votedSongs.OrderByDescending(x => x.Voters.Count).Concat(_unvotedNext).ToArray());
         }
     }
 }
