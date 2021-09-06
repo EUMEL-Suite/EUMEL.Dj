@@ -16,7 +16,7 @@
     public class MessageResponse<TResponse> : MessageResponse
     {
         public MessageResponse(TResponse response, string errorMessage = null)
-            :base(errorMessage)
+            : base(errorMessage)
         {
             Response = response;
         }

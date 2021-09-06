@@ -11,13 +11,13 @@ namespace Eumel.Dj.Ui.Services
 {
     public class DjService : IDisposable
     {
-        private readonly ITinyMessengerHub _hub;
-        private readonly IPlaylistProviderService _playlistService;
-        private VotedSong _currentSong;
-        private readonly FixedSizedQueue<VotedSong> _pastSongs = new(5);
-        private readonly MediaPlayer _mediaPlayer;
         private readonly DjList _djList;
+        private readonly ITinyMessengerHub _hub;
+        private readonly MediaPlayer _mediaPlayer;
+        private readonly FixedSizedQueue<VotedSong> _pastSongs = new(5);
+        private readonly IPlaylistProviderService _playlistService;
         private readonly List<TinyMessageSubscriptionToken> _tinyMessageSubscriptions;
+        private VotedSong _currentSong;
 
         public DjService(ITinyMessengerHub hub, IPlaylistProviderService playlistService)
         {
@@ -36,6 +36,14 @@ namespace Eumel.Dj.Ui.Services
             _mediaPlayer.MediaEnded += (_, _) => PlayNextSong();
         }
 
+        public void Dispose()
+        {
+            _tinyMessageSubscriptions.ForEach(x => _hub.Unsubscribe(x));
+
+            _mediaPlayer.Stop();
+            _mediaPlayer.Close();
+        }
+
         private void PlayNextSong(string directSongRequest = null)
         {
             if (_currentSong != null)
@@ -47,7 +55,7 @@ namespace Eumel.Dj.Ui.Services
             {
                 try
                 {
-                    _currentSong =_playlistService.FindSongById(directSongRequest).ToVotedSong()
+                    _currentSong = _playlistService.FindSongById(directSongRequest).ToVotedSong()
                                    ?? _djList.GetTakeSong()
                                    ?? throw new Exception("cannot take song from list");
                     songLocation = _playlistService.GetLocationOfSongById(_currentSong.Id);
@@ -122,14 +130,6 @@ namespace Eumel.Dj.Ui.Services
 
                 message.Response = new MessageResponse<bool>(true);
             });
-        }
-
-        public void Dispose()
-        {
-            _tinyMessageSubscriptions.ForEach(x => _hub.Unsubscribe(x));
-
-            _mediaPlayer.Stop();
-            _mediaPlayer.Close();
         }
     }
 }

@@ -9,8 +9,9 @@ namespace Eumel.Dj.WebServer.Messages
             Sender = sender;
         }
 
-        public object Sender { get; }
         public MessageResponse Response { get; set; }
+
+        public object Sender { get; }
     }
 
     public abstract class MessageRequest<TResponse> : ITinyMessage
@@ -20,7 +21,8 @@ namespace Eumel.Dj.WebServer.Messages
             Sender = sender;
         }
 
-        public object Sender { get; }
         public MessageResponse<TResponse> Response { get; set; }
+
+        public object Sender { get; }
     }
 }

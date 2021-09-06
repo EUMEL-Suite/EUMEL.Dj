@@ -4,9 +4,9 @@
     {
         public MainPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
 
-            LoadApplication(new Eumel.Dj.Mobile.App());
+            LoadApplication(new Mobile.App());
         }
     }
 }

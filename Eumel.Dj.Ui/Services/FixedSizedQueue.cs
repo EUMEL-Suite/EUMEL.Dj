@@ -5,8 +5,8 @@ namespace Eumel.Dj.Ui.Services
 {
     public class FixedSizedQueue<T>
     {
-        private readonly ConcurrentQueue<T> _q = new();
         private readonly object _lockObject = new();
+        private readonly ConcurrentQueue<T> _q = new();
 
         public FixedSizedQueue(int limit)
         {
@@ -14,12 +14,15 @@ namespace Eumel.Dj.Ui.Services
         }
 
         public int Limit { get; }
+
         public void Enqueue(T obj)
         {
             _q.Enqueue(obj);
             lock (_lockObject)
             {
-                while (_q.Count > Limit && _q.TryDequeue(out _)) { }
+                while (_q.Count > Limit && _q.TryDequeue(out _))
+                {
+                }
             }
         }
 

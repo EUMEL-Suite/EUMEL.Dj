@@ -16,10 +16,10 @@ namespace Eumel.Dj.Ui
 {
     public partial class MainWindow : Window
     {
-        private IWebHost _host;
-        private readonly TinyMessengerHub _hub;
         private readonly DjService _djService;
+        private readonly TinyMessengerHub _hub;
         private readonly List<TinyMessageSubscriptionToken> _tinyMessageSubscriptions;
+        private IWebHost _host;
 
         public MainWindow()
         {
@@ -34,7 +34,6 @@ namespace Eumel.Dj.Ui
             });
 
             _djService = new DjService(_hub, new ItunesProviderService(Settings.Default, _hub));
-
         }
 
         private void LogAllActions(ITinyMessage message)
@@ -43,9 +42,12 @@ namespace Eumel.Dj.Ui
             {
                 Log.Text = message switch
                 {
-                    VoteMessage vote => @$"[Vote] ""{vote.VotersName}"" voted the song ""{vote.Song.Name}"" {vote.Direction.ToString().ToLower()}{Environment.NewLine}{Log.Text}",
-                    GetMyVotesMessage getMyVotes => @$"[Get Votes] ""{getMyVotes.VotersName}"" requested his songs{Environment.NewLine}{Log.Text}",
-                    PlayerMessage player => @$"[Player] Player was requested to {player.PlayerAction.ToString().ToLower()} {player.SongId}{Environment.NewLine}{Log.Text}",
+                    VoteMessage vote =>
+                        @$"[Vote] ""{vote.VotersName}"" voted the song ""{vote.Song.Name}"" {vote.Direction.ToString().ToLower()}{Environment.NewLine}{Log.Text}",
+                    GetMyVotesMessage getMyVotes =>
+                        @$"[Get Votes] ""{getMyVotes.VotersName}"" requested his songs{Environment.NewLine}{Log.Text}",
+                    PlayerMessage player =>
+                        @$"[Player] Player was requested to {player.PlayerAction.ToString().ToLower()} {player.SongId}{Environment.NewLine}{Log.Text}",
                     LogMessage log => $@"[{log.Level}] {log.Message}",
                     _ => $"[Bus] {message.GetType().Name}{Environment.NewLine}{Log.Text}"
                 };
@@ -70,7 +72,7 @@ namespace Eumel.Dj.Ui
                     .ConfigureServices((context, services) => { services.AddSingleton<ITinyMessengerHub>(_hub); })
                     .Build();
                 _host.RunAsync();
-                _hub.Publish(new LogMessage(this, $"Service started at *:443", LogLevel.Information));
+                _hub.Publish(new LogMessage(this, "Service started at *:443", LogLevel.Information));
             }
             catch (Exception ex)
             {

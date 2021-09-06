@@ -4,6 +4,8 @@ namespace Eumel.Dj.WebServer.Messages
 {
     public class GetSongsSourceMessage : MessageRequest<SongsSource>
     {
-        public GetSongsSourceMessage(object sender) : base(sender) { }
+        public GetSongsSourceMessage(object sender) : base(sender)
+        {
+        }
     }
 }

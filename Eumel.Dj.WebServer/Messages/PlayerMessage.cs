@@ -2,8 +2,13 @@
 {
     public class PlayerMessage : MessageRequest<bool>
     {
-        public PlayerControl PlayerAction { get; }
-        public string SongId { get; }
+        public enum PlayerControl
+        {
+            Play,
+            Pause,
+            Continue,
+            Stop
+        }
 
         public PlayerMessage(object sender, PlayerControl playerAction, string songId = null)
             : base(sender)
@@ -12,12 +17,7 @@
             SongId = songId;
         }
 
-        public enum PlayerControl
-        {
-            Play,
-            Pause,
-            Continue,
-            Stop
-        }
+        public PlayerControl PlayerAction { get; }
+        public string SongId { get; }
     }
 }

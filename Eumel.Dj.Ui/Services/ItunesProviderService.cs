@@ -5,16 +5,15 @@ using Eumel.Dj.WebServer;
 using Eumel.Dj.WebServer.Messages;
 using Eumel.Dj.WebServer.Models;
 using ITunesLibraryParser;
-using Microsoft.Extensions.Logging;
 using TinyMessenger;
 
 namespace Eumel.Dj.Ui.Services
 {
     public class ItunesProviderService : IPlaylistProviderService, IDisposable
     {
-        private readonly Settings _settings;
         private readonly ITinyMessengerHub _hub;
         private readonly ITunesLibrary _itunes;
+        private readonly Settings _settings;
         private readonly List<TinyMessageSubscriptionToken> _tinyMessageSubscriptions;
 
         public ItunesProviderService(Settings settings, ITinyMessengerHub hub)
@@ -30,20 +29,9 @@ namespace Eumel.Dj.Ui.Services
             });
         }
 
-        private void GetSongsSource(GetSongsSourceMessage message)
+        public void Dispose()
         {
-            var playlist = string.IsNullOrWhiteSpace(_settings.SelectedPlaylist)
-                ? _itunes.Playlists.First() // this can be all songs?
-                : _itunes.Playlists.Single(x => string.Compare(x.Name, _settings.SelectedPlaylist, StringComparison.InvariantCultureIgnoreCase) == 0);
-
-            message.Response = new MessageResponse<SongsSource>(new SongsSource(playlist.Name, playlist.Tracks.Count()));
-        }
-
-        private void GetSongs(GetSongsMessage message)
-        {
-            var songs = GetSongs(message.Skip, message.Take);
-
-            message.Response = new MessageResponse<IEnumerable<Song>>(songs.ToArray());
+            _tinyMessageSubscriptions.ForEach(x => _hub.Unsubscribe(x));
         }
 
         // cache songs!
@@ -52,12 +40,13 @@ namespace Eumel.Dj.Ui.Services
             var playlist = string.IsNullOrWhiteSpace(_settings.SelectedPlaylist)
                 ? _itunes.Playlists.First() // this can be all songs?
                 : _itunes.Playlists.Single(x =>
-                    string.Compare(x.Name, _settings.SelectedPlaylist, StringComparison.InvariantCultureIgnoreCase) == 0);
+                    string.Compare(x.Name, _settings.SelectedPlaylist, StringComparison.InvariantCultureIgnoreCase) ==
+                    0);
 
             var songs = playlist.Tracks
                 .Skip(skip)
                 .Take(take)
-                .Select(x => new Song()
+                .Select(x => new Song
                 {
                     Name = x.Name,
                     Id = x.PersistentId,
@@ -73,13 +62,16 @@ namespace Eumel.Dj.Ui.Services
             var playlist = string.IsNullOrWhiteSpace(_settings.SelectedPlaylist)
                 ? _itunes.Playlists.First() // this can be all songs?
                 : _itunes.Playlists.Single(x =>
-                    string.Compare(x.Name, _settings.SelectedPlaylist, StringComparison.InvariantCultureIgnoreCase) == 0);
+                    string.Compare(x.Name, _settings.SelectedPlaylist, StringComparison.InvariantCultureIgnoreCase) ==
+                    0);
 
             // iTunes has an interesting format
             var location = playlist.Tracks
-                 .Where(x => string.Compare(x.PersistentId, songId, StringComparison.OrdinalIgnoreCase) == 0)
-                 .Select(x => Uri.UnescapeDataString(x.Location.Replace("file://localhost/", "", StringComparison.InvariantCulture)))
-                 .FirstOrDefault()
+                               .Where(x => string.Compare(x.PersistentId, songId, StringComparison.OrdinalIgnoreCase) ==
+                                           0)
+                               .Select(x => Uri.UnescapeDataString(x.Location.Replace("file://localhost/", "",
+                                   StringComparison.InvariantCulture)))
+                               .FirstOrDefault()
                            ?? throw new SongNotFoundDjException($"Song {songId} was not found in playlist {playlist}");
             return new Uri(location);
         }
@@ -92,26 +84,43 @@ namespace Eumel.Dj.Ui.Services
             var playlist = string.IsNullOrWhiteSpace(_settings.SelectedPlaylist)
                 ? _itunes.Playlists.First() // this can be all songs?
                 : _itunes.Playlists.Single(x =>
-                    string.Compare(x.Name, _settings.SelectedPlaylist, StringComparison.InvariantCultureIgnoreCase) == 0);
+                    string.Compare(x.Name, _settings.SelectedPlaylist, StringComparison.InvariantCultureIgnoreCase) ==
+                    0);
 
             var result = playlist.Tracks
-                .Where(x => string.Compare(x.PersistentId, songId, StringComparison.OrdinalIgnoreCase) == 0)
-                .Select(x => new Song()
-                {
-                    Name = x.Name,
-                    Id = x.PersistentId,
-                    Album = x.Album,
-                    Artist = x.Artist,
-                    AlbumArtist = x.Album
-                }).FirstOrDefault()
-                         ?? throw new SongNotFoundDjException($"Song {songId} was not found in playlist {playlist}"); ;
+                             .Where(x => string.Compare(x.PersistentId, songId, StringComparison.OrdinalIgnoreCase) ==
+                                         0)
+                             .Select(x => new Song
+                             {
+                                 Name = x.Name,
+                                 Id = x.PersistentId,
+                                 Album = x.Album,
+                                 Artist = x.Artist,
+                                 AlbumArtist = x.Album
+                             }).FirstOrDefault()
+                         ?? throw new SongNotFoundDjException($"Song {songId} was not found in playlist {playlist}");
+            ;
 
             return result;
         }
 
-        public void Dispose()
+        private void GetSongsSource(GetSongsSourceMessage message)
         {
-            _tinyMessageSubscriptions.ForEach(x => _hub.Unsubscribe(x));
+            var playlist = string.IsNullOrWhiteSpace(_settings.SelectedPlaylist)
+                ? _itunes.Playlists.First() // this can be all songs?
+                : _itunes.Playlists.Single(x =>
+                    string.Compare(x.Name, _settings.SelectedPlaylist, StringComparison.InvariantCultureIgnoreCase) ==
+                    0);
+
+            message.Response =
+                new MessageResponse<SongsSource>(new SongsSource(playlist.Name, playlist.Tracks.Count()));
+        }
+
+        private void GetSongs(GetSongsMessage message)
+        {
+            var songs = GetSongs(message.Skip, message.Take);
+
+            message.Response = new MessageResponse<IEnumerable<Song>>(songs.ToArray());
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System.Net.Http;
 using Xamarin.Forms;
 
-namespace Eumel.Dj.Mobile
+namespace Eumel.Dj.Mobile.Services
 {
     public class EumelRestServiceFactory : IEumelRestServiceFactory
     {
@@ -11,6 +11,7 @@ namespace Eumel.Dj.Mobile
         {
             _settingsService = DependencyService.Get<ISettingsService>();
         }
+
         public EumelDjServiceClient Build()
         {
             var cl = new HttpClientHandler();

@@ -1,21 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Eumel.Dj.WebServer.Messages;
 using Eumel.Dj.WebServer.Models;
-using Microsoft.Extensions.Logging;
 using TinyMessenger;
 
 namespace Eumel.Dj.Ui.Services
 {
     public class DjList
     {
-        private readonly IPlaylistProviderService _playlistService;
-        private readonly ITinyMessengerHub _hub;
         private readonly IEnumerable<Song> _availableSongs;
-        private readonly IList<VotedSong> _votedSongs;
-        private readonly IList<VotedSong> _unvotedNext;
+        private readonly ITinyMessengerHub _hub;
+        private readonly IPlaylistProviderService _playlistService;
         private readonly Random _random;
+        private readonly IList<VotedSong> _unvotedNext;
+        private readonly IList<VotedSong> _votedSongs;
 
         public DjList(IPlaylistProviderService playlistService, ITinyMessengerHub hub)
         {
@@ -24,7 +22,8 @@ namespace Eumel.Dj.Ui.Services
             _availableSongs = playlistService.GetSongs();
             _votedSongs = new List<VotedSong>();
             _random = new Random();
-            _unvotedNext = Enumerable.Range(1, 10).Select(x => _availableSongs.Skip(_random.Next(0, _availableSongs.Count() - 1)).First().ToVotedSong()).ToList();
+            _unvotedNext = Enumerable.Range(1, 10).Select(x =>
+                _availableSongs.Skip(_random.Next(0, _availableSongs.Count() - 1)).First().ToVotedSong()).ToList();
         }
 
         public VotedSong GetTakeSong()
@@ -36,6 +35,7 @@ namespace Eumel.Dj.Ui.Services
                 _votedSongs.RemoveAt(0);
                 return result;
             }
+
             // take an unvoted song
             result = _unvotedNext.First().ToVotedSong();
             _unvotedNext.RemoveAt(0);
