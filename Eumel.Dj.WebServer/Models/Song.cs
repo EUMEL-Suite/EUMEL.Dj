@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Eumel.Dj.WebServer.Models
+﻿namespace Eumel.Dj.WebServer.Models
 {
     public class Song
     {

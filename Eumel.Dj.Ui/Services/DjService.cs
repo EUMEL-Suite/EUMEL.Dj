@@ -14,7 +14,7 @@ namespace Eumel.Dj.Ui.Services
         private readonly DjList _djList;
         private readonly ITinyMessengerHub _hub;
         private readonly MediaPlayer _mediaPlayer;
-        private readonly FixedSizedQueue<VotedSong> _pastSongs = new(5);
+        private readonly FixedSizedQueue<VotedSong> _pastSongs = new(3);
         private readonly IPlaylistProviderService _playlistService;
         private readonly List<TinyMessageSubscriptionToken> _tinyMessageSubscriptions;
         private VotedSong _currentSong;
@@ -84,7 +84,7 @@ namespace Eumel.Dj.Ui.Services
         private void GetPlaylist(GetPlaylistMessage message)
         {
             var result = _djList.GetPlaylist();
-            result.CurrentSong = _currentSong.ToVotedSong();
+            result.CurrentSong = _currentSong;
             result.PastSongs = _pastSongs.ToArray();
 
             message.Response = new MessageResponse<DjPlaylist>(result);

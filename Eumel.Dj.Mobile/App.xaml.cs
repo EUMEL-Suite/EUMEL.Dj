@@ -1,5 +1,4 @@
-﻿using System;
-using Eumel.Dj.Mobile.Services;
+﻿using Eumel.Dj.Mobile.Services;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 

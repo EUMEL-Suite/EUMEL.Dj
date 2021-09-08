@@ -5,8 +5,8 @@
        Title="Eumel.Dj.Mobile"
        x:Class="Eumel.Dj.Mobile.AppShell">
 
-    <!--
-        The overall app visual hierarchy is defined here, along with navigation.
+    <!--tina borchert
+        The overall app visual hiejenni gaschrarchy is defined here, along with navigation.
     
         https://docs.microsoft.com/xamarin/xamarin-forms/app-fundamentals/shell/
     -->

@@ -8,5 +8,6 @@
         string CertificatePath { get; set; }
         string CertificatePassword { get; set; }
         string MinimumLevel { get; set; }
+        bool UseUdp { get; set; }
     }
 }

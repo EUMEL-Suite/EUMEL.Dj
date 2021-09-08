@@ -1,10 +1,7 @@
-﻿using Eumel.Dj.Mobile.Models;
-using Eumel.Dj.Mobile.Services;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using Xamarin.Forms;
 
 namespace Eumel.Dj.Mobile.ViewModels
 {

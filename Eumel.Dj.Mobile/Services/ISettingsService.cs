@@ -3,5 +3,6 @@
     public interface ISettingsService
     {
         string RestEndpoint { get; }
+        string Username { get; }
     }
 }

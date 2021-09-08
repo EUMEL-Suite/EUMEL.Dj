@@ -1,11 +1,20 @@
 ﻿namespace Eumel.Dj.Mobile.Models
 {
+    public enum SongType
+    {
+        Past,
+        Current,
+        Upcomming
+    }
+
     public class PlaylistSongItem
     {
         public string Id { get; set; }
-        public string Text { get; set; }
-        public string Artist { get; set; }
         public int VoteCount { get; set; }
         public bool VotedByMe { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
+        public SongType Type { get; set; }
     }
+
 }

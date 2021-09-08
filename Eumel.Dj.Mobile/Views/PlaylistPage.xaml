@@ -3,8 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Eumel.Dj.Mobile.Views.PlaylistPage"
              xmlns:vm="clr-namespace:Eumel.Dj.Mobile.ViewModels"
-             xmlns:models="clr-namespace:Eumel.Dj.Mobile.Models;assembly=Eumel.Dj.Mobile"
              xmlns:mobile="clr-namespace:Eumel.Dj.Mobile;assembly=Eumel.Dj.Mobile"
+             xmlns:models="clr-namespace:Eumel.Dj.Mobile.Models;assembly=Eumel.Dj.Mobile"
+             xmlns:converters="clr-namespace:Eumel.Dj.Mobile.Views;assembly=Eumel.Dj.Mobile"
              Title="{Binding Title}">
 
     <ContentPage.ToolbarItems>
@@ -12,6 +13,8 @@
     <!--
       x:DataType enables compiled bindings for better performance and compile time validation of binding expressions.
       https://docs.microsoft.com/xamarin/xamarin-forms/app-fundamentals/data-binding/compiled-bindings
+    
+    BackgroundColor="{Binding Type, Converter= {x:Static converters:SongTypeToColorConverter.Instance } }"
     -->
     <RefreshView x:DataType="vm:PlaylistViewModel" Command="{Binding LoadPlaylistCommand}" IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
         <CollectionView x:Name="ItemsListView"
@@ -19,22 +22,47 @@
                         SelectionMode="None">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <StackLayout Padding="10" x:DataType="mobile:VotedSong">
-                        <Label Text="{Binding Name}" 
+                    <Grid x:DataType="models:PlaylistSongItem">
+                        <Grid.Style>
+                            <Style TargetType="{x:Type Grid}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Path=Type}" Value="{x:Static models:SongType.Past}" TargetType="{x:Type Grid}">
+                                        <Setter Property="BackgroundColor" Value="DimGray"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Path=Type}" Value="{x:Static models:SongType.Current}" TargetType="{x:Type Grid}">
+                                        <Setter Property="BackgroundColor" Value="LightGreen"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Path=Type}" Value="{x:Static models:SongType.Upcomming}" TargetType="{x:Type Grid}">
+                                        <Setter Property="BackgroundColor" Value="GhostWhite"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>
+                        
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="24"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+
+                        <Label Text="{Binding Title}" 
                                LineBreakMode="NoWrap" 
                                Style="{DynamicResource ListItemTextStyle}" 
-                               FontSize="16" />
-                        <Label Text="{Binding Artist}" 
+                               FontSize="16"
+                               Grid.Column="0" Grid.Row="0" />
+                        <Label Text="{Binding Description}" 
                                LineBreakMode="NoWrap"
                                Style="{DynamicResource ListItemDetailTextStyle}"
-                               FontSize="13" />
-                        <!--<StackLayout.GestureRecognizers>
-                            <TapGestureRecognizer 
-                                NumberOfTapsRequired="1"
-                                CommandParameter="{Binding .}">
-                            </TapGestureRecognizer>
-                        </StackLayout.GestureRecognizers>-->
-                    </StackLayout>
+                               FontSize="13" 
+                               Grid.Column="0" Grid.Row="1" />
+
+                        <Label Text="{Binding VoteCount}" VerticalTextAlignment="Center"
+                               Grid.Column="1" Grid.Row="0"  Grid.RowSpan="2" />
+
+                    </Grid>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>

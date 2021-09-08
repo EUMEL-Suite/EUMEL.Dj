@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using Eumel.Dj.Mobile.Models;
 using Eumel.Dj.Mobile.Services;
 using Xamarin.Forms;
@@ -11,16 +11,25 @@ namespace Eumel.Dj.Mobile.ViewModels
 {
     public class PlaylistViewModel : BaseViewModel
     {
+        private string _likeBackgroundImage;
+
         protected IPlaylistService PlaylistService => DependencyService.Get<IPlaylistService>();
 
-        public ObservableCollection<VotedSong> Items { get; }
+        public ObservableCollection<PlaylistSongItem> Items { get; }
 
         public Command LoadPlaylistCommand { get; }
+
+        public string LikeBackgroundImage
+        {
+            get => _likeBackgroundImage;
+            set => SetProperty(ref _likeBackgroundImage, value);
+        }
+
 
         public PlaylistViewModel()
         {
             Title = "Playlist";
-            Items = new ObservableCollection<VotedSong>();
+            Items = new ObservableCollection<PlaylistSongItem>();
             LoadPlaylistCommand = new Command(async () => { await ExecuteLoadPlaylistCommand(); });
         }
 
@@ -32,11 +41,7 @@ namespace Eumel.Dj.Mobile.ViewModels
             {
                 Items.Clear();
                 var playlist = await PlaylistService.Get();
-                var items = playlist.UpcomingSongs;
-                foreach (var item in items)
-                {
-                    Items.Add(item);
-                }
+                playlist.Songs.Where(x => x?.Id != null).ToList().ForEach(Items.Add);
             }
             catch (Exception ex)
             {

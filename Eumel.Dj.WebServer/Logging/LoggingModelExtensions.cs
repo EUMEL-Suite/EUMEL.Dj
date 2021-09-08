@@ -7,8 +7,8 @@
             if (settings == null) return true;
 
             var oneLoggerIsEnabled =
-                settings.Filelog?.EnableFileLogging ?? false |
-                settings.Syslog?.EnableSyslogLogging ?? false;
+                (settings.Filelog?.EnableFileLogging ?? false) ||
+                (settings.Syslog?.EnableSyslogLogging ?? false);
 
             return !oneLoggerIsEnabled;
         }

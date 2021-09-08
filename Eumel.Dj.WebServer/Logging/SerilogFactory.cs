@@ -18,26 +18,37 @@ namespace Eumel.Dj.WebServer.Logging
                 .MinimumLevel.Verbose()
                 .Enrich.FromLogContext();
 
+            // TODO RENEW WITH CDS
+
             //Use syslog over tcp for logging if enabled
             if (settings.Syslog.EnableSyslogLogging)
             {
-                var tcpConfig = new SyslogTcpConfig
+
+                if (settings.Syslog.UseUdp)
                 {
-                    Host = settings.Syslog.SysLogServerIp,
-                    Port = settings.Syslog.SyslogServerPort,
-                    Formatter = new Rfc5424Formatter(),
-                    Framer = new MessageFramer(FramingType.OCTET_COUNTING),
-                    SecureProtocols = SslProtocols.Tls11 | SslProtocols.Tls12,
-                    CertProvider = new CertificateFileProvider(settings.Syslog.CertificatePath,
-                        settings.Syslog.CertificatePassword),
-                    CertValidationCallback = (sender, certificate, chain, sslPolicyErrors) =>
+                    builder = builder.WriteTo.UdpSyslog(settings.Syslog.SysLogServerIp, restrictedToMinimumLevel: GetLevel(settings.Syslog.MinimumLevel));
+                }
+                else
+                {
+                    var tcpConfig = new SyslogTcpConfig
                     {
-                        //Verify the certificate here
-                        var localCert = new X509Certificate2(certificate);
-                        return localCert.Verify();
-                    }
-                };
-                builder = builder.WriteTo.TcpSyslog(tcpConfig, restrictedToMinimumLevel: GetLevel(settings.Syslog.MinimumLevel));
+                        Host = settings.Syslog.SysLogServerIp,
+                        Port = settings.Syslog.SyslogServerPort,
+                        Formatter = new Rfc5424Formatter(),
+                        Framer = new MessageFramer(FramingType.OCTET_COUNTING),
+                        SecureProtocols = SslProtocols.Tls11 | SslProtocols.Tls12,
+                        CertProvider = new CertificateFileProvider(settings.Syslog.CertificatePath,
+                            settings.Syslog.CertificatePassword),
+                        CertValidationCallback = (sender, certificate, chain, sslPolicyErrors) =>
+                        {
+                            //Verify the certificate here
+                            var localCert = new X509Certificate2(certificate);
+                            return localCert.Verify();
+                        }
+                    };
+                    builder = builder.WriteTo.TcpSyslog(tcpConfig,
+                        restrictedToMinimumLevel: GetLevel(settings.Syslog.MinimumLevel));
+                }
             }
 
             if (settings.Filelog.EnableFileLogging)
@@ -59,7 +70,7 @@ namespace Eumel.Dj.WebServer.Logging
 
         private LogEventLevel GetLevel(string level)
         {
-            return (LogEventLevel)Enum.Parse(typeof(LogEventLevel), level);
+            return (LogEventLevel)Enum.Parse(typeof(LogEventLevel), level ?? LogEventLevel.Information.ToString());
         }
     }
 }

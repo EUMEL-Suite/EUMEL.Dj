@@ -6,11 +6,13 @@ namespace Eumel.Dj.WebServer.Messages
     {
         public string Message { get; }
         public LogLevel Level { get; }
+        public EumelDjException Exception { get; }
 
-        public LogMessage(object sender, string message, LogLevel level) : base(sender)
+        public LogMessage(object sender, string message, LogLevel level, EumelDjException exception = null) : base(sender)
         {
             Message = message;
             Level = level;
+            Exception = exception;
         }
     }
 }
