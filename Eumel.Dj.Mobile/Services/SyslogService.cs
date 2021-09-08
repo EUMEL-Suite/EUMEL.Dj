@@ -9,12 +9,22 @@ namespace Eumel.Dj.Mobile.Services
         public SyslogService()
         {
             _log = new LoggingModule("192.168.178.37", 514);
-            _log.Debug("This is a debug message!");
+            _log.Settings.HeaderFormat = "{ts}\t{host}\t{thread}\t{sev}\t";
         }
 
         public void Debug(string msg)
         {
             _log.Debug(msg);
+        }
+
+        public void Information(string msg)
+        {
+            _log.Info(msg);
+        }
+
+        public void Error(string msg)
+        {
+            _log.Error(msg);
         }
     }
 }
