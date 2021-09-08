@@ -5,17 +5,17 @@ using Xamarin.Forms;
 
 namespace Eumel.Dj.Mobile.Views
 {
-    public partial class ItemDetailPage : ContentPage
+    public partial class SongDetailPage : ContentPage
     {
-        public ItemDetailPage()
+        public SongDetailPage()
         {
             InitializeComponent();
-            BindingContext = new ItemDetailViewModel();
+            BindingContext = new SongDetailViewModel();
         }
 
         private void Button_OnClicked(object sender, EventArgs e)
         {
-            var current = (ItemDetailViewModel)BindingContext;
+            var current = (SongDetailViewModel)BindingContext;
             var cl = new HttpClientHandler();
             cl.ServerCertificateCustomValidationCallback = (message, certificate2, arg3, arg4) => true;
             var client = new HttpClient(cl);

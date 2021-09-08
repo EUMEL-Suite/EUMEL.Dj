@@ -7,13 +7,14 @@ using Xamarin.Forms;
 namespace Eumel.Dj.Mobile.ViewModels
 {
     [QueryProperty(nameof(ItemId), nameof(ItemId))]
-    public class ItemDetailViewModel : BaseViewModel
+    public class SongDetailViewModel : BaseViewModel
     {
         public ISongService SongStore => DependencyService.Get<ISongService>();
 
         private string itemId;
         private string text;
         private string description;
+        private string hasMyVote;
         public string Id { get; set; }
 
         public string Text
@@ -26,6 +27,12 @@ namespace Eumel.Dj.Mobile.ViewModels
         {
             get => description;
             set => SetProperty(ref description, value);
+        }
+
+        public string HasMyVote
+        {
+            get => hasMyVote;
+            set => SetProperty(ref hasMyVote, value);
         }
 
         public string ItemId
@@ -41,14 +48,15 @@ namespace Eumel.Dj.Mobile.ViewModels
             }
         }
 
-        public async void LoadItemId(string itemId)
+        public async void LoadItemId(string id)
         {
             try
             {
-                var item = await SongStore.GetItemAsync(itemId);
+                var item = await SongStore.GetItemAsync(id);
                 Id = item.Id;
                 Text = item.Title;
                 Description = item.Description;
+                HasMyVote = item.HasMyVote ? "Yes" : "No";
             }
             catch (Exception)
             {
