@@ -25,6 +25,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\SongsPage.xaml.cs">
+      <DependentUpon>SongsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\PlaylistPage.xaml.cs">
       <DependentUpon>PlaylistPage.xaml</DependentUpon>
     </Compile>

@@ -3,48 +3,44 @@ using Eumel.Dj.Mobile.Views;
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using Eumel.Dj.Mobile.Services;
 using Xamarin.Forms;
 
 namespace Eumel.Dj.Mobile.ViewModels
 {
-    public class ItemsViewModel : BaseViewModel
+    public class SongsViewModel : BaseViewModel
     {
         private SongItem _selectedSongItem;
 
         public ObservableCollection<SongItem> Items { get; }
-        public SongSourceItem Source { get; set; }
         public Command LoadItemsCommand { get; }
-        public Command AddItemCommand { get; }
         public Command<SongItem> ItemTapped { get; }
 
-        public IReadOnlySongStore<SongItem> SongStore => DependencyService.Get<IReadOnlySongStore<SongItem>>();
-        public ItemsViewModel()
+        public Command<SongItem> VoteUpDownCommand { get; }
+
+        public ISongService SongService => DependencyService.Get<ISongService>();
+        public SongsViewModel()
         {
             Title = "Browse";
             Items = new ObservableCollection<SongItem>();
-            Source = SongStore.GetSourceAsync(true).Result;
-            Title = $"Browse Playlist '{Source.Name}' [{Source.NumberOfSongs} Songs]";
             LoadItemsCommand = new Command(async () => { await ExecuteLoadItemsCommand(); });
 
             ItemTapped = new Command<SongItem>(OnItemSelected);
-
-            AddItemCommand = new Command(OnAddItem);
+            VoteUpDownCommand = new Command<SongItem>(OnItemUpDownVote);
         }
 
-        async Task ExecuteLoadItemsCommand()
+        private async Task ExecuteLoadItemsCommand()
         {
             IsBusy = true;
 
             try
             {
                 Items.Clear();
-                var items = await SongStore.GetItemsAsync(true);
-                foreach (var item in items)
-                {
-                    Items.Add(item);
-                }
+                var source = await SongService.GetSongsAsync(true);
+                source.Songs.Where(x => x?.Id != null).ToList().ForEach(Items.Add);
+                Title = $"Browse Playlist '{source.Name}' [{source.NumberOfSongs} Songs]";
             }
             catch (Exception ex)
             {
@@ -72,9 +68,9 @@ namespace Eumel.Dj.Mobile.ViewModels
             }
         }
 
-        private async void OnAddItem(object obj)
+        private async void OnItemUpDownVote(SongItem song)
         {
-            await Shell.Current.GoToAsync(nameof(NewItemPage));
+            await SongService.Vote(song.Id);
         }
 
         async void OnItemSelected(SongItem songItem)

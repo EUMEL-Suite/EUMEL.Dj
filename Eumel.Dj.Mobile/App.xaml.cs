@@ -15,8 +15,7 @@ namespace Eumel.Dj.Mobile
             DependencyService.Register<SettingsService>();
             DependencyService.Register<EumelRestServiceFactory>();
             DependencyService.Register<RestPlaylistService>();
-
-            DependencyService.Register<SongItemSongStore>();
+            DependencyService.Register<RestSongService>();
 
             MainPage = new AppShell();
         }

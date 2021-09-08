@@ -3,15 +3,15 @@ using Xamarin.Forms;
 
 namespace Eumel.Dj.Mobile.Views
 {
-    public partial class ItemsPage : ContentPage
+    public partial class SongsPage : ContentPage
     {
-        ItemsViewModel _viewModel;
+        private SongsViewModel _viewModel;
 
-        public ItemsPage()
+        public SongsPage()
         {
             InitializeComponent();
 
-            BindingContext = _viewModel = new ItemsViewModel();
+            BindingContext = _viewModel = new SongsViewModel();
         }
 
         protected override void OnAppearing()

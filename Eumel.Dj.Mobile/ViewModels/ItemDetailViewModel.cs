@@ -9,7 +9,7 @@ namespace Eumel.Dj.Mobile.ViewModels
     [QueryProperty(nameof(ItemId), nameof(ItemId))]
     public class ItemDetailViewModel : BaseViewModel
     {
-        public IReadOnlySongStore<SongItem> SongStore => DependencyService.Get<IReadOnlySongStore<SongItem>>();
+        public ISongService SongStore => DependencyService.Get<ISongService>();
 
         private string itemId;
         private string text;
@@ -47,8 +47,8 @@ namespace Eumel.Dj.Mobile.ViewModels
             {
                 var item = await SongStore.GetItemAsync(itemId);
                 Id = item.Id;
-                Text = item.Text;
-                Description = item.Artist;
+                Text = item.Title;
+                Description = item.Description;
             }
             catch (Exception)
             {

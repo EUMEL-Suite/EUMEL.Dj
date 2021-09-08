@@ -15,6 +15,7 @@
         public string Title { get; set; }
         public string Description { get; set; }
         public SongType Type { get; set; }
-    }
 
+        public bool HasVotes => VoteCount > 0;
+    }
 }

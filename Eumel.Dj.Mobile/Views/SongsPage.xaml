@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Eumel.Dj.Mobile.Views.SongsPage"
+             Title="{Binding Title}"
+             xmlns:local="clr-namespace:Eumel.Dj.Mobile.ViewModels"  
+             xmlns:model="clr-namespace:Eumel.Dj.Mobile.Models"  
+             x:Name="BrowseSongsPage">
+
+    <ContentPage.ToolbarItems>
+    </ContentPage.ToolbarItems>
+    <!--
+      x:DataType enables compiled bindings for better performance and compile time validation of binding expressions.
+      https://docs.microsoft.com/xamarin/xamarin-forms/app-fundamentals/data-binding/compiled-bindings
+    -->
+    <RefreshView x:DataType="local:SongsViewModel" Command="{Binding LoadItemsCommand}" IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
+        <CollectionView x:Name="ItemsListView"
+                ItemsSource="{Binding Items}"
+                SelectionMode="None">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid x:DataType="model:SongItem">
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="24"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+
+                        <Label Text="{Binding Title}" 
+                               Margin="2"
+                               LineBreakMode="NoWrap" 
+                               Style="{DynamicResource ListItemTextStyle}" 
+                               FontSize="16"
+                               Grid.Column="0" Grid.Row="0" />
+                        <Label Text="{Binding Description}" 
+                               Margin="2"
+                               LineBreakMode="NoWrap"
+                               Style="{DynamicResource ListItemDetailTextStyle}"
+                               FontSize="13" 
+                               Grid.Column="0" Grid.Row="1" />
+                        <Button Text="Up" 
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type local:SongsViewModel}}, Path=VoteUpDownCommand}"		
+                                CommandParameter="{Binding .}"
+                                Margin="4" WidthRequest="24"
+                                Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" >
+                            <Button.Style>
+                                <Style TargetType="{x:Type Button}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Path=HasMyVote}" Value="False" TargetType="{x:Type Button}">
+                                            <Setter Property="Text" Value="Up" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Path=HasMyVote}" Value="True" TargetType="{x:Type Button}">
+                                            <Setter Property="Text" Value="X" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+
+                        </Button>
+
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer 
+                                NumberOfTapsRequired="1"
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type local:SongsViewModel}}, Path=ItemTapped}"		
+                                CommandParameter="{Binding .}">
+                            </TapGestureRecognizer>
+                        </Grid.GestureRecognizers>
+
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </RefreshView>
+</ContentPage>
