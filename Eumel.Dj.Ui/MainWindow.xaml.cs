@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Net;
+using System.Net.Sockets;
 using System.Windows;
 using Eumel.Dj.Ui.Services;
 using Eumel.Dj.WebServer;
 using Eumel.Dj.WebServer.Messages;
+using Eumel.Dj.WebServer.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -20,13 +22,32 @@ namespace Eumel.Dj.Ui
         private readonly TinyMessengerHub _hub;
         private readonly List<TinyMessageSubscriptionToken> _tinyMessageSubscriptions;
         private IWebHost _host;
+        private readonly IAppSettings _appSettings;
+
+        public static string GetLocalIPAddress()
+        {
+            var host = Dns.GetHostEntry(Dns.GetHostName());
+            foreach (var ip in host.AddressList)
+            {
+                if (ip.AddressFamily == AddressFamily.InterNetwork)
+                {
+                    return ip.ToString();
+                }
+            }
+            throw new Exception("No network adapters with an IPv4 address in the system!");
+        }
 
         public MainWindow()
         {
             InitializeComponent();
 
             _hub = TinyMessengerHub.DefaultHub;
-
+            _appSettings = new AppSettings()
+            {
+                RestEndpoint = $"https://{GetLocalIPAddress()}:443",
+                SyslogServer = GetLocalIPAddress(),
+                MinimumLogLevel = "Debug"
+            };
 
             _tinyMessageSubscriptions = new List<TinyMessageSubscriptionToken>(new[]
             {
@@ -69,7 +90,11 @@ namespace Eumel.Dj.Ui
                     .UseIISIntegration()
                     .UseStartup<Startup>()
                     // this needs to be replaces with a "real DI container" which is provided by this app
-                    .ConfigureServices((context, services) => { services.AddSingleton<ITinyMessengerHub>(_hub); })
+                    .ConfigureServices((context, services) =>
+                    {
+                        services.AddSingleton<ITinyMessengerHub>(_hub);
+                        services.AddSingleton<IAppSettings>(_appSettings);
+                    })
                     .Build();
                 _host.RunAsync();
                 _hub.Publish(new LogMessage(this, "Service started at *:443", LogLevel.Information));

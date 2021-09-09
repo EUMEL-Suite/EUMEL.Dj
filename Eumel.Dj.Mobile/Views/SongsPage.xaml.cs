@@ -5,7 +5,7 @@ namespace Eumel.Dj.Mobile.Views
 {
     public partial class SongsPage : ContentPage
     {
-        private SongsViewModel _viewModel;
+        private readonly SongsViewModel _viewModel;
 
         public SongsPage()
         {

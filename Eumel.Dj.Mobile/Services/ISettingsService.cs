@@ -4,5 +4,6 @@
     {
         string RestEndpoint { get; }
         string Username { get; }
+        string SyslogServer { get; set; }
     }
 }

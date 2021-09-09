@@ -1,4 +1,5 @@
-﻿using Eumel.Dj.Mobile.ViewModels;
+﻿using Eumel.Dj.Mobile.Services;
+using Eumel.Dj.Mobile.ViewModels;
 using Xamarin.Forms;
 
 namespace Eumel.Dj.Mobile.Views
@@ -16,6 +17,9 @@ namespace Eumel.Dj.Mobile.Views
         {
             base.OnAppearing();
             _viewModel.OnAppearing();
+
+            if (string.IsNullOrWhiteSpace(DependencyService.Get<ISettingsService>().RestEndpoint))
+                Shell.Current.GoToAsync("//Login");
         }
     }
 }

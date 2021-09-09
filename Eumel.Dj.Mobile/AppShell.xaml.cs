@@ -1,5 +1,6 @@
 ﻿using Eumel.Dj.Mobile.Views;
 using System.Net;
+using Eumel.Dj.Mobile.Services;
 using Xamarin.Forms;
 
 namespace Eumel.Dj.Mobile
@@ -15,6 +16,7 @@ namespace Eumel.Dj.Mobile
             Routing.RegisterRoute(nameof(PlaylistPage), typeof(PlaylistPage));
             Routing.RegisterRoute(nameof(SongsPage), typeof(SongsPage));
             Routing.RegisterRoute(nameof(SongDetailPage), typeof(SongDetailPage));
+            Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
         }
     }
 }

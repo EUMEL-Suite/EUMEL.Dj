@@ -5,18 +5,17 @@ using TinyMessenger;
 
 namespace Eumel.Dj.Ui
 {
-    /// <summary>
-    ///     Interaction logic for App.xaml
-    /// </summary>
     public partial class App : Application
     {
+        // ReSharper disable once NotAccessedField.Local
+        private LoggingService _loggingService;
         private TinyMessengerHub _hub;
-        private LoggingService _loghubService;
 
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
 
+            // todo: there is a class with system settings we needs to inject
             var loggerSettings = new LoggerSettings()
             {
                 Filelog = new FilelogSettings() { EnableFileLogging = false },
@@ -25,7 +24,7 @@ namespace Eumel.Dj.Ui
             var logger = new SerilogFactory().Build(loggerSettings);
 
             _hub = TinyMessengerHub.DefaultHub;
-            _loghubService = new LoggingService(_hub, logger);
+            _loggingService = new LoggingService(_hub, logger);
         }
     }
 }
