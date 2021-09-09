@@ -7,6 +7,7 @@ using System.Net.Sockets;
 using System.Windows;
 using Eumel.Dj.Ui.Services;
 using Eumel.Dj.WebServer;
+using Eumel.Dj.WebServer.Controllers;
 using Eumel.Dj.WebServer.Messages;
 using Eumel.Dj.WebServer.Models;
 using Microsoft.AspNetCore.Hosting;
@@ -44,17 +45,28 @@ namespace Eumel.Dj.Ui
             _hub = TinyMessengerHub.DefaultHub;
             _appSettings = new AppSettings()
             {
-                RestEndpoint = $"https://{GetLocalIPAddress()}:443",
-                SyslogServer = GetLocalIPAddress(),
+                RestEndpoint = "https://192.168.178.37:443",
+                SyslogServer = "192.168.178.37",
                 MinimumLogLevel = "Debug"
             };
 
             _tinyMessageSubscriptions = new List<TinyMessageSubscriptionToken>(new[]
             {
-                _hub.Subscribe((Action<ITinyMessage>)LogAllActions)
+                _hub.Subscribe((Action<ITinyMessage>)LogAllActions),
+                _hub.Subscribe((Action<RequestUserTokenMessage>)RequestUserToken)
             });
 
             _djService = new DjService(_hub, new ItunesProviderService(Settings.Default, _hub));
+        }
+
+        private void RequestUserToken(RequestUserTokenMessage message)
+        {
+            // todo cache token and ook up or throw exception?. dunno
+            var user = message.UsernameRequest;
+            var token = Guid.NewGuid().ToString();
+
+            message.Response =
+                new MessageResponse<UserToken>(new UserToken(user, token));
         }
 
         private void LogAllActions(ITinyMessage message)
