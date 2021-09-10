@@ -6,7 +6,7 @@ namespace Eumel.Dj.Mobile.Services
     public interface ISongService
     {
         Task<SongListItem> GetSongsAsync(bool forceRefresh = false);
-        Task Vote(string id);
+        Task<bool> Vote(string id);
         Task<SongItem> GetItemAsync(string id);
     }
 }

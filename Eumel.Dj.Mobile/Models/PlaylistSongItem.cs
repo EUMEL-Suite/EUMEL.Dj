@@ -17,5 +17,6 @@
         public SongType Type { get; set; }
 
         public bool HasVotes => VoteCount > 0;
+
     }
 }

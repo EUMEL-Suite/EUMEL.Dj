@@ -70,7 +70,8 @@ namespace Eumel.Dj.Mobile.ViewModels
 
         private async void OnItemUpDownVote(SongItem song)
         {
-            await SongService.Vote(song.Id);
+            var hasMyVote = await SongService.Vote(song.Id);
+            song.HasMyVote = hasMyVote;
         }
 
         async void OnItemSelected(SongItem songItem)
@@ -78,7 +79,6 @@ namespace Eumel.Dj.Mobile.ViewModels
             if (songItem == null)
                 return;
 
-            // This will push the ItemDetailPage onto the navigation stack
             await Shell.Current.GoToAsync($"{nameof(SongDetailPage)}?{nameof(SongDetailViewModel.ItemId)}={songItem.Id}");
         }
     }

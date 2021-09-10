@@ -13,6 +13,7 @@ namespace Eumel.Dj.Mobile.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class SettingsPage : ContentPage
     {
+
         private readonly SettingsViewModel _viewModel;
 
         public SettingsPage()
@@ -20,22 +21,12 @@ namespace Eumel.Dj.Mobile.Views
             InitializeComponent();
 
             BindingContext = _viewModel = new SettingsViewModel();
-
-            Overlay.Children.RemoveAt(Overlay.Children.Count-1);
         }
 
         protected override void OnAppearing()
         {
             base.OnAppearing();
             _viewModel.OnAppearing();
-        }
-
-        private void scanView_OnScanResult(Result result)
-        {
-            Device.BeginInvokeOnMainThread(async () =>
-            {
-                await DisplayAlert("Scanned result", "The barcode's text is " + result.Text + ". The barcode's format is " + result.BarcodeFormat, "OK");
-            });
         }
     }
 }

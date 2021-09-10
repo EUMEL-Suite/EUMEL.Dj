@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Media;
 using Eumel.Dj.WebServer;
+using Eumel.Dj.WebServer.Controllers;
 using Eumel.Dj.WebServer.Messages;
 using Eumel.Dj.WebServer.Models;
 using Microsoft.Extensions.Logging;
@@ -18,6 +19,7 @@ namespace Eumel.Dj.Ui.Services
         private readonly IPlaylistProviderService _playlistService;
         private readonly List<TinyMessageSubscriptionToken> _tinyMessageSubscriptions;
         private VotedSong _currentSong;
+        private PlayerMessage.PlayerControl _playerStatus = PlayerMessage.PlayerControl.Stop;
 
         public DjService(ITinyMessengerHub hub, IPlaylistProviderService playlistService)
         {
@@ -29,11 +31,17 @@ namespace Eumel.Dj.Ui.Services
                 hub.Subscribe((Action<PlayerMessage>)PlayerRequest),
                 hub.Subscribe((Action<VoteMessage>)Vote),
                 hub.Subscribe((Action<GetPlaylistMessage>)GetPlaylist),
-                hub.Subscribe((Action<GetMyVotesMessage>)GetMyVotes)
+                hub.Subscribe((Action<GetMyVotesMessage>)GetMyVotes),
+                hub.Subscribe((Action<PlayerStatusMessage>)PlayerStatus)
             });
 
             _mediaPlayer = new MediaPlayer();
             _mediaPlayer.MediaEnded += (_, _) => PlayNextSong();
+        }
+
+        private void PlayerStatus(PlayerStatusMessage message)
+        {
+            message.Response = new MessageResponse<PlayerMessage.PlayerControl>(_playerStatus);
         }
 
         public void Dispose()
@@ -112,7 +120,6 @@ namespace Eumel.Dj.Ui.Services
                 switch (message.PlayerAction)
                 {
                     case PlayerMessage.PlayerControl.Play:
-                        // this needs to be changed to use the ID only!
                         PlayNextSong(message.SongId);
                         break;
                     case PlayerMessage.PlayerControl.Pause:
@@ -128,6 +135,7 @@ namespace Eumel.Dj.Ui.Services
                         throw new ArgumentOutOfRangeException();
                 }
 
+                _playerStatus = message.PlayerAction;
                 message.Response = new MessageResponse<bool>(true);
             });
         }

@@ -43,7 +43,7 @@ namespace Eumel.Dj.Mobile.Services
             };
         }
 
-        public async Task Vote(string id)
+        public async Task<bool> Vote(string id)
         {
             _ = _songCache.TryGetValue(id, out var song);
 
@@ -56,12 +56,14 @@ namespace Eumel.Dj.Mobile.Services
                 _log.Information($"User {_settings.Username} has already voted. Remove vote for {id} [{song?.Title}]");
                 _log.Debug($"Call down vote service endpoint");
                 await _service.DownVoteAsync(_settings.Username, new Song() { Id = id });
+                return false;
             }
             else
             {
                 _log.Information($"User {_settings.Username} has voted for {id} [{song?.Title}]");
                 _log.Debug($"Call up vote service endpoint");
                 await _service.UpVoteAsync(_settings.Username, new Song() { Id = id });
+                return true;
             }
         }
 

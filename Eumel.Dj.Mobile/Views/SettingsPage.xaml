@@ -1,20 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:forms="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
+             Title="{Binding Title}"
+             x:DataType="viewModels:SettingsViewModel"
+             xmlns:viewModels="clr-namespace:Eumel.Dj.Mobile.ViewModels;assembly=Eumel.Dj.Mobile"
              x:Class="Eumel.Dj.Mobile.Views.SettingsPage">
     <ContentPage.Content>
-        <Grid  VerticalOptions="CenterAndExpand"
-               HorizontalOptions="CenterAndExpand">
-            <forms:ZXingScannerView x:Name="scanView"
-                                    
-                                    OnScanResult="scanView_OnScanResult"
-                                    IsScanning="True"
-                                    WidthRequest="300"
-                                    HeightRequest="500"
-                                    VerticalOptions="CenterAndExpand"
-                                    HorizontalOptions="CenterAndExpand"/>
-            <forms:ZXingDefaultOverlay x:Name="Overlay" TopText="Align the settings code within the frame" />
-        </Grid>
+        <StackLayout x:DataType="viewModels:SettingsViewModel">
+            <Label Text="Username" />
+            <Label Text="{Binding Username}" />
+            <Label Text="Token" />
+            <Label Text="{Binding Token}" />
+            <Label Text="Player Endpoint" />
+            <Label Text="{Binding EumelServer}" />
+            <Label Text="Syslog Endpoint" />
+            <Label Text="{Binding SyslogServer}" />
+
+            <Button Command="{Binding ClearSettingsCommand}" Text="Logout" />
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>

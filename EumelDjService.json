@@ -349,6 +349,35 @@
         }
       }
     },
+    "/api/Player/Status": {
+      "get": {
+        "tags": [
+          "Player"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlayerControl"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlayerControl"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlayerControl"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/Settings/Init": {
       "get": {
         "tags": [
@@ -614,6 +643,15 @@
           }
         },
         "additionalProperties": false
+      },
+      "PlayerControl": {
+        "enum": [
+          "Play",
+          "Pause",
+          "Continue",
+          "Stop"
+        ],
+        "type": "string"
       },
       "ServerSettings": {
         "type": "object",

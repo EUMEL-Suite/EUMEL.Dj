@@ -148,7 +148,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2012" />
-    <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform" Version="6.2.12"/>
+    <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform" Version="6.2.12" />
     <PackageReference Include="Xamarin.Essentials" Version="1.6.1" />
   </ItemGroup>
   <ItemGroup>
@@ -156,6 +156,9 @@
       <Project>{B1B4E5A7-9375-45F8-A60C-4B321C5834F2}</Project>
       <Name>Eumel.Dj.Mobile</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\materialdesignicons-webfont.ttf" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

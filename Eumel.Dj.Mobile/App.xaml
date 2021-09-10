@@ -7,9 +7,11 @@
     -->
     <Application.Resources>
         <ResourceDictionary>
-            <Color x:Key="Primary">#118373</Color>
+            <Color x:Key="Primary">#004d80</Color>
+            <Color x:Key="HeartFill">#FF1424</Color>
+            <Color x:Key="HeartNonFill">#AAAAAA</Color>
             <Style TargetType="Button">
-                <Setter Property="TextColor" Value="White"></Setter>
+                <Setter Property="TextColor" Value="#ffffcc" />
                 <Setter Property="VisualStateManager.VisualStateGroups">
                     <VisualStateGroupList>
                         <VisualStateGroup x:Name="CommonStates">
@@ -26,6 +28,16 @@
                         </VisualStateGroup>
                     </VisualStateGroupList>
                 </Setter>
+            </Style>
+            <Style x:Key="ListItemTextStyle" TargetType="Label">
+                <Setter Property="Margin" Value="0" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="VerticalTextAlignment" Value="End" />
+            </Style>
+            <Style x:Key="ListItemDetailTextStyle" TargetType="Label">
+                <Setter Property="Margin" Value="0" />
+                <Setter Property="FontAttributes" Value="Italic" />
+                <Setter Property="VerticalTextAlignment" Value="Start" />
             </Style>
         </ResourceDictionary>        
     </Application.Resources>

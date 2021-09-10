@@ -12,7 +12,7 @@ namespace Eumel.Dj.WebServer.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SongController : ControllerBase
+    public class SongController : EumelDjControllerBase
     {
         private readonly ITinyMessengerHub _hub;
 

@@ -3,26 +3,22 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Eumel.Dj.Mobile.Views.PlaylistPage"
              xmlns:vm="clr-namespace:Eumel.Dj.Mobile.ViewModels"
-             xmlns:mobile="clr-namespace:Eumel.Dj.Mobile;assembly=Eumel.Dj.Mobile"
              xmlns:models="clr-namespace:Eumel.Dj.Mobile.Models;assembly=Eumel.Dj.Mobile"
-             xmlns:converters="clr-namespace:Eumel.Dj.Mobile.Views;assembly=Eumel.Dj.Mobile"
-             Title="{Binding Title}">
+             xmlns:data="clr-namespace:Eumel.Dj.Mobile.Data"  
+             Title="{Binding Title}"
+             x:DataType="vm:PlaylistViewModel">
 
     <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Play" Command="{Binding PlayPlayerCommand}" />
     </ContentPage.ToolbarItems>
-    <!--
-      x:DataType enables compiled bindings for better performance and compile time validation of binding expressions.
-      https://docs.microsoft.com/xamarin/xamarin-forms/app-fundamentals/data-binding/compiled-bindings
-    
-    BackgroundColor="{Binding Type, Converter= {x:Static converters:SongTypeToColorConverter.Instance } }"
-    -->
+
     <RefreshView x:DataType="vm:PlaylistViewModel" Command="{Binding LoadPlaylistCommand}" IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
         <CollectionView x:Name="ItemsListView"
                         ItemsSource="{Binding Items}"
                         SelectionMode="None">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <Grid x:DataType="models:PlaylistSongItem">
+                    <Grid x:DataType="models:PlaylistSongItem" Padding="2">
                         <Grid.Style>
                             <Style TargetType="{x:Type Grid}">
                                 <Style.Triggers>
@@ -40,28 +36,57 @@
                         </Grid.Style>
 
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"></RowDefinition>
-                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                            <ColumnDefinition Width="24"></ColumnDefinition>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="48" />
                         </Grid.ColumnDefinitions>
 
                         <Label Text="{Binding Title}" 
-                               Margin="2"
                                LineBreakMode="NoWrap" 
                                Style="{DynamicResource ListItemTextStyle}" 
                                FontSize="16"
                                Grid.Column="0" Grid.Row="0" />
                         <Label Text="{Binding Description}" 
-                               Margin="2"
                                LineBreakMode="NoWrap"
                                Style="{DynamicResource ListItemDetailTextStyle}"
                                FontSize="13" 
                                Grid.Column="0" Grid.Row="1" />
 
-                        <Label Text="{Binding VoteCount}" VerticalTextAlignment="Center"
+                        <ImageButton  BackgroundColor="Transparent"
+                                      Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Padding="2" Margin="5">
+                            <ImageButton.Source>
+                                <FontImageSource FontFamily="MaterialDesign" Glyph="{Static data:IconFont.Heart}" Color="{DynamicResource HeartNonFill}"/>
+                            </ImageButton.Source>
+
+                            <ImageButton.Style>
+                                <Style TargetType="{x:Type ImageButton}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Path=HasVotes}" Value="True" TargetType="{x:Type ImageButton}">
+                                            <Setter Property="IsVisible" Value="True" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Path=HasVotes}" Value="False" TargetType="{x:Type ImageButton}">
+                                            <Setter Property="IsVisible" Value="False" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Path=VotedByMe}" Value="False" TargetType="{x:Type ImageButton}">
+                                            <Setter Property="Source">
+                                                <FontImageSource FontFamily="MaterialDesign" Glyph="{Static data:IconFont.Heart}" Color="{DynamicResource HeartNonFill}"/>
+                                            </Setter>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Path=VotedByMe}" Value="True" TargetType="{x:Type ImageButton}">
+                                            <Setter Property="Source">
+                                                <FontImageSource FontFamily="MaterialDesign" Glyph="{Static data:IconFont.Heart}" Color="{DynamicResource HeartFill}"/>
+                                            </Setter>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ImageButton.Style>
+
+                        </ImageButton>
+
+                        <Label Text="{Binding VoteCount}" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"
                                Grid.Column="1" Grid.Row="0"  Grid.RowSpan="2">
                             <Label.Style>
                                 <Style TargetType="{x:Type Label}">
@@ -73,6 +98,13 @@
                                 </Style>
                             </Label.Style>
                         </Label>
+
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer 
+                                NumberOfTapsRequired="1"
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:PlaylistViewModel}}, Path=ItemTapped}"		
+                                CommandParameter="{Binding .}" />
+                        </Grid.GestureRecognizers>
 
                     </Grid>
                 </DataTemplate>

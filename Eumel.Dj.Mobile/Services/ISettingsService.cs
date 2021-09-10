@@ -7,5 +7,6 @@
         string Token { get; }
         string SyslogServer { get; }
         void Change(string restEndpoint, string username, string syslogServer, string token);
+        void Reset();
     }
 }

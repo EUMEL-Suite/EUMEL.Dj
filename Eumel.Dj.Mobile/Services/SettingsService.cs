@@ -24,7 +24,7 @@ namespace Eumel.Dj.Mobile.Services
             SyslogServer = syslogServer;
             Token = token;
 
-            //Save();
+            Save();
         }
 
         private void Save()
@@ -33,6 +33,12 @@ namespace Eumel.Dj.Mobile.Services
             Preferences.Set(SettingPrefix + nameof(Username), Username);
             Preferences.Set(SettingPrefix + nameof(Token), Token);
             Preferences.Set(SettingPrefix + nameof(SyslogServer), SyslogServer);
+        }
+
+        public void Reset()
+        {
+            Change(null, null, null, null);
+            Preferences.Clear();
         }
 
         public string RestEndpoint { get; private set; }

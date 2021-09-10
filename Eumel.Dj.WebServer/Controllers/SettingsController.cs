@@ -3,7 +3,6 @@ using System.Drawing.Imaging;
 using System.IO;
 using Eumel.Dj.WebServer.Models;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using QRCoder;
 using TinyMessenger;
 
@@ -11,7 +10,7 @@ namespace Eumel.Dj.WebServer.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SettingsController : ControllerBase
+    public class SettingsController : EumelDjControllerBase
     {
         private readonly ITinyMessengerHub _hub;
         private readonly IAppSettings _settings;
@@ -25,6 +24,7 @@ namespace Eumel.Dj.WebServer.Controllers
         [HttpGet("Init")]
         public FileResult Init()
         {
+            // todo use a message and let s/o else create the code.
             var qrCodeGenerator = new QRCodeGenerator();
             var qrCodeData = qrCodeGenerator.CreateQrCode(new PayloadGenerator.Url(_settings.RestEndpoint), QRCodeGenerator.ECCLevel.Q);
             var qrCode = new QRCode(qrCodeData);

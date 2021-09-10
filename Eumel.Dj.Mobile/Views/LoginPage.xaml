@@ -9,25 +9,36 @@
              x:Class="Eumel.Dj.Mobile.Views.LoginPage"
              Shell.NavBarIsVisible="False">
     <ContentPage.Content>
-        <Grid Padding="10,0,10,0" VerticalOptions="Center" x:DataType="viewModels:LoginViewModel">
+        <Grid Padding="10,10,10,10" VerticalOptions="Center" x:DataType="viewModels:LoginViewModel">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="48" />
+            </Grid.ColumnDefinitions>
 
-            <Label Text="Username" />
-            <Entry Text="{Binding Username}" Grid.Row="1" />
+            <Label Text="Sign in at Eumel DJ app as ..." Grid.ColumnSpan="2"  />
+            <Entry Text="{Binding Username}" Grid.Column="0" Grid.Row="1" />
+
+            <ImageButton Grid.Row="1" Grid.Column="1" Command="{Binding RandomizeUsernameCommand}" BackgroundColor="{DynamicResource Primary}">
+                <ImageButton.Source>
+                    <FontImageSource FontFamily="MaterialDesign"
+                                     Glyph="&#x0f0450;" />
+                </ImageButton.Source>
+            </ImageButton>
 
             <forms:ZXingScannerView IsScanning="True"
                                     HorizontalOptions="FillAndExpand"
                                     VerticalOptions="FillAndExpand"
                                     ScanResultCommand="{Binding ScanResultCommand}"
-                                    Grid.Row="2"/>
+                                    Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"/>
             <forms:ZXingDefaultOverlay x:Name="Overlay"
-                                           TopText="Align the settings code within the frame" 
-                                           BottomText="Set username before scanning QR code"
-                                           Grid.Row="2"/>
+                                           TopText="Scan the QR Code from the EUMEL DJ app" 
+                                           BottomText="{Binding UserHint, Mode=OneWay}"
+                                           Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"/>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

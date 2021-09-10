@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Threading.Tasks;
+using Eumel.Dj.Mobile.Data;
 using Eumel.Dj.Mobile.Services;
 using Eumel.Dj.Mobile.Views;
 using Xamarin.Forms;
@@ -28,12 +29,15 @@ namespace Eumel.Dj.Mobile.ViewModels
 
         public Command ScanResultCommand { get; }
 
+        public Command RandomizeUsernameCommand { get; }
+
         public LoginViewModel()
         {
             _settings = DependencyService.Get<ISettingsService>();
-            Username = _settings.Username;
+            Username = _settings.Username ?? Marvel.Names.Random();
 
             ScanResultCommand = new Command(ScanResult);
+            RandomizeUsernameCommand = new Command(() => Username = Marvel.Names.Random());
         }
 
         private void ScanResult(object scan)
@@ -68,6 +72,7 @@ namespace Eumel.Dj.Mobile.ViewModels
                 return;
             }
 
+            Username = _settings.Username;
             Shell.Current.GoToAsync($"//{nameof(PlaylistPage)}");
         }
 

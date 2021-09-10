@@ -16,26 +16,9 @@ namespace Eumel.Dj.Mobile
             DependencyService.Register<EumelRestServiceFactory>();
             DependencyService.Register<RestPlaylistService>();
             DependencyService.Register<RestSongService>();
+            DependencyService.Register<RestPlayerService>();
 
             MainPage = new AppShell();
-        }
-
-        protected override void OnStart()
-        {
-            var logger = DependencyService.Get<ISyslogService>();
-            logger.Debug($"[{DeviceInfo.Name}] App started");
-        }
-
-        protected override void OnSleep()
-        {
-            var logger = DependencyService.Get<ISyslogService>();
-            logger.Debug($"[{DeviceInfo.Name}] App going to sleep");
-        }
-
-        protected override void OnResume()
-        {
-            var logger = DependencyService.Get<ISyslogService>();
-            logger.Debug($"[{DeviceInfo.Name}] App going to resume");
         }
     }
 }
