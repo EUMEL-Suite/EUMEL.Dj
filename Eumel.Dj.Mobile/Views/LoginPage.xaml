@@ -4,23 +4,30 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:forms="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
+             xmlns:viewModels="clr-namespace:Eumel.Dj.Mobile.ViewModels;assembly=Eumel.Dj.Mobile"
              mc:Ignorable="d"
              x:Class="Eumel.Dj.Mobile.Views.LoginPage"
              Shell.NavBarIsVisible="False">
     <ContentPage.Content>
-        <Grid Padding="10,0,10,0" VerticalOptions="Center">
-            
-            <!--OnScanResult="scanView_OnScanResult"-->
-            <forms:ZXingScannerView x:Name="scanView"
-                                    
-                                    IsScanning="False"
-                                    WidthRequest="300"
-                                    HeightRequest="500"
-                                    VerticalOptions="CenterAndExpand"
-                                    HorizontalOptions="CenterAndExpand"/>
+        <Grid Padding="10,0,10,0" VerticalOptions="Center" x:DataType="viewModels:LoginViewModel">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Label Text="Username" />
+            <Entry Text="{Binding Username}" Grid.Row="1" />
+
+            <forms:ZXingScannerView IsScanning="True"
+                                    HorizontalOptions="FillAndExpand"
+                                    VerticalOptions="FillAndExpand"
+                                    ScanResultCommand="{Binding ScanResultCommand}"
+                                    Grid.Row="2"/>
             <forms:ZXingDefaultOverlay x:Name="Overlay"
-                                       TopText="Align the settings code within the frame" 
-                                       BottomText="Set username before scanning QR code" />
-        </Grid> 
+                                           TopText="Align the settings code within the frame" 
+                                           BottomText="Set username before scanning QR code"
+                                           Grid.Row="2"/>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

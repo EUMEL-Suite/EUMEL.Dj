@@ -6,20 +6,22 @@ namespace Eumel.Dj.Mobile.Views
 {
     public partial class PlaylistPage : ContentPage
     {
-        PlaylistViewModel _viewModel;
+        private readonly PlaylistViewModel _viewModel;
+
         public PlaylistPage()
         {
             InitializeComponent();
             BindingContext = _viewModel = new PlaylistViewModel();
+
+            // if no endpoint set, navigate to login page
+            if (string.IsNullOrWhiteSpace(DependencyService.Get<ISettingsService>().RestEndpoint))
+                Shell.Current.GoToAsync("//Login");
         }
 
         protected override void OnAppearing()
         {
             base.OnAppearing();
             _viewModel.OnAppearing();
-
-            if (string.IsNullOrWhiteSpace(DependencyService.Get<ISettingsService>().RestEndpoint))
-                Shell.Current.GoToAsync("//Login");
         }
     }
 }

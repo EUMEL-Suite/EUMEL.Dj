@@ -7,9 +7,26 @@ namespace Eumel.Dj.Mobile.Services
     {
         private readonly ISettingsService _settingsService;
 
+        private class EndpointOnlySettings : ISettingsService
+        {
+            public string RestEndpoint { get; set; }
+            public string Username { get; }
+            public string Token { get; }
+            public string SyslogServer { get; }
+            public void Change(string restEndpoint, string username, string syslogServer, string token)
+            {
+            }
+        }
+
         public EumelRestServiceFactory()
         {
             _settingsService = DependencyService.Get<ISettingsService>();
+        }
+
+        public EumelRestServiceFactory(string endpoint)
+        {
+            var settings = new EndpointOnlySettings() { RestEndpoint = endpoint };
+            _settingsService = settings;
         }
 
         public EumelDjServiceClient Build()

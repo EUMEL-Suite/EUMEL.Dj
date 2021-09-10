@@ -4,6 +4,8 @@
     {
         string RestEndpoint { get; }
         string Username { get; }
-        string SyslogServer { get; set; }
+        string Token { get; }
+        string SyslogServer { get; }
+        void Change(string restEndpoint, string username, string syslogServer, string token);
     }
 }
