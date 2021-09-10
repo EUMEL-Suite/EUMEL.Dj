@@ -7,10 +7,12 @@ namespace Eumel.Dj.Mobile.ViewModels
     {
         private readonly ISettingsService _settings;
         private readonly IPlaylistService _playlist;
+        private readonly IPlayerService _player;
         private string _eumelServer;
         private string _syslogServer;
         private string _username ;
         private string _token;
+        private bool _userIsAdmin;
 
         public Command ClearSettingsCommand { get; }
 
@@ -38,15 +40,31 @@ namespace Eumel.Dj.Mobile.ViewModels
             set => SetProperty(ref _token, value);
         }
 
+        public bool UserIsAdmin
+        {
+            get => _userIsAdmin;
+            set => SetProperty(ref _userIsAdmin, value);
+        }
+
+        public Command PlayCommand { get; set; }
+        public Command StopCommand { get; set; }
+        public Command ContinueCommand { get; set; }
+
         public SettingsViewModel()
         {
             _settings = DependencyService.Get<ISettingsService>();
             _playlist = DependencyService.Get<IPlaylistService>();
+            _player = DependencyService.Get<IPlayerService>();
 
             SyslogServer = _settings.SyslogServer;
             EumelServer = _settings.RestEndpoint;
             Username = _settings.Username;
             Token = _settings.Token;
+            UserIsAdmin = Username.Contains("Admin");
+
+            ContinueCommand = new Command(async () => await _player.Continue());
+            StopCommand = new Command(async () => await _player.Stop());
+            PlayCommand = new Command(async () => await _player.Play());
 
             ClearSettingsCommand = new Command(() =>
             {
@@ -58,6 +76,12 @@ namespace Eumel.Dj.Mobile.ViewModels
         public void OnAppearing()
         {
             IsBusy = true;
+
+            SyslogServer = _settings.SyslogServer;
+            EumelServer = _settings.RestEndpoint;
+            Username = _settings.Username;
+            Token = _settings.Token;
+            UserIsAdmin = Username.Contains("Admin");
         }
     }
 }

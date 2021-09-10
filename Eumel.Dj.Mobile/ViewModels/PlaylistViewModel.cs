@@ -29,7 +29,7 @@ namespace Eumel.Dj.Mobile.ViewModels
             Title = "Playlist";
             Items = new ObservableCollection<PlaylistSongItem>();
             LoadPlaylistCommand = new Command(async () => { await ExecuteLoadPlaylistCommand(); });
-            PlayPlayerCommand = new Command(async () => await PlayerService.Play(), () => PlayerService.CanPlay);
+            PlayPlayerCommand = new Command(async () => await PlayerService.Continue(), () => PlayerService.CanContinue);
             ItemTapped = new Command<PlaylistSongItem>(OnItemSelected);
         }
 

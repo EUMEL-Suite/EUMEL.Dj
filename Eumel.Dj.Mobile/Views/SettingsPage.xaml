@@ -4,19 +4,42 @@
              Title="{Binding Title}"
              x:DataType="viewModels:SettingsViewModel"
              xmlns:viewModels="clr-namespace:Eumel.Dj.Mobile.ViewModels;assembly=Eumel.Dj.Mobile"
+             xmlns:data="clr-namespace:Eumel.Dj.Mobile.Data"  
              x:Class="Eumel.Dj.Mobile.Views.SettingsPage">
     <ContentPage.Content>
-        <StackLayout x:DataType="viewModels:SettingsViewModel">
-            <Label Text="Username" />
-            <Label Text="{Binding Username}" />
-            <Label Text="Token" />
-            <Label Text="{Binding Token}" />
-            <Label Text="Player Endpoint" />
-            <Label Text="{Binding EumelServer}" />
-            <Label Text="Syslog Endpoint" />
-            <Label Text="{Binding SyslogServer}" />
+        <StackLayout x:DataType="viewModels:SettingsViewModel" Padding="4">
+            <Label Text="Username"  Style="{DynamicResource ListItemDetailTextStyle}"/>
+            <Label Text="{Binding Username}" Style="{DynamicResource ListItemTextStyle}"/>
+            <Label Text="Token"   Style="{DynamicResource ListItemDetailTextStyle}"/>
+            <Label Text="{Binding Token}" Style="{DynamicResource ListItemTextStyle}"/>
+            <Label Text="Player Endpoint" Style="{DynamicResource ListItemDetailTextStyle}"/>
+            <Label Text="{Binding EumelServer}"  Style="{DynamicResource ListItemTextStyle}"/>
+            <Label Text="Syslog Endpoint"   Style="{DynamicResource ListItemDetailTextStyle}"/>
+            <Label Text="{Binding SyslogServer}"  Style="{DynamicResource ListItemTextStyle}"/>
 
             <Button Command="{Binding ClearSettingsCommand}" Text="Logout" />
+
+            <StackLayout Orientation="Horizontal" IsVisible="{Binding UserIsAdmin}" Spacing="10" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                <ImageButton Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:SettingsViewModel}}, Path=StopCommand}"		
+                             BackgroundColor="Transparent" Padding="2" Margin="5">
+                    <ImageButton.Source>
+                        <FontImageSource FontFamily="MaterialDesign" Glyph="{Static data:IconFont.Stop}" Color="{DynamicResource Primary}"  />
+                    </ImageButton.Source>
+                </ImageButton>
+                <ImageButton Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:SettingsViewModel}}, Path=ContinueCommand}"		
+                             BackgroundColor="Transparent" Padding="2" Margin="5">
+                    <ImageButton.Source>
+                        <FontImageSource FontFamily="MaterialDesign" Glyph="{Static data:IconFont.Play}" Color="{DynamicResource Primary}" />
+                    </ImageButton.Source>
+                </ImageButton>
+                <ImageButton Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:SettingsViewModel}}, Path=PlayCommand}"		
+                             BackgroundColor="Transparent" Padding="2" Margin="5">
+                    <ImageButton.Source>
+                        <FontImageSource FontFamily="MaterialDesign" Glyph="{Static data:IconFont.SkipNext}" Color="{DynamicResource Primary}"  />
+                    </ImageButton.Source>
+                </ImageButton>
+            </StackLayout>
+
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
