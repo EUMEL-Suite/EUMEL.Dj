@@ -4,7 +4,6 @@ using Android.OS;
 using Android.Runtime;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
-using Platform = Xamarin.Essentials.Platform;
 
 namespace Eumel.Dj.Mobile.Droid
 {
@@ -17,7 +16,7 @@ namespace Eumel.Dj.Mobile.Droid
         {
             base.OnCreate(savedInstanceState);
 
-            Platform.Init(this, savedInstanceState);
+            Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             Forms.Init(this, savedInstanceState);
             LoadApplication(new App());
         }
@@ -25,10 +24,8 @@ namespace Eumel.Dj.Mobile.Droid
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions,
             [GeneratedEnum] Permission[] grantResults)
         {
-            Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
-
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
-            global::ZXing.Net.Mobile.Android.PermissionsHandler.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+            ZXing.Net.Mobile.Android.PermissionsHandler.OnRequestPermissionsResult(requestCode, permissions, grantResults);
 
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }

@@ -27,7 +27,7 @@ namespace Eumel.Dj.Mobile.Services
             _log.Information($"User {_settings.Username} a list of songs");
             var source = await _service.GetSongsSourceAsync();
 
-            var myVotes = await _service.GetMyVotesAsync(_settings.Username);
+            var myVotes = await _service.GetMyVotesAsync();
 
             var songs = await _service.GetSongsAsync(0, int.MaxValue);
 
@@ -48,21 +48,21 @@ namespace Eumel.Dj.Mobile.Services
             _ = _songCache.TryGetValue(id, out var song);
 
             _log.Debug($"Call get my votes service endpoint for {_settings.Username}");
-            var myVotes = await _service.GetMyVotesAsync(_settings.Username);
+            var myVotes = await _service.GetMyVotesAsync();
             var hasAlreadyVoted = myVotes.Any(y => y.Id == id);
 
             if (hasAlreadyVoted)
             {
                 _log.Information($"User {_settings.Username} has already voted. Remove vote for {id} [{song?.Title}]");
                 _log.Debug($"Call down vote service endpoint");
-                await _service.DownVoteAsync(_settings.Username, new Song() { Id = id });
+                await _service.DownVoteAsync(new Song() { Id = id });
                 return false;
             }
             else
             {
                 _log.Information($"User {_settings.Username} has voted for {id} [{song?.Title}]");
                 _log.Debug($"Call up vote service endpoint");
-                await _service.UpVoteAsync(_settings.Username, new Song() { Id = id });
+                await _service.UpVoteAsync(new Song() { Id = id });
                 return true;
             }
         }

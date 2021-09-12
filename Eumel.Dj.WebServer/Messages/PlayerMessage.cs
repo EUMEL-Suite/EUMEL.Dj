@@ -6,18 +6,17 @@
         {
             Play,
             Pause,
-            Continue,
-            Stop
+            Stop,
+            Next,
+            Restart
         }
 
-        public PlayerMessage(object sender, PlayerControl playerAction, string songId = null)
+        public PlayerMessage(object sender, PlayerControl playerAction)
             : base(sender)
         {
             PlayerAction = playerAction;
-            SongId = songId;
         }
 
         public PlayerControl PlayerAction { get; }
-        public string SongId { get; }
     }
 }

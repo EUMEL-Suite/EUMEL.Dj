@@ -19,7 +19,8 @@ namespace Eumel.Dj.Ui
             var loggerSettings = new LoggerSettings()
             {
                 Filelog = new FilelogSettings() { EnableFileLogging = false },
-                Syslog = new SyslogSettings() { EnableSyslogLogging = true, SysLogServerIp = "192.168.178.37", UseUdp = true }
+                Syslog = new SyslogSettings() { EnableSyslogLogging = true, SysLogServerIp = "192.168.178.37", UseUdp = true },
+                DeviceName = "EUMEL DJ"
             };
             var logger = new SerilogFactory().Build(loggerSettings);
 

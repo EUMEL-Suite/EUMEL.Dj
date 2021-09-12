@@ -13,12 +13,11 @@ namespace Eumel.Dj.WebServer.Controllers
     {
         private readonly ITinyMessengerHub _hub;
 
-        public DjController(ITinyMessengerHub hub)
+        public DjController(ITinyMessengerHub hub, ITokenService tokenService) : base(tokenService)
         {
             _hub = hub ?? throw new ArgumentNullException(nameof(hub));
         }
 
-        // GET: api/<SongController>
         [HttpGet("GetPlaylist")]
         public DjPlaylist GetPlaylist()
         {
@@ -27,29 +26,33 @@ namespace Eumel.Dj.WebServer.Controllers
             return plm.Response.Response;
         }
 
-        // GET: api/<SongController>
         [HttpPost("UpVote")]
-        public void UpVote([FromBody] Song song, string votersName)
+        public void UpVote([FromBody] Song song)
         {
-            var plm = new VoteMessage(this, VoteMessage.UpDownVote.Up, song, votersName);
+            var plm = new VoteMessage(this, VoteMessage.UpDownVote.Up, song, Username);
             _hub.Publish(plm);
         }
 
-        // GET: api/<SongController>
         [HttpPost("DownVote")]
-        public void DownVote([FromBody] Song song, string votersName)
+        public void DownVote([FromBody] Song song)
         {
-            var plm = new VoteMessage(this, VoteMessage.UpDownVote.Down, song, votersName);
+            var plm = new VoteMessage(this, VoteMessage.UpDownVote.Down, song, Username);
             _hub.Publish(plm);
         }
 
-        // GET: api/<SongController>
         [HttpGet("GetMyVotes")]
-        public IEnumerable<Song> GetMyVotes(string votersName)
+        public IEnumerable<Song> GetMyVotes()
         {
-            var plm = new GetMyVotesMessage(this, votersName);
+            var plm = new GetMyVotesMessage(this, Username);
             _hub.Publish(plm);
             return plm.Response.Response;
+        }
+
+        [HttpGet("ClearMyVotes")]
+        public void ClearMyVotes()
+        {
+            var plm = new ClearMyVotesMessage(this, Username);
+            _hub.Publish(plm);
         }
     }
 }

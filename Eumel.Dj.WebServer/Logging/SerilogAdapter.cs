@@ -1,4 +1,5 @@
 ﻿using System;
+using Eumel.Dj.WebServer.Exceptions;
 using Serilog;
 using Serilog.Context;
 

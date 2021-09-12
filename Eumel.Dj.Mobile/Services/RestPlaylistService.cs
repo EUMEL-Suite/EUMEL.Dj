@@ -33,5 +33,10 @@ namespace Eumel.Dj.Mobile.Services
                 Songs = songs
             };
         }
+
+        public async Task ClearMyVotes()
+        {
+            await _service.ClearMyVotesAsync();
+        }
     }
 }

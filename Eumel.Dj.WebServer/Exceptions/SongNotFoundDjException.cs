@@ -1,4 +1,4 @@
-﻿namespace Eumel.Dj.WebServer
+﻿namespace Eumel.Dj.WebServer.Exceptions
 {
     public class SongNotFoundDjException : EumelDjException
     {

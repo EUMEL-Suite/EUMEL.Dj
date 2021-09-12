@@ -11,6 +11,8 @@ namespace Eumel.Dj.Mobile
         {
             InitializeComponent();
 
+            DependencyService.Get<ISyslogService>().Information("Starting app shell");
+
             ServicePointManager.ServerCertificateValidationCallback += (sender, certificate, chain, sslPolicyErrors) => true;
 
             Routing.RegisterRoute(nameof(PlaylistPage), typeof(PlaylistPage));

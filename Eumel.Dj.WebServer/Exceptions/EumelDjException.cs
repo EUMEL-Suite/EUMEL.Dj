@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Eumel.Dj.WebServer
+namespace Eumel.Dj.WebServer.Exceptions
 {
     public class EumelDjException : Exception
     {

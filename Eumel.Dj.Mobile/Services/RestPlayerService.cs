@@ -6,28 +6,15 @@ namespace Eumel.Dj.Mobile.Services
     public class RestPlayerService : IPlayerService
     {
         private readonly EumelDjServiceClient _service;
-        private readonly ISettingsService _settings;
 
         public RestPlayerService()
         {
             _service = DependencyService.Get<IEumelRestServiceFactory>().Build();
-            _settings = DependencyService.Get<ISettingsService>();
-        }
-        public async Task Continue()
-        {
-            await _service.ContinueAsync();
         }
 
-        public bool CanContinue
+        public async Task Pause()
         {
-            get
-            {
-                if (string.IsNullOrWhiteSpace(_settings.Token))
-                    return false;
-
-                var status = _service.StatusAsync().Result;
-                return status != PlayerControl.Play;
-            }
+            await _service.PauseAsync();
         }
 
         public async Task Play()
@@ -35,33 +22,19 @@ namespace Eumel.Dj.Mobile.Services
             await _service.PlayAsync();
         }
 
-        public bool CanPlay
-        {
-            get
-            {
-                if (string.IsNullOrWhiteSpace(_settings.Token))
-                    return false;
-
-                var status = _service.StatusAsync().Result;
-                return status != PlayerControl.Play;
-            }
-        }
-
         public async Task Stop()
         {
             await _service.StopAsync();
         }
 
-        public bool CanStop
+        public async Task Next()
         {
-            get
-            {
-                if (string.IsNullOrWhiteSpace(_settings.Token))
-                    return false;
+            await _service.NextAsync();
+        }
 
-                var status = _service.StatusAsync().Result;
-                return status != PlayerControl.Stop;
-            }
+        public async Task Restart()
+        {
+            await _service.RestartAsync();
         }
     }
 }

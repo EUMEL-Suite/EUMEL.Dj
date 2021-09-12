@@ -23,7 +23,7 @@ namespace Eumel.Dj.Mobile.Services
                 return null;
 
             _syslogger = new LoggingModule(_settings.SyslogServer, 514);
-            _syslogger.Settings.HeaderFormat = "{ts}\t" + _deviceName + "\t{sev}\t";
+            _syslogger.Settings.HeaderFormat = "{ts}\t" + _deviceName.PadRight(18).Substring(0, 18) + "\t{sev}\t";
             _syslogger.Info($"Syslogger started on device {_deviceName}");
             return _syslogger;
         }

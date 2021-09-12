@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Threading.Tasks;
 using Eumel.Dj.WebServer.Messages;
 using Eumel.Dj.WebServer.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TinyMessenger;
 
@@ -16,7 +13,7 @@ namespace Eumel.Dj.WebServer.Controllers
     {
         private readonly ITinyMessengerHub _hub;
 
-        public SongController(ITinyMessengerHub hub)
+        public SongController(ITinyMessengerHub hub, ITokenService tokenService) : base(tokenService)
         {
             _hub = hub ?? throw new ArgumentNullException(nameof(hub));
         }

@@ -18,6 +18,8 @@ namespace Eumel.Dj.Mobile
             DependencyService.Register<RestSongService>();
             DependencyService.Register<RestPlayerService>();
 
+            DependencyService.Get<ISyslogService>().Information("Starting application");
+
             MainPage = new AppShell();
         }
     }

@@ -1,5 +1,7 @@
-﻿using Eumel.Dj.Mobile.Data;
+﻿using System.Threading.Tasks;
+using Eumel.Dj.Mobile.Data;
 using Xamarin.Essentials;
+using Xamarin.Forms;
 
 namespace Eumel.Dj.Mobile.Services
 {
@@ -19,6 +21,7 @@ namespace Eumel.Dj.Mobile.Services
 
         public void Change(string restEndpoint, string username, string syslogServer, string token)
         {
+            DependencyService.Get<ISyslogService>().Debug("Settings changed");
             RestEndpoint = restEndpoint;
             Username = username;
             SyslogServer = syslogServer;
@@ -29,6 +32,7 @@ namespace Eumel.Dj.Mobile.Services
 
         private void Save()
         {
+            DependencyService.Get<ISyslogService>().Debug("Settings saved");
             Preferences.Set(SettingPrefix + nameof(RestEndpoint), RestEndpoint);
             Preferences.Set(SettingPrefix + nameof(Username), Username);
             Preferences.Set(SettingPrefix + nameof(Token), Token);
@@ -37,8 +41,17 @@ namespace Eumel.Dj.Mobile.Services
 
         public void Reset()
         {
+            DependencyService.Get<ISyslogService>().Debug("Settings cleared");
             Change(null, null, null, null);
             Preferences.Clear();
+        }
+
+        public async Task<bool> CheckUserIsAdmin()
+        {
+            if (string.IsNullOrWhiteSpace(Token)) return false;
+
+            var service = DependencyService.Get<IEumelRestServiceFactory>().Build();
+            return await service.CheckUserIsAdminAsync();
         }
 
         public string RestEndpoint { get; private set; }

@@ -26,7 +26,8 @@ namespace Eumel.Dj.WebServer.Logging
 
                 if (settings.Syslog.UseUdp)
                 {
-                    builder = builder.WriteTo.UdpSyslog(settings.Syslog.SysLogServerIp, restrictedToMinimumLevel: GetLevel(settings.Syslog.MinimumLevel));
+                    builder = builder.WriteTo.UdpSyslog(settings.Syslog.SysLogServerIp, restrictedToMinimumLevel: GetLevel(settings.Syslog.MinimumLevel),
+                        format: SyslogFormat.Local, outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss}\t" + settings.DeviceName.PadRight(18)[..18] + "\t{Level:u5}\t{Message}");
                 }
                 else
                 {

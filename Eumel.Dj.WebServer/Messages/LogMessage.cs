@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Eumel.Dj.WebServer.Exceptions;
+using Microsoft.Extensions.Logging;
 
 namespace Eumel.Dj.WebServer.Messages
 {

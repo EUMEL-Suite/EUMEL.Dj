@@ -10,6 +10,7 @@ using Eumel.Dj.WebServer;
 using Eumel.Dj.WebServer.Controllers;
 using Eumel.Dj.WebServer.Messages;
 using Eumel.Dj.WebServer.Models;
+using Eumel.Dj.WebServer.Services;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -24,19 +25,6 @@ namespace Eumel.Dj.Ui
         private readonly List<TinyMessageSubscriptionToken> _tinyMessageSubscriptions;
         private IWebHost _host;
         private readonly IAppSettings _appSettings;
-
-        public static string GetLocalIPAddress()
-        {
-            var host = Dns.GetHostEntry(Dns.GetHostName());
-            foreach (var ip in host.AddressList)
-            {
-                if (ip.AddressFamily == AddressFamily.InterNetwork)
-                {
-                    return ip.ToString();
-                }
-            }
-            throw new Exception("No network adapters with an IPv4 address in the system!");
-        }
 
         public MainWindow()
         {
@@ -53,20 +41,30 @@ namespace Eumel.Dj.Ui
             _tinyMessageSubscriptions = new List<TinyMessageSubscriptionToken>(new[]
             {
                 _hub.Subscribe((Action<ITinyMessage>)LogAllActions),
-                _hub.Subscribe((Action<RequestUserTokenMessage>)RequestUserToken)
+                _hub.Subscribe((Action<RequestUserIsAdminMessage>)RequestUserIsAdmin),
+                _hub.Subscribe((Action<UserAddedMessage>)UserAdded),
+                _hub.Subscribe((Action<UserAddedMessage>)UserRemoved),
+                _hub.Subscribe((Action<RequestUserIsAdminMessage>)RequestUserIsAdmin)
             });
 
-            _djService = new DjService(_hub, new ItunesProviderService(Settings.Default, _hub));
+            _djService = new DjService(
+                _hub,
+                new ItunesProviderService(Settings.Default, _hub));
         }
 
-        private void RequestUserToken(RequestUserTokenMessage message)
+        private void UserRemoved(UserAddedMessage message)
         {
-            // todo cache token and ook up or throw exception?. dunno
-            var user = message.UsernameRequest;
-            var token = Guid.NewGuid().ToString();
+             _hub.Publish(new LogMessage(this, $"User removed from system: {message.Username}", LogLevel.Information));
+       }
 
-            message.Response =
-                new MessageResponse<UserToken>(new UserToken(user, token));
+        private void UserAdded(UserAddedMessage message)
+        {
+            _hub.Publish(new LogMessage(this, $"User added to system: {message.Username}", LogLevel.Information));
+        }
+
+        private void RequestUserIsAdmin(RequestUserIsAdminMessage message)
+        {
+            message.Response = new MessageResponse<bool>(true);
         }
 
         private void LogAllActions(ITinyMessage message)
@@ -80,8 +78,8 @@ namespace Eumel.Dj.Ui
                     GetMyVotesMessage getMyVotes =>
                         @$"[Get Votes] ""{getMyVotes.VotersName}"" requested his songs{Environment.NewLine}{Log.Text}",
                     PlayerMessage player =>
-                        @$"[Player] Player was requested to {player.PlayerAction.ToString().ToLower()} {player.SongId}{Environment.NewLine}{Log.Text}",
-                    LogMessage log => $@"[{log.Level}] {log.Message}",
+                        @$"[Player] Player was requested to {player.PlayerAction.ToString().ToLower()}{Environment.NewLine}{Log.Text}",
+                    LogMessage log => $@"[{log.Level}] {log.Message}{Environment.NewLine}{Log.Text}",
                     _ => $"[Bus] {message.GetType().Name}{Environment.NewLine}{Log.Text}"
                 };
             });
@@ -106,6 +104,8 @@ namespace Eumel.Dj.Ui
                     {
                         services.AddSingleton<ITinyMessengerHub>(_hub);
                         services.AddSingleton<IAppSettings>(_appSettings);
+                        services.AddSingleton<IQrCodeService>(new QrCodeService());
+                        services.AddSingleton<ITokenService>(new TokenService());
                     })
                     .Build();
                 _host.RunAsync();

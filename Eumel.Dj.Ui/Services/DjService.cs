@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Media;
-using Eumel.Dj.WebServer;
 using Eumel.Dj.WebServer.Controllers;
+using Eumel.Dj.WebServer.Exceptions;
 using Eumel.Dj.WebServer.Messages;
 using Eumel.Dj.WebServer.Models;
 using Microsoft.Extensions.Logging;
@@ -19,7 +19,7 @@ namespace Eumel.Dj.Ui.Services
         private readonly IPlaylistProviderService _playlistService;
         private readonly List<TinyMessageSubscriptionToken> _tinyMessageSubscriptions;
         private VotedSong _currentSong;
-        private PlayerMessage.PlayerControl _playerStatus = PlayerMessage.PlayerControl.Stop;
+        private PlayerStatus _playerStatus = WebServer.Controllers.PlayerStatus.Stopped;
 
         public DjService(ITinyMessengerHub hub, IPlaylistProviderService playlistService)
         {
@@ -30,6 +30,7 @@ namespace Eumel.Dj.Ui.Services
             {
                 hub.Subscribe((Action<PlayerMessage>)PlayerRequest),
                 hub.Subscribe((Action<VoteMessage>)Vote),
+                hub.Subscribe((Action<ClearMyVotesMessage>)ClearMyVotes),
                 hub.Subscribe((Action<GetPlaylistMessage>)GetPlaylist),
                 hub.Subscribe((Action<GetMyVotesMessage>)GetMyVotes),
                 hub.Subscribe((Action<PlayerStatusMessage>)PlayerStatus)
@@ -39,9 +40,14 @@ namespace Eumel.Dj.Ui.Services
             _mediaPlayer.MediaEnded += (_, _) => PlayNextSong();
         }
 
+        private void ClearMyVotes(ClearMyVotesMessage message)
+        {
+            _djList.ClearVotesFor(message.Username);
+        }
+
         private void PlayerStatus(PlayerStatusMessage message)
         {
-            message.Response = new MessageResponse<PlayerMessage.PlayerControl>(_playerStatus);
+            message.Response = new MessageResponse<PlayerStatus>(_playerStatus);
         }
 
         public void Dispose()
@@ -52,20 +58,38 @@ namespace Eumel.Dj.Ui.Services
             _mediaPlayer.Close();
         }
 
-        private void PlayNextSong(string directSongRequest = null)
+        private void ContinueOrNext()
+        {
+            if (_currentSong != null)
+                _pastSongs.Enqueue(_currentSong);
+
+            if (_mediaPlayer.Source == null)
+            {
+                _currentSong = _djList.GetTakeSong();
+                var location = _playlistService.GetLocationOfSongById(_currentSong.Id);
+                _mediaPlayer.Open(location);
+
+                var playlist = _djList.GetPlaylist();
+                playlist.CurrentSong = _currentSong;
+                playlist.PastSongs = _pastSongs.ToArray();
+                _hub.Publish(new PlaylistChangedMessage(this, playlist));
+            }
+
+            _mediaPlayer.Play();
+        }
+
+        private void PlayNextSong()
         {
             if (_currentSong != null)
                 _pastSongs.Enqueue(_currentSong);
 
             var notFoundCounter = 0;
-            Uri songLocation = null;
+            Uri songLocation;
             do
             {
                 try
                 {
-                    _currentSong = _playlistService.FindSongById(directSongRequest).ToVotedSong()
-                                   ?? _djList.GetTakeSong()
-                                   ?? throw new Exception("cannot take song from list");
+                    _currentSong = _djList.GetTakeSong() ?? throw new Exception("cannot take song from list");
                     songLocation = _playlistService.GetLocationOfSongById(_currentSong.Id);
                 }
                 catch (SongNotFoundDjException ex)
@@ -77,9 +101,12 @@ namespace Eumel.Dj.Ui.Services
                 }
             } while (songLocation == null && notFoundCounter <= 10);
 
-
             _mediaPlayer.Open(songLocation);
             _mediaPlayer.Play();
+            var playlist = _djList.GetPlaylist();
+            playlist.CurrentSong = _currentSong;
+            playlist.PastSongs = _pastSongs.ToArray();
+            _hub.Publish(new PlaylistChangedMessage(this, playlist));
         }
 
         private void GetMyVotes(GetMyVotesMessage message)
@@ -120,22 +147,28 @@ namespace Eumel.Dj.Ui.Services
                 switch (message.PlayerAction)
                 {
                     case PlayerMessage.PlayerControl.Play:
-                        PlayNextSong(message.SongId);
+                        ContinueOrNext();
+                        _playerStatus = WebServer.Controllers.PlayerStatus.Playing;
                         break;
                     case PlayerMessage.PlayerControl.Pause:
                         _mediaPlayer.Pause();
-                        break;
-                    case PlayerMessage.PlayerControl.Continue:
-                        _mediaPlayer.Play();
+                        _playerStatus = WebServer.Controllers.PlayerStatus.Paused;
                         break;
                     case PlayerMessage.PlayerControl.Stop:
                         _mediaPlayer.Stop();
+                        _mediaPlayer.Position = TimeSpan.Zero;
+                        _playerStatus = WebServer.Controllers.PlayerStatus.Stopped;
+                        break;
+                    case PlayerMessage.PlayerControl.Next:
+                        PlayNextSong();
+                        break;
+                    case PlayerMessage.PlayerControl.Restart:
+                        _mediaPlayer.Position = TimeSpan.Zero;
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
 
-                _playerStatus = message.PlayerAction;
                 message.Response = new MessageResponse<bool>(true);
             });
         }

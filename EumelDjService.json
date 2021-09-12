@@ -5,6 +5,57 @@
     "version": "v1"
   },
   "paths": {
+    "/api/Chat/SendMessage": {
+      "post": {
+        "tags": [
+          "Chat"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "string",
+                "nullable": true
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "string",
+                "nullable": true
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "string",
+                "nullable": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "boolean"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/Dj/GetPlaylist": {
       "get": {
         "tags": [
@@ -38,16 +89,6 @@
       "post": {
         "tags": [
           "Dj"
-        ],
-        "parameters": [
-          {
-            "name": "votersName",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          }
         ],
         "requestBody": {
           "content": {
@@ -95,16 +136,6 @@
         "tags": [
           "Dj"
         ],
-        "parameters": [
-          {
-            "name": "votersName",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          }
-        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -151,16 +182,6 @@
         "tags": [
           "Dj"
         ],
-        "parameters": [
-          {
-            "name": "votersName",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "Success",
@@ -190,6 +211,18 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/api/Dj/ClearMyVotes": {
+      "get": {
+        "tags": [
+          "Dj"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
           }
         }
       }
@@ -198,45 +231,6 @@
       "get": {
         "tags": [
           "Player"
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "boolean"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "boolean"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "type": "boolean"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/Player/Open": {
-      "get": {
-        "tags": [
-          "Player"
-        ],
-        "parameters": [
-          {
-            "name": "songId",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          }
         ],
         "responses": {
           "200": {
@@ -320,7 +314,36 @@
         }
       }
     },
-    "/api/Player/Continue": {
+    "/api/Player/Next": {
+      "get": {
+        "tags": [
+          "Player"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "boolean"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Player/Restart": {
       "get": {
         "tags": [
           "Player"
@@ -360,17 +383,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/PlayerControl"
+                  "$ref": "#/components/schemas/PlayerStatus"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PlayerControl"
+                  "$ref": "#/components/schemas/PlayerStatus"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PlayerControl"
+                  "$ref": "#/components/schemas/PlayerStatus"
                 }
               }
             }
@@ -386,6 +409,35 @@
         "responses": {
           "200": {
             "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/Settings/CheckUserIsAdmin": {
+      "get": {
+        "tags": [
+          "Settings"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "boolean"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
           }
         }
       }
@@ -644,12 +696,11 @@
         },
         "additionalProperties": false
       },
-      "PlayerControl": {
+      "PlayerStatus": {
         "enum": [
-          "Play",
-          "Pause",
-          "Continue",
-          "Stop"
+          "Playing",
+          "Stopped",
+          "Paused"
         ],
         "type": "string"
       },

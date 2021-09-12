@@ -9,6 +9,7 @@
                 Id = source.Id,
                 Title = source.Name,
                 Description = $"{source.Artist} - {source.Album}",
+                //Voters = string.Join(","source.Voters),
                 HasMyVote = hasMyVote
             };
         }

@@ -77,5 +77,13 @@ namespace Eumel.Dj.Ui.Services
         {
             return new DjPlaylist(_votedSongs.OrderByDescending(x => x.Voters.Count).Concat(_unvotedNext).ToArray());
         }
+
+        public void ClearVotesFor(string votersName)
+        {
+            var votedSongs = _votedSongs.Where(x => x.Voters.Contains(votersName)).ToArray();
+            if (!votedSongs.Any()) return;
+
+            votedSongs.ToList().ForEach(x => x.Voters = x.Voters.Where(y => y != votersName).ToArray());
+        }
     }
 }
