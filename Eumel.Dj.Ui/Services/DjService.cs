@@ -60,9 +60,6 @@ namespace Eumel.Dj.Ui.Services
 
         private void ContinueOrNext()
         {
-            if (_currentSong != null)
-                _pastSongs.Enqueue(_currentSong);
-
             if (_mediaPlayer.Source == null)
             {
                 _currentSong = _djList.GetTakeSong();

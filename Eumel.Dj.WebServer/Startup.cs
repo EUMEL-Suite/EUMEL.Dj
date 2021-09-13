@@ -12,6 +12,9 @@ namespace Eumel.Dj.WebServer
 {
     public class Startup
     {
+        private PlaylistAdapterService _pla;
+        private object _ca;
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -27,6 +30,7 @@ namespace Eumel.Dj.WebServer
                 .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
             services.AddSignalR();
             services.AddSingleton<PlaylistAdapterService>();
+            services.AddSingleton<ChatAdapterService>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "EUMEL Dj", Version = "v1" });
@@ -53,12 +57,12 @@ namespace Eumel.Dj.WebServer
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                //endpoints.MapHub<ChatHub>("/chatHub").WithMetadata();
-                //endpoints.MapHub<PlayerHub>("/playerHub").WithMetadata();
-                endpoints.MapHub<PlaylistHub>("/playlistHub").WithMetadata();
+                endpoints.MapHub<PlaylistHub>($"/{PlaylistHub.Route}").WithMetadata();
+                endpoints.MapHub<ChatHub>($"/{ChatHub.Route}").WithMetadata();
             });
 
-            app.ApplicationServices.GetService<PlaylistAdapterService>();
+            _pla = app.ApplicationServices.GetService<PlaylistAdapterService>();
+            _ca = app.ApplicationServices.GetService<ChatAdapterService>();
         }
     }
 }

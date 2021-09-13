@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Eumel.Dj.WebServer.Messages;
 using Eumel.Dj.WebServer.Models;
@@ -8,28 +7,16 @@ using TinyMessenger;
 
 namespace Eumel.Dj.WebServer.Hubs
 {
-    public class PlaylistAdapterService
+    public class PlaylistAdapterService : AdapterServiceBase
     {
-
-        private readonly IHubContext<PlaylistHub> _clientHub;
-
-        private readonly List<TinyMessageSubscriptionToken> _tinyMessageSubscriptions;
-
-
-        public PlaylistAdapterService(IHubContext<PlaylistHub> clientHub, ITinyMessengerHub serverHub)
+        public PlaylistAdapterService(IHubContext<PlaylistHub> clientHub, ITinyMessengerHub serverHub) : base(clientHub, serverHub)
         {
-            _clientHub = clientHub;
-
-            _tinyMessageSubscriptions = new List<TinyMessageSubscriptionToken>(new[]
-            {
-                _ = serverHub.Subscribe((Action<PlaylistChangedMessage>)(async (x) => await SendPlaylistChangedAsync(x.Playlist)))
-            });
+            Subscribe((Action<PlaylistChangedMessage>)(async (x) => await SendPlaylistChangedAsync(x.Playlist)));
         }
 
-        public Task SendPlaylistChangedAsync(DjPlaylist playlist)
+        private Task SendPlaylistChangedAsync(DjPlaylist playlist)
         {
-            return _clientHub.Clients.All.SendAsync(PlaylistHub.PlaylistChanged, playlist);
+            return ClientHub.Clients.All.SendAsync(PlaylistHub.PlaylistChanged, playlist);
         }
-
     }
 }

@@ -10,7 +10,12 @@
         <TextBlock Height="200" x:Name="Log" />
         <StackPanel Orientation="Horizontal">
             <Button Content="Play" Click="PlayClicked" />
+            <Button Content="Pause" Click="PauseClicked" />
             <Button Content="Next" Click="NextClicked" />
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <TextBox x:Name="ChatMessage" Width="400" />
+            <Button Content="Send" Click="SendChatMessage" />
         </StackPanel>
     </StackPanel>
 </Window>

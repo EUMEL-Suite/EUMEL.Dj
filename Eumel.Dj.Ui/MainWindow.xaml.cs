@@ -8,6 +8,7 @@ using System.Windows;
 using Eumel.Dj.Ui.Services;
 using Eumel.Dj.WebServer;
 using Eumel.Dj.WebServer.Controllers;
+using Eumel.Dj.WebServer.Hubs;
 using Eumel.Dj.WebServer.Messages;
 using Eumel.Dj.WebServer.Models;
 using Eumel.Dj.WebServer.Services;
@@ -76,13 +77,12 @@ namespace Eumel.Dj.Ui
             {
                 Log.Text = message switch
                 {
-                    VoteMessage vote =>
-                        @$"[Vote] ""{vote.VotersName}"" voted the song ""{vote.Song.Name}"" {vote.Direction.ToString().ToLower()}{Environment.NewLine}{Log.Text}",
-                    GetMyVotesMessage getMyVotes =>
-                        @$"[Get Votes] ""{getMyVotes.VotersName}"" requested his songs{Environment.NewLine}{Log.Text}",
-                    PlayerMessage player =>
-                        @$"[Player] Player was requested to {player.PlayerAction.ToString().ToLower()}{Environment.NewLine}{Log.Text}",
+                    VoteMessage vote => @$"[Vote] ""{vote.VotersName}"" voted the song ""{vote.Song.Name}"" {vote.Direction.ToString().ToLower()}{Environment.NewLine}{Log.Text}",
+                    GetMyVotesMessage getMyVotes => @$"[Get Votes] ""{getMyVotes.VotersName}"" requested his songs{Environment.NewLine}{Log.Text}",
+                    PlayerMessage player => @$"[Player] Player was requested to {player.PlayerAction.ToString().ToLower()}{Environment.NewLine}{Log.Text}",
                     LogMessage log => $@"[{log.Level}] {log.Message}{Environment.NewLine}{Log.Text}",
+                    ChatReceivedMessage chatReceived => $@"{chatReceived.Username}: {chatReceived.Message}{Environment.NewLine}{Log.Text}",
+                    ChatSentMessage chatSent => $@"{chatSent.Username}: {chatSent.Message}{Environment.NewLine}{Log.Text}",
                     _ => $"[Bus] {message.GetType().Name}{Environment.NewLine}{Log.Text}"
                 };
             });
@@ -144,6 +144,18 @@ namespace Eumel.Dj.Ui
         private void NextClicked(object sender, RoutedEventArgs e)
         {
             _hub.Publish(new PlayerMessage(this, PlayerMessage.PlayerControl.Next));
+        }
+
+        private void PauseClicked(object sender, RoutedEventArgs e)
+        {
+            _hub.Publish(new PlayerMessage(this, PlayerMessage.PlayerControl.Pause));
+        }
+
+        private void SendChatMessage(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(ChatMessage.Text)) return;
+            _hub.Publish(new ChatSentMessage(this, "[Server]", ChatMessage.Text));
+            ChatMessage.Text = string.Empty;
         }
     }
 }

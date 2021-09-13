@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Eumel.Dj.Mobile.Views.ChatPage"
+             Title="{Binding Title}"
+             xmlns:local="clr-namespace:Eumel.Dj.Mobile.ViewModels"  
+             xmlns:model="clr-namespace:Eumel.Dj.Mobile.Models"  
+             xmlns:data="clr-namespace:Eumel.Dj.Mobile.Data"  
+             x:Name="BrowseChatPage">
+
+    <ContentPage.ToolbarItems>
+    </ContentPage.ToolbarItems>
+    <!--
+      x:DataType enables compiled bindings for better performance and compile time validation of binding expressions.
+      https://docs.microsoft.com/xamarin/xamarin-forms/app-fundamentals/data-binding/compiled-bindings
+    -->
+    <Grid Padding="10,10,10,10" VerticalOptions="Center"  x:DataType="local:ChatViewModel" >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <!--<Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="48" />
+        </Grid.ColumnDefinitions>-->
+
+        <Editor Text="{Binding Message}" />
+        <Button Command="{Binding SendMessageCommand}" Text="Send" Grid.Row="1" />
+        <Label Text="{Binding Chat}" Grid.Row="2" />
+    </Grid>
+</ContentPage>

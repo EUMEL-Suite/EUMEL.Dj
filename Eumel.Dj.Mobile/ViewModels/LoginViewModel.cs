@@ -1,5 +1,4 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Threading.Tasks;
 using Eumel.Dj.Mobile.Data;
 using Eumel.Dj.Mobile.Services;
@@ -83,6 +82,11 @@ namespace Eumel.Dj.Mobile.ViewModels
 
             _settings.Change(server, token.Username, token.SyslogServer, token.Usertoken);
             return true;
+        }
+
+
+        public void OnAppearing()
+        {
         }
     }
 }
