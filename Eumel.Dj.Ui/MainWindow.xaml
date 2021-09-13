@@ -8,5 +8,9 @@
     <StackPanel>
         <Button Click="ButtonBase_OnClick" Height="24" Content="Start service" />
         <TextBlock Height="200" x:Name="Log" />
+        <StackPanel Orientation="Horizontal">
+            <Button Content="Play" Click="PlayClicked" />
+            <Button Content="Next" Click="NextClicked" />
+        </StackPanel>
     </StackPanel>
 </Window>

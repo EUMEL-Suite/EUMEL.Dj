@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Eumel.Dj.Mobile.Models;
 using Eumel.Dj.Mobile.Services;
@@ -31,7 +32,7 @@ namespace Eumel.Dj.Mobile.ViewModels
             Title = "Playlist";
             Items = new ObservableCollection<PlaylistSongItem>();
             LoadPlaylistCommand = new Command(async () => { await ExecuteLoadPlaylistCommand(); });
-            PlayPlayerCommand = new Command(async () => await PlayerService.Play(), ()=> Items.All(x => x.Type != SongType.Current));
+            PlayPlayerCommand = new Command(async () => await PlayerService.Play(), () => Items.All(x => x.Type != SongType.Current));
             ItemTapped = new Command<PlaylistSongItem>(OnItemSelected);
         }
 
@@ -54,23 +55,41 @@ namespace Eumel.Dj.Mobile.ViewModels
                 IsBusy = false;
             }
         }
-        public void OnAppearing()
+
+        public async void OnAppearing()
         {
             IsBusy = true;
+            if (string.IsNullOrWhiteSpace(DependencyService.Get<ISettingsService>().RestEndpoint))
+                return;
 
-            if (_hub != null) return;
-            _hub = new HubConnectionBuilder()
-                .WithUrl(DependencyService.Get<ISettingsService>().RestEndpoint + "/playlistHub")
-                .Build();
-
-            _hub.StartAsync();
-            _hub.On<DjPlaylist>("PlaylistChanged", pl =>
+            if (_hub == null)
             {
-                var songs = pl.PastSongs.Select(x => x.ToPlaylistSongItem(SongType.Past, DependencyService.Get<ISettingsService>()))
-                    .Append(pl.CurrentSong.ToPlaylistSongItem(SongType.Current, DependencyService.Get<ISettingsService>()))
-                    .Concat(pl.UpcomingSongs.Select(x => x.ToPlaylistSongItem(SongType.Upcomming, DependencyService.Get<ISettingsService>())));
-                songs.Where(y => y?.Id != null).ToList().ForEach(Items.Add);
-            });
+                _hub = new HubConnectionBuilder()
+                    .WithUrl(DependencyService.Get<ISettingsService>().RestEndpoint + "/playlistHub", options =>
+                    {
+                        options.HttpMessageHandlerFactory = message =>
+                        {
+                            if (message is HttpClientHandler clientHandler)
+                                // always verify the SSL certificate
+                                clientHandler.ServerCertificateCustomValidationCallback +=
+                                    (sender, certificate, chain, sslPolicyErrors) => true;
+                            return message;
+                        };
+                    })
+
+                    .Build();
+
+                _hub.On<DjPlaylist>("PlaylistChanged", pl =>
+                {
+                    Items.Clear();
+                    var songs = pl.PastSongs.Select(x => x.ToPlaylistSongItem(SongType.Past, DependencyService.Get<ISettingsService>()))
+                        .Append(pl.CurrentSong.ToPlaylistSongItem(SongType.Current, DependencyService.Get<ISettingsService>()))
+                        .Concat(pl.UpcomingSongs.Select(x => x.ToPlaylistSongItem(SongType.Upcomming, DependencyService.Get<ISettingsService>())));
+                    songs.Where(y => y?.Id != null).ToList().ForEach(Items.Add);
+                });
+            };
+            if (_hub.State == HubConnectionState.Disconnected)
+                await _hub.StartAsync();
         }
 
         private async void OnItemSelected(PlaylistSongItem songItem)

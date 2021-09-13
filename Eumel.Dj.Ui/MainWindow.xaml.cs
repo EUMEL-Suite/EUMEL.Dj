@@ -50,12 +50,15 @@ namespace Eumel.Dj.Ui
             _djService = new DjService(
                 _hub,
                 new ItunesProviderService(Settings.Default, _hub));
+
+            Loaded += (sender, args) => StartService();
         }
+
 
         private void UserRemoved(UserAddedMessage message)
         {
-             _hub.Publish(new LogMessage(this, $"User removed from system: {message.Username}", LogLevel.Information));
-       }
+            _hub.Publish(new LogMessage(this, $"User removed from system: {message.Username}", LogLevel.Information));
+        }
 
         private void UserAdded(UserAddedMessage message)
         {
@@ -86,6 +89,11 @@ namespace Eumel.Dj.Ui
         }
 
         private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        {
+            StartService();
+        }
+
+        private void StartService()
         {
             if (_host != null) return;
 
@@ -122,10 +130,20 @@ namespace Eumel.Dj.Ui
         {
             _djService.Dispose();
             _tinyMessageSubscriptions.ForEach(x => _hub.Unsubscribe(x));
-            _host.StopAsync();
+            _host?.StopAsync();
 
             base.OnClosing(e);
-            _host.WaitForShutdown();
+            _host?.WaitForShutdown();
+        }
+
+        private void PlayClicked(object sender, RoutedEventArgs e)
+        {
+            _hub.Publish(new PlayerMessage(this, PlayerMessage.PlayerControl.Play));
+        }
+
+        private void NextClicked(object sender, RoutedEventArgs e)
+        {
+            _hub.Publish(new PlayerMessage(this, PlayerMessage.PlayerControl.Next));
         }
     }
 }
