@@ -67,16 +67,16 @@ namespace Eumel.Dj.Mobile.ViewModels
                 _hub = new HubConnectionBuilder()
                     .WithUrl(DependencyService.Get<ISettingsService>().RestEndpoint + "/playlistHub", options =>
                     {
+                        options.Headers.Add("usertoken", DependencyService.Get<ISettingsService>().RestEndpoint);
                         options.HttpMessageHandlerFactory = message =>
                         {
                             if (message is HttpClientHandler clientHandler)
                                 // always verify the SSL certificate
                                 clientHandler.ServerCertificateCustomValidationCallback +=
-                                    (sender, certificate, chain, sslPolicyErrors) => true;
+                                        (sender, certificate, chain, sslPolicyErrors) => true;
                             return message;
                         };
                     })
-
                     .Build();
 
                 _hub.On<DjPlaylist>("PlaylistChanged", pl =>

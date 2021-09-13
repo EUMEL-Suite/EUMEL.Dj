@@ -26,7 +26,7 @@ namespace Eumel.Dj.WebServer
                 // this will do the trick to make the PlayerControl enum available as string in swagger json.
                 .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
             services.AddSignalR();
-            services.AddSingleton<PlaylistHubService>();
+            services.AddSingleton<PlaylistAdapterService>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "EUMEL Dj", Version = "v1" });
@@ -58,7 +58,7 @@ namespace Eumel.Dj.WebServer
                 endpoints.MapHub<PlaylistHub>("/playlistHub").WithMetadata();
             });
 
-            app.ApplicationServices.GetService<PlaylistHubService>();
+            app.ApplicationServices.GetService<PlaylistAdapterService>();
         }
     }
 }

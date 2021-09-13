@@ -11,6 +11,7 @@ namespace Eumel.Dj.WebServer.Models
         }
 
         public IEnumerable<VotedSong> UpcomingSongs { get; }
+        // todo checkme 
         [JsonProperty(Required = Required.AllowNull)]
         public VotedSong CurrentSong { get; set; }
         public IEnumerable<VotedSong> PastSongs { get; set; }

@@ -20,12 +20,14 @@ namespace Eumel.Dj.WebServer.Services
 
         public bool UsernameIsAvailable(string usernameRequest, out string usernameRecommendation)
         {
-            if (!_tokenToUserDictionary.ContainsValue(usernameRequest))
+            // if user not taken, use it :-)
+            if (_tokenToUserDictionary.ContainsValue(usernameRequest))
             {
                 usernameRecommendation = usernameRequest;
                 return true;
             }
 
+            // lets append a random number to the username
             var counter = 1;
             usernameRecommendation = usernameRequest + counter;
             while (_tokenToUserDictionary.ContainsValue(usernameRecommendation))
