@@ -12,6 +12,12 @@ namespace Eumel.Dj.WebServer
 {
     public class Startup
     {
+        private static string GetMajorMinorVersion()
+        {
+            var ver = typeof(Startup).Assembly.GetName().Version ?? new Version(0, 0);
+            return $"{ver.Major}.{ver.Minor}";
+        }
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -30,7 +36,7 @@ namespace Eumel.Dj.WebServer
             services.AddSingleton<ChatAdapterService>();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = Constants.ApplicationName, Version = $"v{typeof(Startup).Assembly.GetName().Version}"});
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = Constants.ApplicationName, Version = $"v{GetMajorMinorVersion()}" });
                 c.UseAllOfToExtendReferenceSchemas();
             });
         }
@@ -42,7 +48,7 @@ namespace Eumel.Dj.WebServer
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint($"{Constants.Swagger.JsonEndpoint}", $"{Constants.ApplicationName} v{typeof(Startup).Assembly.GetName().Version}"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint($"{Constants.Swagger.JsonEndpoint}", $"{Constants.ApplicationName} v{GetMajorMinorVersion()}"));
             }
 
             app.UseRouting();
