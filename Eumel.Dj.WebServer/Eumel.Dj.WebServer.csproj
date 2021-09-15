@@ -4,6 +4,9 @@
     <TargetFramework>net5.0</TargetFramework>
     <AssemblyName>Eumel.Dj.WebServer</AssemblyName>
     <RootNamespace>Eumel.Dj.WebServer</RootNamespace>
+    <ApplicationIcon />
+    <OutputType>Library</OutputType>
+    <StartupObject />
   </PropertyGroup>
 
   <ItemGroup>

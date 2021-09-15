@@ -10,6 +10,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="..\EumelDjConstants.cs" Link="EumelDjConstants.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <EmbeddedResource Include="Resources\materialdesignicons-webfont.ttf" />
   </ItemGroup>
 

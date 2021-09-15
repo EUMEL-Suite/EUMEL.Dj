@@ -2,9 +2,9 @@
 
 namespace Eumel.Dj.WebServer.Hubs
 {
-    public class ChatSentMessage : MessageRequest
+    public class ChatSendingMessage : MessageRequest
     {
-        public ChatSentMessage(object sender, string username, string message) : base(sender)
+        public ChatSendingMessage(object sender, string username, string message) : base(sender)
         {
             Username = username;
             Message = message;

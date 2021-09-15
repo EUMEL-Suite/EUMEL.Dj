@@ -14,6 +14,7 @@ using Eumel.Dj.WebServer.Models;
 using Eumel.Dj.WebServer.Services;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using TinyMessenger;
 
@@ -82,7 +83,7 @@ namespace Eumel.Dj.Ui
                     PlayerMessage player => @$"[Player] Player was requested to {player.PlayerAction.ToString().ToLower()}{Environment.NewLine}{Log.Text}",
                     LogMessage log => $@"[{log.Level}] {log.Message}{Environment.NewLine}{Log.Text}",
                     ChatReceivedMessage chatReceived => $@"{chatReceived.Username}: {chatReceived.Message}{Environment.NewLine}{Log.Text}",
-                    ChatSentMessage chatSent => $@"Request to sent chat {chatSent.Message} by {chatSent.Username}{Environment.NewLine}{Log.Text}",
+                    ChatSendingMessage chatSent => $@"Request to sent chat {chatSent.Message} by {chatSent.Username}{Environment.NewLine}{Log.Text}",
                     _ => $"[Bus] {message.GetType().Name}{Environment.NewLine}{Log.Text}"
                 };
             });
@@ -100,6 +101,7 @@ namespace Eumel.Dj.Ui
             try
             {
                 _host = new WebHostBuilder()
+                    .UseEnvironment(GetEnvironment())
                     .UseKestrel(options =>
                     {
                         options.Listen(IPAddress.Any, 443, listenOptions => { listenOptions.UseHttps(); });
@@ -136,6 +138,11 @@ namespace Eumel.Dj.Ui
             _host?.WaitForShutdown();
         }
 
+        private string GetEnvironment()
+        {
+            return "DEVELOPMENT";
+        }
+
         private void PlayClicked(object sender, RoutedEventArgs e)
         {
             _hub.Publish(new PlayerMessage(this, PlayerMessage.PlayerControl.Play));
@@ -154,7 +161,7 @@ namespace Eumel.Dj.Ui
         private void SendChatMessage(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(ChatMessage.Text)) return;
-            _hub.Publish(new ChatSentMessage(this, "[Server]", ChatMessage.Text));
+            _hub.Publish(new ChatSendingMessage(this, "[Server]", ChatMessage.Text));
             ChatMessage.Text = string.Empty;
         }
     }

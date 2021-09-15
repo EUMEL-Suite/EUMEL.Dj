@@ -65,9 +65,9 @@ namespace Eumel.Dj.Mobile.ViewModels
             if (_hub == null)
             {
                 _hub = new HubConnectionBuilder()
-                    .WithUrl(DependencyService.Get<ISettingsService>().RestEndpoint + "/playlistHub", options =>
+                    .WithUrl($"{DependencyService.Get<ISettingsService>().RestEndpoint}/{Constants.PlaylistHub.Route}", options =>
                     {
-                        options.Headers.Add("usertoken", DependencyService.Get<ISettingsService>().RestEndpoint);
+                        options.Headers.Add(Constants.UserToken, DependencyService.Get<ISettingsService>().RestEndpoint);
                         options.HttpMessageHandlerFactory = message =>
                         {
                             if (message is HttpClientHandler clientHandler)
@@ -79,7 +79,7 @@ namespace Eumel.Dj.Mobile.ViewModels
                     })
                     .Build();
 
-                _hub.On<DjPlaylist>("PlaylistChanged", pl =>
+                _hub.On<DjPlaylist>(Constants.PlaylistHub.PlaylistChanged, pl =>
                 {
                     Items.Clear();
                     var songs = pl.PastSongs.Select(x => x.ToPlaylistSongItem(SongType.Past, DependencyService.Get<ISettingsService>()))

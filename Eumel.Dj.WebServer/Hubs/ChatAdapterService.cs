@@ -10,43 +10,25 @@ namespace Eumel.Dj.WebServer.Hubs
 {
     public class ChatAdapterService : AdapterServiceBase<ChatHub>
     {
-        private readonly HubConnection _connection;
-
-        public ChatAdapterService(IHubContext<ChatHub> clientHub, ITinyMessengerHub serverHub, IAppSettings settings) : base(clientHub, serverHub)
+        public ChatAdapterService(IHubContext<ChatHub> clientHub, ITinyMessengerHub applicationHub, IAppSettings settings) : base(clientHub, applicationHub)
         {
-            Subscribe((Action<ChatSentMessage>)(async (x) => await SendChatSentAsync(x.Username, x.Message)));
+            Subscribe((Action<ChatSendingMessage>)(async (x) => await SendChatSentAsync(x)));
 
-            _connection = new HubConnectionBuilder()
-                .WithUrl($"{settings.RestEndpoint}/{ChatHub.Route}", options =>
-                {
-                    options.Headers.Add("usertoken", Guid.NewGuid().ToString());
-                    options.HttpMessageHandlerFactory = message =>
-                    {
-                        if (message is HttpClientHandler clientHandler)
-                            // always verify the SSL certificate
-                            clientHandler.ServerCertificateCustomValidationCallback +=
-                                (sender, certificate, chain, sslPolicyErrors) => true;
-                        return message;
-                    };
-                })
-                .Build();
-
-            _connection.Closed += async (error) =>
-            {
-                await Task.Delay(new Random().Next(0, 5) * 1000);
-                await _connection.StartAsync();
-            };
-            _connection.StartAsync();
-
-            _connection.On<string, string>(ChatHub.ChatSent, (username, message) =>
-            {
-                serverHub.Publish(new ChatReceivedMessage(this, username, message));
-            });
+            // this adapter need to listen to the bus itself because it represents a bidirectional interface
+            InitHubConnection(applicationHub, settings);
         }
 
-        private async Task SendChatSentAsync(string username, string message)
+        protected void InitHubConnection(ITinyMessengerHub serverHub, IAppSettings settings)
         {
-            await ClientHub.Clients.All.SendAsync(ChatHub.ChatSent, username, message);
+            // creates a hub connection so it can be used
+            CreateHubConnection($"{settings.RestEndpoint}/{Constants.ChatHub.Route}");
+
+            HubConnection.On<string, string>(Constants.ChatHub.ChatSent, (username, message) => { serverHub.Publish(new ChatReceivedMessage(this, username, message)); });
+        }
+
+        private async Task SendChatSentAsync(ChatSendingMessage message)
+        {
+            await ClientHub.Clients.All.SendAsync(Constants.ChatHub.ChatSent, message.Username, message.Message);
         }
     }
 }

@@ -12,9 +12,6 @@ namespace Eumel.Dj.WebServer
 {
     public class Startup
     {
-        private PlaylistAdapterService _pla;
-        private object _ca;
-
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -33,7 +30,7 @@ namespace Eumel.Dj.WebServer
             services.AddSingleton<ChatAdapterService>();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "EUMEL Dj", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = Constants.ApplicationName, Version = $"v{typeof(Startup).Assembly.GetName().Version}"});
                 c.UseAllOfToExtendReferenceSchemas();
             });
         }
@@ -41,14 +38,12 @@ namespace Eumel.Dj.WebServer
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment() || true)
+            if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "EUMEL Dj v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint($"{Constants.Swagger.JsonEndpoint}", $"{Constants.ApplicationName} v{typeof(Startup).Assembly.GetName().Version}"));
             }
-
-            //app.UseHttpsRedirection();
 
             app.UseRouting();
 
@@ -57,12 +52,13 @@ namespace Eumel.Dj.WebServer
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                endpoints.MapHub<PlaylistHub>($"/{PlaylistHub.Route}").WithMetadata();
-                endpoints.MapHub<ChatHub>($"/{ChatHub.Route}").WithMetadata();
+                endpoints.MapHub<PlaylistHub>($"/{Constants.PlaylistHub.Route}").WithMetadata();
+                endpoints.MapHub<ChatHub>($"/{Constants.ChatHub.Route}").WithMetadata();
             });
 
-            _pla = app.ApplicationServices.GetService<PlaylistAdapterService>();
-            _ca = app.ApplicationServices.GetService<ChatAdapterService>();
+            // Start the adapter services so they link both hubs
+            _ = app.ApplicationServices.GetService<PlaylistAdapterService>();
+            _ = app.ApplicationServices.GetService<ChatAdapterService>();
         }
     }
 }

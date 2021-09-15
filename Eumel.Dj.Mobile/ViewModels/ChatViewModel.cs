@@ -36,7 +36,7 @@ namespace Eumel.Dj.Mobile.ViewModels
             var settings = DependencyService.Get<ISettingsService>();
             try
             {
-                await _hub.InvokeAsync("SendChatMessage", settings.Username, Message);
+                await _hub.InvokeAsync(Constants.ChatHub.SendChat, settings.Username, Message);
             }
             catch (Exception ex)
             {
@@ -49,13 +49,13 @@ namespace Eumel.Dj.Mobile.ViewModels
             if (_hub != null) return;
 
             _hub = new HubConnectionBuilder()
-                .WithUrl(DependencyService.Get<ISettingsService>().RestEndpoint + "/chatHub", options =>
+                .WithUrl($"{DependencyService.Get<ISettingsService>().RestEndpoint}/{Constants.ChatHub.Route}", options =>
                 {
-                    options.Headers.Add("usertoken", DependencyService.Get<ISettingsService>().Token);
+                    options.Headers.Add(Constants.UserToken, DependencyService.Get<ISettingsService>().Token);
                     options.HttpMessageHandlerFactory = message =>
                     {
                         if (message is HttpClientHandler clientHandler)
-                            // always verify the SSL certificate
+                            // always ignore the SSL certificate
                             clientHandler.ServerCertificateCustomValidationCallback +=
                                 (sender, certificate, chain, sslPolicyErrors) => true;
                         return message;
@@ -68,7 +68,7 @@ namespace Eumel.Dj.Mobile.ViewModels
                 await Task.Delay(new Random().Next(0, 5) * 1000);
                 await _hub.StartAsync();
             };
-            _hub.On<string, string>("ChatSent", (username, message) =>
+            _hub.On<string, string>(Constants.ChatHub.ChatSent, (username, message) =>
             {
                 Chat = $"{username}: {message}{Environment.NewLine}{Chat}";
             });

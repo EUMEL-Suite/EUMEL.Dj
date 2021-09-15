@@ -21,7 +21,7 @@ namespace Eumel.Dj.WebServer.Services
         public bool UsernameIsAvailable(string usernameRequest, out string usernameRecommendation)
         {
             // if user not taken, use it :-)
-            if (_tokenToUserDictionary.ContainsValue(usernameRequest))
+            if (!_tokenToUserDictionary.ContainsValue(usernameRequest))
             {
                 usernameRecommendation = usernameRequest;
                 return true;

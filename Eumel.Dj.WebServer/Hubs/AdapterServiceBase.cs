@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.AspNetCore.SignalR.Client;
 using TinyMessenger;
 
 namespace Eumel.Dj.WebServer.Hubs
@@ -11,33 +14,64 @@ namespace Eumel.Dj.WebServer.Hubs
     public abstract class AdapterServiceBase<T> : IDisposable
         where T: Hub
     {
-        private readonly ITinyMessengerHub _serverHub;
+        private readonly ITinyMessengerHub _applicationHub;
         private readonly List<TinyMessageSubscriptionToken> _tinyMessageSubscriptions = new();
+        protected  HubConnection HubConnection { get; private set; }
         protected IHubContext<T> ClientHub { get; }
 
-        protected AdapterServiceBase(IHubContext<T> clientHub, ITinyMessengerHub serverHub)
+        protected AdapterServiceBase(IHubContext<T> clientHub, ITinyMessengerHub applicationHub)
         {
-            _serverHub = serverHub;
+            _applicationHub = applicationHub;
             ClientHub = clientHub;
         }
 
         protected void Subscribe<TMessage>(Action<TMessage> deliveryAction) where TMessage : class, ITinyMessage
         {
-            _tinyMessageSubscriptions.Add(_serverHub.Subscribe(deliveryAction));
+            _tinyMessageSubscriptions.Add(_applicationHub.Subscribe(deliveryAction));
         }
 
-        protected virtual void Dispose(bool disposing)
+        protected virtual async void Dispose(bool disposing)
         {
-            if (disposing)
+            if (!disposing) return;
+
+            if (HubConnection != null)
             {
-                _tinyMessageSubscriptions?.ForEach(x=>_serverHub.Unsubscribe(x));
+                await HubConnection.StopAsync();
+                await HubConnection.DisposeAsync();
             }
+
+            _tinyMessageSubscriptions?.ForEach(x => _applicationHub.Unsubscribe(x));
         }
 
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        protected void CreateHubConnection(string hubEndpoint)
+        {
+            HubConnection = new HubConnectionBuilder()
+                .WithUrl(hubEndpoint, options =>
+                {
+                    options.Headers.Add(Constants.UserToken, Guid.NewGuid().ToString());
+                    options.HttpMessageHandlerFactory = message =>
+                    {
+                        if (message is HttpClientHandler clientHandler)
+                            // always ignore the SSL certificate
+                            clientHandler.ServerCertificateCustomValidationCallback +=
+                                (sender, certificate, chain, sslPolicyErrors) => true;
+                        return message;
+                    };
+                })
+                .Build();
+
+            HubConnection.Closed += async (error) =>
+            {
+                await Task.Delay(new Random().Next(0, 5) * 1000);
+                await HubConnection.StartAsync();
+            };
+            HubConnection.StartAsync();
         }
     }
 }
