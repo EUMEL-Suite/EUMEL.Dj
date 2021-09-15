@@ -82,7 +82,7 @@ namespace Eumel.Dj.Ui
                     PlayerMessage player => @$"[Player] Player was requested to {player.PlayerAction.ToString().ToLower()}{Environment.NewLine}{Log.Text}",
                     LogMessage log => $@"[{log.Level}] {log.Message}{Environment.NewLine}{Log.Text}",
                     ChatReceivedMessage chatReceived => $@"{chatReceived.Username}: {chatReceived.Message}{Environment.NewLine}{Log.Text}",
-                    ChatSentMessage chatSent => $@"{chatSent.Username}: {chatSent.Message}{Environment.NewLine}{Log.Text}",
+                    ChatSentMessage chatSent => $@"Request to sent chat {chatSent.Message} by {chatSent.Username}{Environment.NewLine}{Log.Text}",
                     _ => $"[Bus] {message.GetType().Name}{Environment.NewLine}{Log.Text}"
                 };
             });

@@ -7,7 +7,7 @@ using TinyMessenger;
 
 namespace Eumel.Dj.WebServer.Hubs
 {
-    public class PlaylistAdapterService : AdapterServiceBase
+    public class PlaylistAdapterService : AdapterServiceBase<PlaylistHub>
     {
         public PlaylistAdapterService(IHubContext<PlaylistHub> clientHub, ITinyMessengerHub serverHub) : base(clientHub, serverHub)
         {

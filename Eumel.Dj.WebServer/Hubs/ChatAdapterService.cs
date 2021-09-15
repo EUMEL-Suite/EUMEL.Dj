@@ -8,11 +8,11 @@ using TinyMessenger;
 
 namespace Eumel.Dj.WebServer.Hubs
 {
-    public class ChatAdapterService : AdapterServiceBase
+    public class ChatAdapterService : AdapterServiceBase<ChatHub>
     {
         private readonly HubConnection _connection;
 
-        public ChatAdapterService(IHubContext<PlaylistHub> clientHub, ITinyMessengerHub serverHub, IAppSettings settings) : base(clientHub, serverHub)
+        public ChatAdapterService(IHubContext<ChatHub> clientHub, ITinyMessengerHub serverHub, IAppSettings settings) : base(clientHub, serverHub)
         {
             Subscribe((Action<ChatSentMessage>)(async (x) => await SendChatSentAsync(x.Username, x.Message)));
 
@@ -46,7 +46,7 @@ namespace Eumel.Dj.WebServer.Hubs
 
         private async Task SendChatSentAsync(string username, string message)
         {
-            await ClientHub.Clients.All.SendAsync(nameof(ChatHub.SendChatMessage), username, message);
+            await ClientHub.Clients.All.SendAsync(ChatHub.ChatSent, username, message);
         }
     }
 }

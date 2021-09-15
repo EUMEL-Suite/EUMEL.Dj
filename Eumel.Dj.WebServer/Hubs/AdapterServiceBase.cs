@@ -8,13 +8,14 @@ namespace Eumel.Dj.WebServer.Hubs
     /// <summary>
     /// base class for bus to bus adapter. base class takes care of subscription token and removes subscriptions on dispose
     /// </summary>
-    public abstract class AdapterServiceBase : IDisposable
+    public abstract class AdapterServiceBase<T> : IDisposable
+        where T: Hub
     {
         private readonly ITinyMessengerHub _serverHub;
         private readonly List<TinyMessageSubscriptionToken> _tinyMessageSubscriptions = new();
-        protected IHubContext<PlaylistHub> ClientHub { get; }
+        protected IHubContext<T> ClientHub { get; }
 
-        protected AdapterServiceBase(IHubContext<PlaylistHub> clientHub, ITinyMessengerHub serverHub)
+        protected AdapterServiceBase(IHubContext<T> clientHub, ITinyMessengerHub serverHub)
         {
             _serverHub = serverHub;
             ClientHub = clientHub;
