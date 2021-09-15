@@ -31,8 +31,8 @@
 
     <TabBar>
         <ShellContent Title="Playlist" Icon="icon_about.png" Route="PlaylistPage" ContentTemplate="{DataTemplate local:PlaylistPage}" />
-        <ShellContent Title="Vote" Icon="icon_feed.png" ContentTemplate="{DataTemplate local:SongsPage}" />
-        <ShellContent Title="Chat" Icon="icon_about.png" ContentTemplate="{DataTemplate local:ChatPage}" />
+        <ShellContent Title="Vote" Icon="icon_vote.png" ContentTemplate="{DataTemplate local:SongsPage}" />
+        <ShellContent Title="Chat" Icon="icon_chat.png" ContentTemplate="{DataTemplate local:ChatPage}" />
         <ShellContent Title="Settings" Icon="icon_feed.png" ContentTemplate="{DataTemplate local:SettingsPage}" />
     </TabBar>
 
