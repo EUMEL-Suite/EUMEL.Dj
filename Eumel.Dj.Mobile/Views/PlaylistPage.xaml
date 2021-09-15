@@ -9,7 +9,6 @@
              x:DataType="vm:PlaylistViewModel">
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Play" Command="{Binding PlayPlayerCommand}" />
     </ContentPage.ToolbarItems>
 
     <RefreshView x:DataType="vm:PlaylistViewModel" Command="{Binding LoadPlaylistCommand}" IsRefreshing="{Binding IsBusy, Mode=TwoWay}">

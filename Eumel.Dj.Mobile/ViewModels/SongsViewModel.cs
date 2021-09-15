@@ -79,7 +79,7 @@ namespace Eumel.Dj.Mobile.ViewModels
             if (songItem == null)
                 return;
 
-            await Shell.Current.GoToAsync($"{nameof(SongDetailPage)}?{nameof(SongDetailViewModel.ItemId)}={songItem.Id}");
+            // we don't show a detail page any longer
         }
     }
 }

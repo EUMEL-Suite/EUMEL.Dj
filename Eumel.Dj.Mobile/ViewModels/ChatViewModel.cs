@@ -12,6 +12,7 @@ namespace Eumel.Dj.Mobile.ViewModels
         private string _message;
         private HubConnection _hub;
         private string _chat;
+        private string _messagePlaceholder;
         public Command SendMessageCommand { get; }
 
         public ChatViewModel()
@@ -31,6 +32,12 @@ namespace Eumel.Dj.Mobile.ViewModels
             set => SetProperty(ref _chat, value);
         }
 
+        public string MessagePlaceholder
+        {
+            get => _messagePlaceholder;
+            set => SetProperty(ref _messagePlaceholder, value);
+        }
+
         private async void SendMessageAsync()
         {
             var settings = DependencyService.Get<ISettingsService>();
@@ -46,12 +53,15 @@ namespace Eumel.Dj.Mobile.ViewModels
 
         public void OnAppearing()
         {
+            var settings = DependencyService.Get<ISettingsService>();
+            MessagePlaceholder = $"send as {settings.Username}...";
+
             if (_hub != null) return;
 
             _hub = new HubConnectionBuilder()
-                .WithUrl($"{DependencyService.Get<ISettingsService>().RestEndpoint}/{Constants.ChatHub.Route}", options =>
+                .WithUrl($"{settings.RestEndpoint}/{Constants.ChatHub.Route}", options =>
                 {
-                    options.Headers.Add(Constants.UserToken, DependencyService.Get<ISettingsService>().Token);
+                    options.Headers.Add(Constants.UserToken, settings.Token);
                     options.HttpMessageHandlerFactory = message =>
                     {
                         if (message is HttpClientHandler clientHandler)
@@ -70,7 +80,7 @@ namespace Eumel.Dj.Mobile.ViewModels
             };
             _hub.On<string, string>(Constants.ChatHub.ChatSent, (username, message) =>
             {
-                Chat = $"{username}: {message}{Environment.NewLine}{Chat}";
+                Chat = $"{Chat}{Environment.NewLine}{username}: {message}";
             });
         }
     }

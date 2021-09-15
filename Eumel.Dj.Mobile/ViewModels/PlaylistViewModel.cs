@@ -21,8 +21,6 @@ namespace Eumel.Dj.Mobile.ViewModels
 
         public ObservableCollection<PlaylistSongItem> Items { get; }
 
-        public Command PlayPlayerCommand { get; }
-
         public Command<PlaylistSongItem> ItemTapped { get; }
 
         public Command LoadPlaylistCommand { get; }
@@ -32,7 +30,6 @@ namespace Eumel.Dj.Mobile.ViewModels
             Title = "Playlist";
             Items = new ObservableCollection<PlaylistSongItem>();
             LoadPlaylistCommand = new Command(async () => { await ExecuteLoadPlaylistCommand(); });
-            PlayPlayerCommand = new Command(async () => await PlayerService.Play(), () => Items.All(x => x.Type != SongType.Current));
             ItemTapped = new Command<PlaylistSongItem>(OnItemSelected);
         }
 
@@ -97,7 +94,8 @@ namespace Eumel.Dj.Mobile.ViewModels
             if (songItem == null)
                 return;
 
-            await Shell.Current.GoToAsync($"{nameof(SongDetailPage)}?{nameof(SongDetailViewModel.ItemId)}={songItem.Id}");
+            // we don't navigation to any detail page any longer
+            //await Shell.Current.GoToAsync($"{nameof(SongDetailPage)}?{nameof(SongDetailViewModel.ItemId)}={songItem.Id}");
         }
     }
 }

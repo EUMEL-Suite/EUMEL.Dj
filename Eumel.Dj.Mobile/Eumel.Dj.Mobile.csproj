@@ -49,9 +49,6 @@
     <Compile Update="Views\SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\SongDetailPage.xaml.cs">
-      <DependentUpon>SongDetailPage.xaml</DependentUpon>
-    </Compile>
     <Compile Update="Views\ChatPage.xaml.cs">
       <DependentUpon>ChatPage.xaml</DependentUpon>
     </Compile>

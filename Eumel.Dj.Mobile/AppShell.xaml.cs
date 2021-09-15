@@ -17,8 +17,8 @@ namespace Eumel.Dj.Mobile
 
             Routing.RegisterRoute(nameof(PlaylistPage), typeof(PlaylistPage));
             Routing.RegisterRoute(nameof(SongsPage), typeof(SongsPage));
-            Routing.RegisterRoute(nameof(SongDetailPage), typeof(SongDetailPage));
             Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
+            Routing.RegisterRoute(nameof(SettingsPage), typeof(SettingsPage));
         }
     }
 }
