@@ -77,7 +77,6 @@ namespace Eumel.Dj.Mobile.ViewModels
             catch (ApiException ex)
             {
                 Application.Current.MainPage = new LoginPage() { BackgroundColor = Color.White };
-                //await Shell.Current.GoToAsync(nameof(LoginPage));
             }
         }
 

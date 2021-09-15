@@ -70,18 +70,6 @@ namespace Eumel.Dj.Mobile.ViewModels
 
             Username = Settings.Username;
 
-
-
-
-
-            // RECREATE SERVICE OR USER NEW TOKEN! THE OLD TOKEN IS NOT ADDED IN HEADER
-
-
-
-
-
-
-
             Application.Current.Dispatcher.BeginInvokeOnMainThread(() =>
             {
                 if (Shell.Current == null)

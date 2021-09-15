@@ -23,6 +23,7 @@ namespace Eumel.Dj.Mobile.Services
 
             public Task<bool> CheckUserIsAdmin() { return Task.FromResult(false); }
             public Task<bool> TokenIsInvalid() { return Task.FromResult(true); }
+            public Task Logout() { return Task.Delay(0); }
         }
 
         #endregion

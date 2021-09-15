@@ -12,5 +12,6 @@ namespace Eumel.Dj.Mobile.Services
         void Reset();
         Task<bool> CheckUserIsAdmin();
         Task<bool> TokenIsInvalid();
+        Task Logout();
     }
 }

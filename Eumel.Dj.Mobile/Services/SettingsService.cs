@@ -7,6 +7,8 @@ namespace Eumel.Dj.Mobile.Services
 {
     public class SettingsService : ISettingsService
     {
+        private EumelDjServiceClient Service => DependencyService.Get<IEumelRestServiceFactory>().Build();
+
         private const string SettingPrefix = "Eumel.Dj.";
         public SettingsService()
         {
@@ -50,15 +52,18 @@ namespace Eumel.Dj.Mobile.Services
         {
             if (string.IsNullOrWhiteSpace(Token)) return false;
 
-            var service = DependencyService.Get<IEumelRestServiceFactory>().Build();
-            return await service.CheckUserIsAdminAsync();
+            return await Service.CheckUserIsAdminAsync();
         }
 
         public async Task<bool> TokenIsInvalid()
         {
-            var service = DependencyService.Get<IEumelRestServiceFactory>().Build();
-            var isValid = await service.TokenIsValidAsync();
+            var isValid = await Service.TokenIsValidAsync();
             return !isValid;
+        }
+
+        public async Task Logout()
+        {
+            await Service.LogoutAsync();
         }
 
         public string RestEndpoint { get; private set; }

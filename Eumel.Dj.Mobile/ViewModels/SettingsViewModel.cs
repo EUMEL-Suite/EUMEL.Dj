@@ -1,4 +1,5 @@
-﻿using Xamarin.Forms;
+﻿using Eumel.Dj.Mobile.Views;
+using Xamarin.Forms;
 
 namespace Eumel.Dj.Mobile.ViewModels
 {
@@ -65,9 +66,10 @@ namespace Eumel.Dj.Mobile.ViewModels
 
             ClearSettingsCommand = new Command(async () =>
             {
-                Settings.Reset();
                 await PlaylistService.ClearMyVotes();
-                await Shell.Current.GoToAsync("//Login");
+                await Settings.Logout();
+                Settings.Reset();
+                Application.Current.MainPage = new LoginPage() { BackgroundColor = Color.White };
             });
         }
         public async void OnAppearing()

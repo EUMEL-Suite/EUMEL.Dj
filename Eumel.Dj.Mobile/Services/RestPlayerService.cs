@@ -5,36 +5,31 @@ namespace Eumel.Dj.Mobile.Services
 {
     public class RestPlayerService : IPlayerService
     {
-        private readonly EumelDjServiceClient _service;
-
-        public RestPlayerService()
-        {
-            _service = DependencyService.Get<IEumelRestServiceFactory>().Build();
-        }
+        private EumelDjServiceClient Service => DependencyService.Get<IEumelRestServiceFactory>().Build();
 
         public async Task Pause()
         {
-            await _service.PauseAsync();
+            await Service.PauseAsync();
         }
 
         public async Task Play()
         {
-            await _service.PlayAsync();
+            await Service.PlayAsync();
         }
 
         public async Task Stop()
         {
-            await _service.StopAsync();
+            await Service.StopAsync();
         }
 
         public async Task Next()
         {
-            await _service.NextAsync();
+            await Service.NextAsync();
         }
 
         public async Task Restart()
         {
-            await _service.RestartAsync();
+            await Service.RestartAsync();
         }
     }
 }
