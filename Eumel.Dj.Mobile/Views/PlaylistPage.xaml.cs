@@ -12,10 +12,6 @@ namespace Eumel.Dj.Mobile.Views
         {
             InitializeComponent();
             BindingContext = _viewModel = new PlaylistViewModel();
-
-            // if no endpoint set, navigate to login page
-            if (string.IsNullOrWhiteSpace(DependencyService.Get<ISettingsService>().RestEndpoint))
-                Shell.Current.GoToAsync("//Login");
         }
 
         protected override void OnAppearing()

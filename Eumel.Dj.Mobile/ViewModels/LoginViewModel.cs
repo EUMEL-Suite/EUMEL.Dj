@@ -1,5 +1,4 @@
-﻿using System.Globalization;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Eumel.Dj.Mobile.Data;
 using Eumel.Dj.Mobile.Services;
 using Eumel.Dj.Mobile.Views;
@@ -11,7 +10,6 @@ namespace Eumel.Dj.Mobile.ViewModels
     public class LoginViewModel : BaseViewModel
     {
         private string _username = string.Empty;
-        private readonly ISettingsService _settings;
         private string _userHint;
 
         public string Username
@@ -32,14 +30,13 @@ namespace Eumel.Dj.Mobile.ViewModels
 
         public LoginViewModel()
         {
-            _settings = DependencyService.Get<ISettingsService>();
-            Username = _settings.Username ?? Marvel.Names.Random();
+            Username = Settings.Username ?? Marvel.Names.Random();
 
             ScanResultCommand = new Command(ScanResult);
             RandomizeUsernameCommand = new Command(() => Username = Marvel.Names.Random());
         }
 
-        private void ScanResult(object scan)
+        private async void ScanResult(object scan)
         {
             // dont care what you scan, username must be filled
             if (string.IsNullOrWhiteSpace(Username))
@@ -71,8 +68,28 @@ namespace Eumel.Dj.Mobile.ViewModels
                 return;
             }
 
-            Username = _settings.Username;
-            Shell.Current.GoToAsync($"//{nameof(PlaylistPage)}");
+            Username = Settings.Username;
+
+
+
+
+
+            // RECREATE SERVICE OR USER NEW TOKEN! THE OLD TOKEN IS NOT ADDED IN HEADER
+
+
+
+
+
+
+
+            Application.Current.Dispatcher.BeginInvokeOnMainThread(() =>
+            {
+                if (Shell.Current == null)
+                    Application.Current.MainPage = new AppShell();
+
+                // ReSharper disable once PossibleNullReferenceException
+                Shell.Current.GoToAsync(nameof(PlaylistPage));
+            });
         }
 
         private async Task<bool> GetSettingsForServer(string server)
@@ -80,7 +97,7 @@ namespace Eumel.Dj.Mobile.ViewModels
             var client = new EumelRestServiceFactory(server).Build();
             var token = await client.RequestSettingsAndTokenAsync(Username);
 
-            _settings.Change(server, token.Username, token.SyslogServer, token.Usertoken);
+            Settings.Change(server, token.Username, token.SyslogServer, token.Usertoken);
             return true;
         }
 

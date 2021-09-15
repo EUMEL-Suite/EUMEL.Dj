@@ -45,5 +45,13 @@ namespace Eumel.Dj.WebServer.Services
             username = _tokenToUserDictionary[token];
             return true;
         }
+
+        public void DisposeUserToken(string token)
+        {
+            if (!_tokenToUserDictionary.ContainsKey(token))
+                return;
+
+            _tokenToUserDictionary.Remove(token);
+        }
     }
 }

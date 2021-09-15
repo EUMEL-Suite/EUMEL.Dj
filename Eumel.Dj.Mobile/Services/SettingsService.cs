@@ -54,6 +54,13 @@ namespace Eumel.Dj.Mobile.Services
             return await service.CheckUserIsAdminAsync();
         }
 
+        public async Task<bool> TokenIsInvalid()
+        {
+            var service = DependencyService.Get<IEumelRestServiceFactory>().Build();
+            var isValid = await service.TokenIsValidAsync();
+            return !isValid;
+        }
+
         public string RestEndpoint { get; private set; }
         public string Username { get; private set; }
         public string Token { get; private set; }

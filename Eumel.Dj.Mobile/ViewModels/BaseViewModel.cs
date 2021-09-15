@@ -2,11 +2,19 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using Eumel.Dj.Mobile.Services;
+using Xamarin.Forms;
 
 namespace Eumel.Dj.Mobile.ViewModels
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
+        protected ISettingsService Settings => DependencyService.Get<ISettingsService>();
+        protected IPlaylistService PlaylistService => DependencyService.Get<IPlaylistService>();
+        protected IPlayerService PlayerService => DependencyService.Get<IPlayerService>();
+        protected ISongService SongService => DependencyService.Get<ISongService>();
+        protected ISyslogService SyslogService => DependencyService.Get<ISyslogService>();
+
         private bool _isBusy;
 
         public bool IsBusy

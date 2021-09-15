@@ -12,8 +12,7 @@ namespace Eumel.Dj.Mobile.Views
         public LoginPage()
         {
             InitializeComponent();
-            _viewModel = new LoginViewModel();
-            this.BindingContext = _viewModel;
+            this.BindingContext = _viewModel = new LoginViewModel();
         }
 
         protected override void OnAppearing()

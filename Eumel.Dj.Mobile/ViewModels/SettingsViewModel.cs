@@ -1,13 +1,9 @@
-﻿using Eumel.Dj.Mobile.Services;
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 
 namespace Eumel.Dj.Mobile.ViewModels
 {
     public class SettingsViewModel : BaseViewModel
     {
-        private readonly ISettingsService _settings;
-        private readonly IPlayerService _player;
-        private readonly IPlaylistService _playlist;
         private string _eumelServer;
         private string _syslogServer;
         private string _username ;
@@ -54,27 +50,23 @@ namespace Eumel.Dj.Mobile.ViewModels
 
         public SettingsViewModel()
         {
-            _settings = DependencyService.Get<ISettingsService>();
-            _player = DependencyService.Get<IPlayerService>();
-            _playlist = DependencyService.Get<IPlaylistService>();
-
-            SyslogServer = _settings.SyslogServer;
-            EumelServer = _settings.RestEndpoint;
-            Username = _settings.Username;
-            Token = _settings.Token;
-            //UserIsAdmin = _settings.CheckUserIdAdmin().Result;
+            SyslogServer = Settings.SyslogServer;
+            EumelServer = Settings.RestEndpoint;
+            Username = Settings.Username;
+            Token = Settings.Token;
+            //UserIsAdmin = Settings.CheckUserIdAdmin().Result;
             UserIsAdmin = false;
 
-            PlayCommand = new Command(async () => await _player.Play());
-            PauseCommand = new Command(async () => await _player.Pause());
-            RestartCommand = new Command(async () => await _player.Restart());
-            StopCommand = new Command(async () => await _player.Stop());
-            NextCommand = new Command(async () => await _player.Next());
+            PlayCommand = new Command(async () => await PlayerService.Play());
+            PauseCommand = new Command(async () => await PlayerService.Pause());
+            RestartCommand = new Command(async () => await PlayerService.Restart());
+            StopCommand = new Command(async () => await PlayerService.Stop());
+            NextCommand = new Command(async () => await PlayerService.Next());
 
             ClearSettingsCommand = new Command(async () =>
             {
-                _settings.Reset();
-                await _playlist.ClearMyVotes();
+                Settings.Reset();
+                await PlaylistService.ClearMyVotes();
                 await Shell.Current.GoToAsync("//Login");
             });
         }
@@ -82,7 +74,7 @@ namespace Eumel.Dj.Mobile.ViewModels
         {
             IsBusy = true;
 
-            UserIsAdmin = await _settings.CheckUserIsAdmin();
+            UserIsAdmin = await Settings.CheckUserIsAdmin();
         }
     }
 }

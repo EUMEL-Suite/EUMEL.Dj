@@ -2,7 +2,7 @@
   "openapi": "3.0.1",
   "info": {
     "title": "EUMEL Dj",
-    "version": "v1.0.0.0"
+    "version": "v1.0"
   },
   "paths": {
     "/api/Dj/GetPlaylist": {
@@ -385,6 +385,35 @@
         }
       }
     },
+    "/api/Settings/TokenIsValid": {
+      "get": {
+        "tags": [
+          "Settings"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "boolean"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/Settings/CheckUsername": {
       "get": {
         "tags": [
@@ -457,6 +486,18 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/api/Settings/Logout": {
+      "get": {
+        "tags": [
+          "Settings"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
           }
         }
       }

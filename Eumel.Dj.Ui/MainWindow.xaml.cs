@@ -45,7 +45,7 @@ namespace Eumel.Dj.Ui
                 _hub.Subscribe((Action<ITinyMessage>)LogAllActions),
                 _hub.Subscribe((Action<RequestUserIsAdminMessage>)RequestUserIsAdmin),
                 _hub.Subscribe((Action<UserAddedMessage>)UserAdded),
-                _hub.Subscribe((Action<UserAddedMessage>)UserRemoved),
+                _hub.Subscribe((Action<UserRemovedMessage>)UserRemoved),
                 _hub.Subscribe((Action<RequestUserIsAdminMessage>)RequestUserIsAdmin)
             });
 
@@ -57,7 +57,7 @@ namespace Eumel.Dj.Ui
         }
 
 
-        private void UserRemoved(UserAddedMessage message)
+        private void UserRemoved(UserRemovedMessage message)
         {
             _hub.Publish(new LogMessage(this, $"User removed from system: {message.Username}", LogLevel.Information));
         }

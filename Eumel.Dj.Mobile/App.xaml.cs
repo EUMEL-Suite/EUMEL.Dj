@@ -1,12 +1,11 @@
 ﻿using Eumel.Dj.Mobile.Services;
-using Xamarin.Essentials;
+using Eumel.Dj.Mobile.Views;
 using Xamarin.Forms;
 
 namespace Eumel.Dj.Mobile
 {
     public partial class App : Application
     {
-
         public App()
         {
             InitializeComponent();
@@ -18,9 +17,10 @@ namespace Eumel.Dj.Mobile
             DependencyService.Register<RestSongService>();
             DependencyService.Register<RestPlayerService>();
 
-            DependencyService.Get<ISyslogService>().Information("Starting application");
-
-            MainPage = new AppShell();
+            // if no endpoint set, navigate to login page
+            MainPage = string.IsNullOrWhiteSpace(DependencyService.Get<ISettingsService>().RestEndpoint)
+                ? (Page)new LoginPage()
+                : new AppShell();
         }
     }
 }

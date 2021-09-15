@@ -54,6 +54,12 @@ namespace Eumel.Dj.WebServer.Controllers
             return message.Response.Response;
         }
 
+        [HttpGet("TokenIsValid")]
+        public bool TokenIsValid()
+        {
+            return _tokenService.TryFindUser(Token, out _);
+        }
+
         [HttpGet("CheckUsername")]
         public bool CheckUsername(string username)
         {
@@ -77,6 +83,14 @@ namespace Eumel.Dj.WebServer.Controllers
             _hub.Publish(new UserAddedMessage(this, settings.Username));
 
             return settings;
+        }
+
+        [HttpGet("Logout")]
+        public void Logout()
+        {
+            _tokenService.DisposeUserToken(Token);
+
+            _hub.Publish(new UserRemovedMessage(this, Username));
         }
     }
 }

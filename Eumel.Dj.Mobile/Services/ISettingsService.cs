@@ -11,5 +11,6 @@ namespace Eumel.Dj.Mobile.Services
         void Change(string restEndpoint, string username, string syslogServer, string token);
         void Reset();
         Task<bool> CheckUserIsAdmin();
+        Task<bool> TokenIsInvalid();
     }
 }

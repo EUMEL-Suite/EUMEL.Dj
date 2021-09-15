@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Eumel.Dj.Mobile.Services;
 using Microsoft.AspNetCore.SignalR.Client;
 using Xamarin.Forms;
 
@@ -40,28 +39,26 @@ namespace Eumel.Dj.Mobile.ViewModels
 
         private async void SendMessageAsync()
         {
-            var settings = DependencyService.Get<ISettingsService>();
             try
             {
-                await _hub.InvokeAsync(Constants.ChatHub.SendChat, settings.Username, Message);
+                await _hub.InvokeAsync(Constants.ChatHub.SendChat, Settings.Username, Message);
             }
             catch (Exception ex)
             {
-                DependencyService.Get<ISyslogService>().Error(ex.Message);
+                SyslogService.Error(ex.Message);
             }
         }
 
         public void OnAppearing()
         {
-            var settings = DependencyService.Get<ISettingsService>();
-            MessagePlaceholder = $"send as {settings.Username}...";
+            MessagePlaceholder = $"send as {Settings.Username}...";
 
             if (_hub != null) return;
 
             _hub = new HubConnectionBuilder()
-                .WithUrl($"{settings.RestEndpoint}/{Constants.ChatHub.Route}", options =>
+                .WithUrl($"{Settings.RestEndpoint}/{Constants.ChatHub.Route}", options =>
                 {
-                    options.Headers.Add(Constants.UserToken, settings.Token);
+                    options.Headers.Add(Constants.UserToken, Settings.Token);
                     options.HttpMessageHandlerFactory = message =>
                     {
                         if (message is HttpClientHandler clientHandler)

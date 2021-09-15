@@ -1,11 +1,10 @@
 ﻿using Eumel.Dj.Mobile.Models;
-using Eumel.Dj.Mobile.Views;
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using Eumel.Dj.Mobile.Services;
+using Eumel.Dj.Mobile.Views;
 using Xamarin.Forms;
 
 namespace Eumel.Dj.Mobile.ViewModels
@@ -20,7 +19,6 @@ namespace Eumel.Dj.Mobile.ViewModels
 
         public Command<SongItem> VoteUpDownCommand { get; }
 
-        public ISongService SongService => DependencyService.Get<ISongService>();
         public SongsViewModel()
         {
             Title = "Browse";
@@ -70,8 +68,17 @@ namespace Eumel.Dj.Mobile.ViewModels
 
         private async void OnItemUpDownVote(SongItem song)
         {
-            var hasMyVote = await SongService.Vote(song.Id);
-            song.HasMyVote = hasMyVote;
+            try
+            {
+                var hasMyVote = await SongService.Vote(song.Id);
+                song.HasMyVote = hasMyVote;
+
+            }
+            catch (ApiException ex)
+            {
+                Application.Current.MainPage = new LoginPage() { BackgroundColor = Color.White };
+                //await Shell.Current.GoToAsync(nameof(LoginPage));
+            }
         }
 
         async void OnItemSelected(SongItem songItem)

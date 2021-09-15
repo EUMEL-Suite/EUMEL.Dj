@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Net.Http;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Xamarin.Forms;
-using Xamarin.Forms.Internals;
 
 namespace Eumel.Dj.Mobile.Services
 {
@@ -24,6 +22,7 @@ namespace Eumel.Dj.Mobile.Services
             public void Reset() { }
 
             public Task<bool> CheckUserIsAdmin() { return Task.FromResult(false); }
+            public Task<bool> TokenIsInvalid() { return Task.FromResult(true); }
         }
 
         #endregion

@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Eumel.Dj.Mobile.Annotations;
-using Xamarin.Forms;
 
 namespace Eumel.Dj.Mobile.Models
 {

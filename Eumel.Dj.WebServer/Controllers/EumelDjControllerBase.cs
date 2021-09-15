@@ -16,11 +16,12 @@ namespace Eumel.Dj.WebServer.Controllers
         {
             get
             {
-                var token = Request.Headers.ContainsKey("usertoken") ? Request.Headers["usertoken"][0] : string.Empty;
-                _ = _tokenService.TryFindUser(token, out var username);
+                _ = _tokenService.TryFindUser(Token, out var username);
                 return username ?? string.Empty;
             }
         }
+
+        protected string Token => Request.Headers.ContainsKey(Constants.UserToken) ? Request.Headers[Constants.UserToken][0] : string.Empty;
 
         protected string GetClientIp()
         {

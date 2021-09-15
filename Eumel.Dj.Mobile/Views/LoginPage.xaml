@@ -5,8 +5,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:forms="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
              xmlns:viewModels="clr-namespace:Eumel.Dj.Mobile.ViewModels;assembly=Eumel.Dj.Mobile"
-             mc:Ignorable="d"
-             x:Class="Eumel.Dj.Mobile.Views.LoginPage"
+             mc:Ignorable="d" d:Shell.FlyoutBehavior="Disabled" d:Shell.TabBarIsVisible="false"
+             
+             x:Class="Eumel.Dj.Mobile.Views.LoginPage" xmlns:data="clr-namespace:Eumel.Dj.Mobile.Data"
              Shell.NavBarIsVisible="False">
     <ContentPage.Content>
         <Grid Padding="10,10,10,10" VerticalOptions="Center" x:DataType="viewModels:LoginViewModel">
@@ -25,8 +26,7 @@
 
             <ImageButton Grid.Row="1" Grid.Column="1" Command="{Binding RandomizeUsernameCommand}" BackgroundColor="{DynamicResource Primary}">
                 <ImageButton.Source>
-                    <FontImageSource FontFamily="MaterialDesign"
-                                     Glyph="&#x0f0450;" />
+                    <FontImageSource FontFamily="MaterialDesign" Glyph="{Static data:IconFont.Refresh}" Color="{DynamicResource HeartNonFill}"/>
                 </ImageButton.Source>
             </ImageButton>
 

@@ -10,7 +10,6 @@ namespace Eumel.Dj.Mobile.Views
         public ChatPage()
         {
             InitializeComponent();
-
             BindingContext = _viewModel = new ChatViewModel();
         }
 

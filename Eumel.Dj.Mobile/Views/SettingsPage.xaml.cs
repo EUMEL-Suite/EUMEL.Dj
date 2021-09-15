@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Eumel.Dj.Mobile.ViewModels;
+﻿using Eumel.Dj.Mobile.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using ZXing;
 
 namespace Eumel.Dj.Mobile.Views
 {
@@ -19,7 +13,6 @@ namespace Eumel.Dj.Mobile.Views
         public SettingsPage()
         {
             InitializeComponent();
-
             BindingContext = _viewModel = new SettingsViewModel();
         }
 
