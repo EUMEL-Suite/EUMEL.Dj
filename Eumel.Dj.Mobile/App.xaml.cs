@@ -18,9 +18,6 @@ namespace Eumel.Dj.Mobile
             DependencyService.Register<RestPlayerService>();
             DependencyService.Register<RestChatService>();
 
-            // for testing to delete settings
-            DependencyService.Get<ISettingsService>().Reset();
-
             // if no endpoint set, navigate to login page
             if (string.IsNullOrWhiteSpace(DependencyService.Get<ISettingsService>().RestEndpoint))
             {
