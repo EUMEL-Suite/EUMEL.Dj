@@ -38,6 +38,7 @@ namespace Eumel.Dj.WebServer
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = Constants.ApplicationName, Version = $"v{GetMajorMinorVersion()}" });
                 c.UseAllOfToExtendReferenceSchemas();
+                c.OperationFilter<UserTokenHeaderSwaggerAttribute>();
             });
         }
 
