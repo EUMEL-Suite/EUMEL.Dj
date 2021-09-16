@@ -7,7 +7,7 @@ namespace Eumel.Dj.Mobile.ViewModels
     {
         private string _eumelServer;
         private string _syslogServer;
-        private string _username ;
+        private string _username;
         private string _token;
         private bool _userIsAdmin;
 
@@ -55,14 +55,13 @@ namespace Eumel.Dj.Mobile.ViewModels
             EumelServer = Settings.RestEndpoint;
             Username = Settings.Username;
             Token = Settings.Token;
-            //UserIsAdmin = Settings.CheckUserIdAdmin().Result;
             UserIsAdmin = false;
 
-            PlayCommand = new Command(async () => await PlayerService.Play());
-            PauseCommand = new Command(async () => await PlayerService.Pause());
-            RestartCommand = new Command(async () => await PlayerService.Restart());
-            StopCommand = new Command(async () => await PlayerService.Stop());
-            NextCommand = new Command(async () => await PlayerService.Next());
+            PlayCommand = new Command(() => TryOrRedirectToLoginAsync(() => PlayerService.Play()));
+            PauseCommand = new Command(() => TryOrRedirectToLoginAsync(() => PlayerService.Pause()));
+            RestartCommand = new Command(() => TryOrRedirectToLoginAsync(() => PlayerService.Restart()));
+            StopCommand = new Command(() => TryOrRedirectToLoginAsync(() => PlayerService.Stop()));
+            NextCommand = new Command(() => TryOrRedirectToLoginAsync(() => PlayerService.Next()));
 
             ClearSettingsCommand = new Command(async () =>
             {

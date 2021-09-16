@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using Eumel.Dj.Mobile.Services;
+using Eumel.Dj.Mobile.Views;
 using Xamarin.Forms;
 
 namespace Eumel.Dj.Mobile.ViewModels
@@ -55,5 +57,25 @@ namespace Eumel.Dj.Mobile.ViewModels
             changed.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
+
+        protected async void TryOrRedirectToLoginAsync(Func<Task> action)
+        {
+            try
+            {
+                await action();
+            }
+            catch (ApiException ex)
+            {
+                if (ex.Response.Contains(Constants.InvalidTokenException))
+                {
+                    await Application.Current.MainPage.DisplayAlert("Token Invalid", "Your login token expired. Please login again.", "OK");
+                    Application.Current.MainPage = new LoginPage() { BackgroundColor = Color.White };
+                }
+                else if (ex.Response.Contains(Constants.UnauthorizedEumelException))
+                    await Application.Current.MainPage.DisplayAlert("Permission Denied", "You are not allowed to do this. Please request permissions.", "OK"); 
+                else
+                    throw;
+            }
+        }
     }
 }

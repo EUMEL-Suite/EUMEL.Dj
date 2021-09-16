@@ -3,7 +3,9 @@ namespace Eumel.Dj
     public class Constants
     {
         public const string ApplicationName = "EUMEL Dj";
-        public const string UserToken  = "usertoken";
+        public const string UserToken = "usertoken";
+        public const string InvalidTokenException = "InvalidTokenException";
+        public const string UnauthorizedEumelException = "UnauthorizedEumelException";
 
         // naming conventions for Hub messages:
         //
@@ -23,7 +25,7 @@ namespace Eumel.Dj
         }
         public class Swagger
         {
-            public const string JsonEndpoint= "/swagger/v1/swagger.json";
+            public const string JsonEndpoint = "/swagger/v1/swagger.json";
         }
     }
 }

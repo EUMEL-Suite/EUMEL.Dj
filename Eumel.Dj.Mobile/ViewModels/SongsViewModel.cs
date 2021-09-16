@@ -66,18 +66,13 @@ namespace Eumel.Dj.Mobile.ViewModels
             }
         }
 
-        private async void OnItemUpDownVote(SongItem song)
+        private void OnItemUpDownVote(SongItem song)
         {
-            try
+            TryOrRedirectToLoginAsync(async () =>
             {
                 var hasMyVote = await SongService.Vote(song.Id);
                 song.HasMyVote = hasMyVote;
-
-            }
-            catch (ApiException ex)
-            {
-                Application.Current.MainPage = new LoginPage() { BackgroundColor = Color.White };
-            }
+            });
         }
 
         async void OnItemSelected(SongItem songItem)
