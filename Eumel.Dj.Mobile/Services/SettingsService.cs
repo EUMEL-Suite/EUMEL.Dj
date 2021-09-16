@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Eumel.Dj.Mobile.Data;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -16,35 +17,38 @@ namespace Eumel.Dj.Mobile.Services
             RestEndpoint = Preferences.Get(SettingPrefix + nameof(RestEndpoint), null);
             SyslogServer = Preferences.Get(SettingPrefix + nameof(SyslogServer), null);
             Token = Preferences.Get(SettingPrefix + nameof(Token), null);
+            MinimumLogLevel = (EumelLogLevel)Enum.Parse(typeof(EumelLogLevel), Preferences.Get(SettingPrefix + nameof(MinimumLogLevel), EumelLogLevel.Warn.ToString()));
 
             if (string.IsNullOrWhiteSpace(Username))
                 Username = Marvel.Names.Random();
         }
 
-        public void Change(string restEndpoint, string username, string syslogServer, string token)
+        public void Change(string restEndpoint, string username, string syslogServer, string token, EumelLogLevel minimumLogLevel)
         {
-            DependencyService.Get<ISyslogService>().Debug("Settings changed");
+            DependencyService.Get<ISyslogService>().Debug("Settings changing");
             RestEndpoint = restEndpoint;
             Username = username;
             SyslogServer = syslogServer;
             Token = token;
+            MinimumLogLevel = minimumLogLevel;
 
             Save();
         }
 
         private void Save()
         {
-            DependencyService.Get<ISyslogService>().Debug("Settings saved");
+            DependencyService.Get<ISyslogService>().Debug("Settings saving");
             Preferences.Set(SettingPrefix + nameof(RestEndpoint), RestEndpoint);
             Preferences.Set(SettingPrefix + nameof(Username), Username);
             Preferences.Set(SettingPrefix + nameof(Token), Token);
             Preferences.Set(SettingPrefix + nameof(SyslogServer), SyslogServer);
+            Preferences.Set(SettingPrefix + nameof(MinimumLogLevel), MinimumLogLevel.ToString());
         }
 
         public void Reset()
         {
             DependencyService.Get<ISyslogService>().Debug("Settings cleared");
-            Change(null, null, null, null);
+            Change(null, null, null, null, EumelLogLevel.Error);
             Preferences.Clear();
         }
 
@@ -70,5 +74,6 @@ namespace Eumel.Dj.Mobile.Services
         public string Username { get; private set; }
         public string Token { get; private set; }
         public string SyslogServer { get; private set; }
+        public EumelLogLevel MinimumLogLevel { get; set; }
     }
 }

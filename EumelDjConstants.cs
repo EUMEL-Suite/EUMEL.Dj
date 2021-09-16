@@ -2,6 +2,15 @@ namespace Eumel.Dj
 {
     public class Constants
     {
+        public enum EumelLogLevel
+        {
+            Debug = 1,
+            Information = 2,
+            Warn = 3,
+            Error = 4,
+            Fatal = 5
+        }
+
         public const string SystemChatName = "Eumel";
         public const string ApplicationName = "EUMEL Dj";
         public const string UserToken = "usertoken";

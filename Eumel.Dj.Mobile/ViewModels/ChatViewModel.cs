@@ -26,7 +26,7 @@ namespace Eumel.Dj.Mobile.ViewModels
 
                 Chat = chatHistory;
                 IsBusy = false;
-            }));
+            }, "Loading Chat History"));
         }
 
         public Command LoadChatCommand { get; }
@@ -63,11 +63,13 @@ namespace Eumel.Dj.Mobile.ViewModels
             }
         }
 
-        public void OnAppearing()
+        public async void OnAppearing()
         {
             LoadChatCommand.Execute(null);
             MessagePlaceholder = $"send as {Settings.Username}...";
 
+            if (string.IsNullOrWhiteSpace(Settings.RestEndpoint))
+                return;
 
             if (_hub != null) return;
 
@@ -85,16 +87,20 @@ namespace Eumel.Dj.Mobile.ViewModels
                     };
                 })
                 .Build();
-            _hub.StartAsync();
+            await _hub.StartAsync();
             _hub.Closed += async error =>
             {
+                SyslogService.Warn("Chat Hub connection was closed. Trying to reconnect");
                 await Task.Delay(new Random().Next(0, 5) * 1000);
                 await _hub.StartAsync();
             };
             _hub.On<string, string>(Constants.ChatHub.ChatSent, (username, message) =>
             {
-                Chat = $"{Chat}{Environment.NewLine}{username}: {message}";
+                if (!string.IsNullOrWhiteSpace(Chat))
+                    Chat += Environment.NewLine;
+                Chat = $"{Chat}{username}: {message}";
             });
+            SyslogService.Information("Chat Hub created and started");
         }
     }
 }

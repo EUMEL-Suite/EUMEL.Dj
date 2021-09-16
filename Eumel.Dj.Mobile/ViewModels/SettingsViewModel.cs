@@ -19,11 +19,11 @@ namespace Eumel.Dj.Mobile.ViewModels
             Token = Settings.Token;
             UserIsAdmin = false;
 
-            PlayCommand = new Command(() => TryOrRedirectToLoginAsync(() => PlayerService.Play()));
-            PauseCommand = new Command(() => TryOrRedirectToLoginAsync(() => PlayerService.Pause()));
-            RestartCommand = new Command(() => TryOrRedirectToLoginAsync(() => PlayerService.Restart()));
-            StopCommand = new Command(() => TryOrRedirectToLoginAsync(() => PlayerService.Stop()));
-            NextCommand = new Command(() => TryOrRedirectToLoginAsync(() => PlayerService.Next()));
+            PlayCommand = new Command(() => TryOrRedirectToLoginAsync(() => PlayerService.Play(), "Player Play"));
+            PauseCommand = new Command(() => TryOrRedirectToLoginAsync(() => PlayerService.Pause(), "Player Pause"));
+            RestartCommand = new Command(() => TryOrRedirectToLoginAsync(() => PlayerService.Restart(), "Player Restart"));
+            StopCommand = new Command(() => TryOrRedirectToLoginAsync(() => PlayerService.Stop(), "Player Stop"));
+            NextCommand = new Command(() => TryOrRedirectToLoginAsync(() => PlayerService.Next(), "Player Next"));
 
             ClearSettingsCommand = new Command(async () =>
             {

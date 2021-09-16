@@ -71,7 +71,7 @@ namespace Eumel.Dj.Mobile.ViewModels
             {
                 var hasMyVote = await SongService.Vote(song.Id);
                 song.HasMyVote = hasMyVote;
-            });
+            }, "Vote song");
         }
 
         private async void OnItemSelected(SongItem songItem)

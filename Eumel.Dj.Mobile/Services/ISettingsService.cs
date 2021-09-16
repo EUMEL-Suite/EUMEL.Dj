@@ -8,7 +8,8 @@ namespace Eumel.Dj.Mobile.Services
         string Username { get; }
         string Token { get; }
         string SyslogServer { get; }
-        void Change(string restEndpoint, string username, string syslogServer, string token);
+        EumelLogLevel MinimumLogLevel { get; }
+        void Change(string restEndpoint, string username, string syslogServer, string token, EumelLogLevel minimumLogLevel);
         void Reset();
         Task<bool> CheckUserIsAdmin();
         Task<bool> TokenIsInvalid();

@@ -37,7 +37,7 @@ namespace Eumel.Dj.Ui
             {
                 RestEndpoint = "https://192.168.178.37:443",
                 SyslogServer = "192.168.178.37",
-                MinimumLogLevel = "Debug"
+                MinimumLogLevel = Constants.EumelLogLevel.Information
             };
 
             _tinyMessageSubscriptions = new List<TinyMessageSubscriptionToken>(new[]

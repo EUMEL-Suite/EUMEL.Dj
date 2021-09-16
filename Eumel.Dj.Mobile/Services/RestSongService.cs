@@ -16,7 +16,7 @@ namespace Eumel.Dj.Mobile.Services
 
         public async Task<SongListItem> GetSongsAsync(bool forceRefresh = false)
         {
-            Log.Information($"User {Settings.Username} a list of songs");
+            Log.Debug($"User {Settings.Username} a list of songs");
             var source = await Service.GetSongsSourceAsync();
 
             var myVotes = await Service.GetMyVotesAsync();
@@ -45,15 +45,13 @@ namespace Eumel.Dj.Mobile.Services
 
             if (hasAlreadyVoted)
             {
-                Log.Information($"User {Settings.Username} has already voted. Remove vote for {id} [{song?.Title}]");
-                Log.Debug($"Call down vote service endpoint");
+                Log.Debug($"User {Settings.Username} has already voted. Remove vote for {id} [{song?.Title}]");
                 await Service.DownVoteAsync(new Song() { Id = id });
                 return false;
             }
             else
             {
-                Log.Information($"User {Settings.Username} has voted for {id} [{song?.Title}]");
-                Log.Debug($"Call up vote service endpoint");
+                Log.Debug($"User {Settings.Username} has voted for {id} [{song?.Title}]");
                 await Service.UpVoteAsync(new Song() { Id = id });
                 return true;
             }

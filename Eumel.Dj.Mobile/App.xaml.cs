@@ -18,10 +18,21 @@ namespace Eumel.Dj.Mobile
             DependencyService.Register<RestPlayerService>();
             DependencyService.Register<RestChatService>();
 
+            // for testing to delete settings
+            DependencyService.Get<ISettingsService>().Reset();
+
             // if no endpoint set, navigate to login page
-            MainPage = string.IsNullOrWhiteSpace(DependencyService.Get<ISettingsService>().RestEndpoint)
-                ? (Page)new LoginPage()
-                : new AppShell();
+            if (string.IsNullOrWhiteSpace(DependencyService.Get<ISettingsService>().RestEndpoint))
+            {
+                // the message will never appear because syslog is unknown!
+                DependencyService.Get<ISyslogService>().Debug("Application not configured. Loading login page.");
+                MainPage = new LoginPage();
+            }
+            else
+            {
+                DependencyService.Get<ISyslogService>().Debug("Application already configured with endpoint. Starting AppShell.");
+                MainPage = new AppShell();
+            }
         }
     }
 }

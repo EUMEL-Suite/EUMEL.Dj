@@ -6,15 +6,10 @@ namespace Eumel.Dj.Mobile.Services
 {
     public class SyslogService : ISyslogService
     {
-        private readonly ISettingsService _settings;
-        private LoggingModule _syslogger;
-        private readonly string _deviceName;
+        private ISettingsService _settings => DependencyService.Get<ISettingsService>();
 
-        public SyslogService()
-        {
-            _settings = DependencyService.Get<ISettingsService>();
-            _deviceName = DeviceInfo.Name;
-        }
+        private LoggingModule _syslogger;
+        private readonly string _deviceName = DeviceInfo.Name;
 
         private LoggingModule GetLogger()
         {
@@ -30,17 +25,47 @@ namespace Eumel.Dj.Mobile.Services
 
         public void Debug(string msg)
         {
-            GetLogger()?.Debug(msg);
+            if (_settings.MinimumLogLevel == EumelLogLevel.Debug)
+
+                GetLogger()?.Debug(msg);
         }
 
         public void Information(string msg)
         {
-            GetLogger()?.Info(msg);
+            if (_settings.MinimumLogLevel == EumelLogLevel.Information ||
+                _settings.MinimumLogLevel == EumelLogLevel.Debug)
+
+                GetLogger()?.Info(msg);
+        }
+
+        public void Warn(string msg)
+        {
+            if (_settings.MinimumLogLevel == EumelLogLevel.Warn ||
+                _settings.MinimumLogLevel == EumelLogLevel.Information ||
+                _settings.MinimumLogLevel == EumelLogLevel.Debug)
+
+                GetLogger()?.Warn(msg);
         }
 
         public void Error(string msg)
         {
-            GetLogger()?.Error(msg);
+            if (_settings.MinimumLogLevel == EumelLogLevel.Error ||
+                _settings.MinimumLogLevel == EumelLogLevel.Warn ||
+                _settings.MinimumLogLevel == EumelLogLevel.Information ||
+                _settings.MinimumLogLevel == EumelLogLevel.Debug)
+
+                GetLogger()?.Error(msg);
+        }
+
+        public void Fatal(string msg)
+        {
+            if (_settings.MinimumLogLevel == EumelLogLevel.Fatal ||
+                _settings.MinimumLogLevel == EumelLogLevel.Error ||
+                _settings.MinimumLogLevel == EumelLogLevel.Warn ||
+                _settings.MinimumLogLevel == EumelLogLevel.Information ||
+                _settings.MinimumLogLevel == EumelLogLevel.Debug)
+
+                GetLogger()?.Critical(msg);
         }
     }
 }

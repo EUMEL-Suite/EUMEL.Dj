@@ -85,7 +85,7 @@ namespace Eumel.Dj.Mobile.ViewModels
             var client = new EumelRestServiceFactory(server).Build();
             var token = await client.RequestSettingsAndTokenAsync(Username);
 
-            Settings.Change(server, token.Username, token.SyslogServer, token.Usertoken);
+            Settings.Change(server, token.Username, token.SyslogServer, token.Usertoken, token.MinimumLogLevel);
             return true;
         }
 

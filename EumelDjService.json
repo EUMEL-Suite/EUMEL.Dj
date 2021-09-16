@@ -671,6 +671,16 @@
         },
         "additionalProperties": false
       },
+      "EumelLogLevel": {
+        "enum": [
+          "Debug",
+          "Information",
+          "Warn",
+          "Error",
+          "Fatal"
+        ],
+        "type": "string"
+      },
       "PlayerStatus": {
         "enum": [
           "Playing",
@@ -687,8 +697,11 @@
             "nullable": true
           },
           "minimumLogLevel": {
-            "type": "string",
-            "nullable": true
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EumelLogLevel"
+              }
+            ]
           },
           "username": {
             "type": "string",

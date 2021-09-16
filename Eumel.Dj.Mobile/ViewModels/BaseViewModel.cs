@@ -59,23 +59,36 @@ namespace Eumel.Dj.Mobile.ViewModels
         }
         #endregion
 
-        protected async void TryOrRedirectToLoginAsync(Func<Task> action)
+        protected async void TryOrRedirectToLoginAsync(Func<Task> action, string actionTitle = "unknown")
         {
             try
             {
+                SyslogService.Debug($"[{actionTitle}] Executing code in a login-safe environment.");
                 await action();
             }
             catch (ApiException ex)
             {
                 if (ex.Response.Contains(Constants.InvalidTokenException))
                 {
+                    SyslogService.Information($"The token for user {Settings.Username} is invalid and user needs to login again.");
                     await Application.Current.MainPage.DisplayAlert("Token Invalid", "Your login token expired. Please login again.", "OK");
                     Application.Current.MainPage = new LoginPage() { BackgroundColor = Color.White };
                 }
                 else if (ex.Response.Contains(Constants.UnauthorizedEumelException))
-                    await Application.Current.MainPage.DisplayAlert("Permission Denied", "You are not allowed to do this. Please request permissions.", "OK"); 
+                {
+                    SyslogService.Information($"The user {Settings.Username} has not sufficient permissions to execute the action.");
+                    await Application.Current.MainPage.DisplayAlert("Permission Denied", "You are not allowed to do this. Please request permissions.", "OK");
+                }
                 else
+                {
+                    SyslogService.Error($"A REST service exception was raised: {ex.Message}");
                     throw;
+                }
+            }
+            catch (Exception ex)
+            {
+                SyslogService.Error($"An exception was raised: {ex.Message}");
+                throw;
             }
         }
     }

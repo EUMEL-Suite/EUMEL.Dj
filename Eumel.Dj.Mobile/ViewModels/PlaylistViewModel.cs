@@ -69,7 +69,13 @@ namespace Eumel.Dj.Mobile.ViewModels
                         };
                     })
                     .Build();
-
+                await _hub.StartAsync();
+                _hub.Closed += async error =>
+                {
+                    SyslogService.Warn("Chat Hub connection was closed. Trying to reconnect");
+                    await Task.Delay(new Random().Next(0, 5) * 1000);
+                    await _hub.StartAsync();
+                };
                 _hub.On<DjPlaylist>(Constants.PlaylistHub.PlaylistChanged, pl =>
                 {
                     Items.Clear();
@@ -79,8 +85,7 @@ namespace Eumel.Dj.Mobile.ViewModels
                     songs.Where(y => y?.Id != null).ToList().ForEach(Items.Add);
                 });
             };
-            if (_hub.State == HubConnectionState.Disconnected)
-                await _hub.StartAsync();
+            SyslogService.Information("Playlist Hub created and started");
         }
 
         private async void OnItemSelected(PlaylistSongItem songItem)
