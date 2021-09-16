@@ -16,6 +16,7 @@ namespace Eumel.Dj.Mobile.ViewModels
         protected IPlayerService PlayerService => DependencyService.Get<IPlayerService>();
         protected ISongService SongService => DependencyService.Get<ISongService>();
         protected ISyslogService SyslogService => DependencyService.Get<ISyslogService>();
+        protected IChatService ChatService => DependencyService.Get<IChatService>();
 
         private bool _isBusy;
 

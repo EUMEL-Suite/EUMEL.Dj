@@ -16,6 +16,7 @@ namespace Eumel.Dj.Mobile
             DependencyService.Register<RestPlaylistService>();
             DependencyService.Register<RestSongService>();
             DependencyService.Register<RestPlayerService>();
+            DependencyService.Register<RestChatService>();
 
             // if no endpoint set, navigate to login page
             MainPage = string.IsNullOrWhiteSpace(DependencyService.Get<ISettingsService>().RestEndpoint)

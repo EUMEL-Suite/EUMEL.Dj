@@ -10,7 +10,7 @@ namespace Eumel.Dj.WebServer.Services
 
         public UserToken GetUserToken(string usernameRequest)
         {
-            _ = UsernameIsAvailable(usernameRequest, out var username);
+            _ = UsernameIsAvailable(usernameRequest.Trim(), out var username);
             var token = Guid.NewGuid().ToString();
 
             _tokenToUserDictionary.Add(token, username);
@@ -20,6 +20,10 @@ namespace Eumel.Dj.WebServer.Services
 
         public bool UsernameIsAvailable(string usernameRequest, out string usernameRecommendation)
         {
+            // cannot take system name
+            if (usernameRequest.ToLower() == Constants.SystemChatName.ToLower())
+                usernameRequest = "Hades";
+
             // if user not taken, use it :-)
             if (!_tokenToUserDictionary.ContainsValue(usernameRequest))
             {

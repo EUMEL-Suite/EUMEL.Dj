@@ -3,22 +3,25 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Eumel.Dj.Mobile.Views.ChatPage"
              Title="{Binding Title}"
+             x:DataType="local:ChatViewModel" 
              xmlns:local="clr-namespace:Eumel.Dj.Mobile.ViewModels"  
              xmlns:data="clr-namespace:Eumel.Dj.Mobile.Data">
 
-   <StackLayout x:DataType="local:ChatViewModel">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Update" Command="{Binding LoadChatCommand}"/>
+    </ContentPage.ToolbarItems>
 
+    <StackLayout x:DataType="local:ChatViewModel">
         <Editor x:Name="ChatHistory" Text="{Binding Chat}" IsReadOnly="true" FontSize="Small"
                 VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"  />
 
         <StackLayout Orientation="Horizontal" VerticalOptions="End">
-            <Entry Text="{Binding Message}" Placeholder="{Binding MessagePlaceholder}" HorizontalOptions="FillAndExpand" />
-
+                <Entry Text="{Binding Message}" Placeholder="{Binding MessagePlaceholder}" HorizontalOptions="FillAndExpand" />
             <ImageButton Command="{Binding SendMessageCommand}"	BackgroundColor="Transparent" Padding="2" Margin="5">
                 <ImageButton.Source>
                     <FontImageSource FontFamily="MaterialDesign" Glyph="{Static data:IconFont.Send}" Color="{DynamicResource HeartNonFill}"/>
                 </ImageButton.Source>
             </ImageButton>
         </StackLayout>
-   </StackLayout>
+    </StackLayout>
 </ContentPage>

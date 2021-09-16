@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Windows;
 using Eumel.Dj.Ui.Services;
 using Eumel.Dj.WebServer;
+using Eumel.Dj.WebServer.Controllers;
 using Eumel.Dj.WebServer.Hubs;
 using Eumel.Dj.WebServer.Messages;
 using Eumel.Dj.WebServer.Models;
@@ -23,6 +25,7 @@ namespace Eumel.Dj.Ui
         private readonly DjService _djService;
         private readonly TinyMessengerHub _hub;
         private readonly List<TinyMessageSubscriptionToken> _tinyMessageSubscriptions;
+        private readonly IList<ChatEntry> _chats = new List<ChatEntry>();
         private IWebHost _host;
 
         public MainWindow()
@@ -43,7 +46,8 @@ namespace Eumel.Dj.Ui
                 _hub.Subscribe((Action<RequestUserIsAdminMessage>)RequestUserIsAdmin),
                 _hub.Subscribe((Action<UserAddedMessage>)UserAdded),
                 _hub.Subscribe((Action<UserRemovedMessage>)UserRemoved),
-                _hub.Subscribe((Action<RequestUserIsAdminMessage>)RequestUserIsAdmin)
+                _hub.Subscribe((Action<ChatReceivedMessage>)ChatReceived),
+                _hub.Subscribe((Action<GetChatHistoryMessage>)GetChatHistory)
             });
 
             _djService = new DjService(
@@ -51,6 +55,16 @@ namespace Eumel.Dj.Ui
                 new ItunesProviderService(Settings.Default, _hub));
 
             Loaded += (sender, args) => StartService();
+        }
+
+        private void GetChatHistory(GetChatHistoryMessage message)
+        {
+            message.Response = new MessageResponse<IEnumerable<ChatEntry>>(_chats.ToArray());
+        }
+
+        private void ChatReceived(ChatReceivedMessage message)
+        {
+            _chats.Add(new ChatEntry() { Username = message.Username, Message = message.Message });
         }
 
 

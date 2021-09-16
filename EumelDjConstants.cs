@@ -2,6 +2,7 @@ namespace Eumel.Dj
 {
     public class Constants
     {
+        public const string SystemChatName = "Eumel";
         public const string ApplicationName = "EUMEL Dj";
         public const string UserToken = "usertoken";
         public const string InvalidTokenException = "InvalidTokenException";

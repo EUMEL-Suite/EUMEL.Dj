@@ -5,6 +5,44 @@
     "version": "v1.0"
   },
   "paths": {
+    "/api/Chat/GetChatHistory": {
+      "get": {
+        "tags": [
+          "Chat"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChatEntry"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChatEntry"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChatEntry"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/Dj/GetPlaylist": {
       "get": {
         "tags": [
@@ -590,6 +628,20 @@
   },
   "components": {
     "schemas": {
+      "ChatEntry": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "nullable": true
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "DjPlaylist": {
         "type": "object",
         "properties": {

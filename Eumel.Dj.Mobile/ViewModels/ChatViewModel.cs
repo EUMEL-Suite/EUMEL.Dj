@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Eumel.Dj.Mobile.Services;
 using Microsoft.AspNetCore.SignalR.Client;
 using Xamarin.Forms;
 
@@ -16,7 +18,18 @@ namespace Eumel.Dj.Mobile.ViewModels
         public ChatViewModel()
         {
             SendMessageCommand = new Command(SendMessageAsync);
+            LoadChatCommand = new Command(() => TryOrRedirectToLoginAsync(async () =>
+            {
+                IsBusy = true;
+                var chats = await ChatService.GetChatHistory();
+                var chatHistory = string.Join(Environment.NewLine, chats.Select(item => item.Username + ": " + item.Message));
+
+                Chat = chatHistory;
+                IsBusy = false;
+            }));
         }
+
+        public Command LoadChatCommand { get; }
 
         public Command SendMessageCommand { get; }
 
@@ -52,7 +65,9 @@ namespace Eumel.Dj.Mobile.ViewModels
 
         public void OnAppearing()
         {
+            LoadChatCommand.Execute(null);
             MessagePlaceholder = $"send as {Settings.Username}...";
+
 
             if (_hub != null) return;
 
