@@ -8,16 +8,17 @@ namespace Eumel.Dj.Mobile.ViewModels
 {
     public class ChatViewModel : BaseViewModel
     {
-        private string _message;
-        private HubConnection _hub;
         private string _chat;
+        private HubConnection _hub;
+        private string _message;
         private string _messagePlaceholder;
-        public Command SendMessageCommand { get; }
 
         public ChatViewModel()
         {
             SendMessageCommand = new Command(SendMessageAsync);
         }
+
+        public Command SendMessageCommand { get; }
 
         public string Message
         {
@@ -70,7 +71,7 @@ namespace Eumel.Dj.Mobile.ViewModels
                 })
                 .Build();
             _hub.StartAsync();
-            _hub.Closed += async (error) =>
+            _hub.Closed += async error =>
             {
                 await Task.Delay(new Random().Next(0, 5) * 1000);
                 await _hub.StartAsync();

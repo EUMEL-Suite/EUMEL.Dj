@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Shell xmlns="http://xamarin.com/schemas/2014/forms" 
+
+<Shell xmlns="http://xamarin.com/schemas/2014/forms"
        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
        xmlns:local="clr-namespace:Eumel.Dj.Mobile.Views"
        Title="Eumel.Dj.Mobile"
@@ -20,9 +21,9 @@
                 <Setter Property="Shell.DisabledColor" Value="#B4FFFFFF" />
                 <Setter Property="Shell.UnselectedColor" Value="#95FFFFFF" />
                 <Setter Property="Shell.TabBarBackgroundColor" Value="{StaticResource Primary}" />
-                <Setter Property="Shell.TabBarForegroundColor" Value="White"/>
-                <Setter Property="Shell.TabBarUnselectedColor" Value="#95FFFFFF"/>
-                <Setter Property="Shell.TabBarTitleColor" Value="White"/>
+                <Setter Property="Shell.TabBarForegroundColor" Value="White" />
+                <Setter Property="Shell.TabBarUnselectedColor" Value="#95FFFFFF" />
+                <Setter Property="Shell.TabBarTitleColor" Value="White" />
             </Style>
             <Style TargetType="TabBar" BasedOn="{StaticResource BaseStyle}" />
             <Style TargetType="FlyoutItem" BasedOn="{StaticResource BaseStyle}" />
@@ -30,7 +31,8 @@
     </Shell.Resources>
 
     <TabBar>
-        <ShellContent Title="Playlist" Icon="icon_about.png" Route="PlaylistPage" ContentTemplate="{DataTemplate local:PlaylistPage}" />
+        <ShellContent Title="Playlist" Icon="icon_about.png" Route="PlaylistPage"
+                      ContentTemplate="{DataTemplate local:PlaylistPage}" />
         <ShellContent Title="Vote" Icon="icon_vote.png" ContentTemplate="{DataTemplate local:SongsPage}" />
         <ShellContent Title="Chat" Icon="icon_chat.png" ContentTemplate="{DataTemplate local:ChatPage}" />
         <ShellContent Title="Settings" Icon="icon_feed.png" ContentTemplate="{DataTemplate local:SettingsPage}" />

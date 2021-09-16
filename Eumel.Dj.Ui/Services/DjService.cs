@@ -40,6 +40,14 @@ namespace Eumel.Dj.Ui.Services
             _mediaPlayer.MediaEnded += (_, _) => PlayNextSong();
         }
 
+        public void Dispose()
+        {
+            _tinyMessageSubscriptions.ForEach(x => _hub.Unsubscribe(x));
+
+            _mediaPlayer.Stop();
+            _mediaPlayer.Close();
+        }
+
         private void ClearMyVotes(ClearMyVotesMessage message)
         {
             _djList.ClearVotesFor(message.Username);
@@ -48,14 +56,6 @@ namespace Eumel.Dj.Ui.Services
         private void PlayerStatus(PlayerStatusMessage message)
         {
             message.Response = new MessageResponse<PlayerStatus>(_playerStatus);
-        }
-
-        public void Dispose()
-        {
-            _tinyMessageSubscriptions.ForEach(x => _hub.Unsubscribe(x));
-
-            _mediaPlayer.Stop();
-            _mediaPlayer.Close();
         }
 
         private void ContinueOrNext()

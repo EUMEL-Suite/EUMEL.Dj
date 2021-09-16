@@ -3,18 +3,15 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Net;
-using System.Net.Sockets;
 using System.Windows;
 using Eumel.Dj.Ui.Services;
 using Eumel.Dj.WebServer;
-using Eumel.Dj.WebServer.Controllers;
 using Eumel.Dj.WebServer.Hubs;
 using Eumel.Dj.WebServer.Messages;
 using Eumel.Dj.WebServer.Models;
 using Eumel.Dj.WebServer.Services;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using TinyMessenger;
 
@@ -22,18 +19,18 @@ namespace Eumel.Dj.Ui
 {
     public partial class MainWindow : Window
     {
+        private readonly IAppSettings _appSettings;
         private readonly DjService _djService;
         private readonly TinyMessengerHub _hub;
         private readonly List<TinyMessageSubscriptionToken> _tinyMessageSubscriptions;
         private IWebHost _host;
-        private readonly IAppSettings _appSettings;
 
         public MainWindow()
         {
             InitializeComponent();
 
             _hub = TinyMessengerHub.DefaultHub;
-            _appSettings = new AppSettings()
+            _appSettings = new AppSettings
             {
                 RestEndpoint = "https://192.168.178.37:443",
                 SyslogServer = "192.168.178.37",
@@ -113,7 +110,7 @@ namespace Eumel.Dj.Ui
                     .ConfigureServices((context, services) =>
                     {
                         services.AddSingleton<ITinyMessengerHub>(_hub);
-                        services.AddSingleton<IAppSettings>(_appSettings);
+                        services.AddSingleton(_appSettings);
                         services.AddSingleton<IQrCodeService>(new QrCodeService());
                         services.AddSingleton<ITokenService>(new TokenService());
                     })

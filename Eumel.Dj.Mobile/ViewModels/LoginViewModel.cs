@@ -9,8 +9,16 @@ namespace Eumel.Dj.Mobile.ViewModels
 {
     public class LoginViewModel : BaseViewModel
     {
-        private string _username = string.Empty;
         private string _userHint;
+        private string _username = string.Empty;
+
+        public LoginViewModel()
+        {
+            Username = Settings.Username ?? Marvel.Names.Random();
+
+            ScanResultCommand = new Command(ScanResult);
+            RandomizeUsernameCommand = new Command(() => Username = Marvel.Names.Random());
+        }
 
         public string Username
         {
@@ -27,14 +35,6 @@ namespace Eumel.Dj.Mobile.ViewModels
         public Command ScanResultCommand { get; }
 
         public Command RandomizeUsernameCommand { get; }
-
-        public LoginViewModel()
-        {
-            Username = Settings.Username ?? Marvel.Names.Random();
-
-            ScanResultCommand = new Command(ScanResult);
-            RandomizeUsernameCommand = new Command(() => Username = Marvel.Names.Random());
-        }
 
         private async void ScanResult(object scan)
         {

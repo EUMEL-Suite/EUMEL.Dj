@@ -2828,7 +2828,7 @@
             "the Living Colossus It",
             "the Living Darkness Null",
             "the Renegade Watcher Aron",
-            "the Tomorrow Man Zarrko",
+            "the Tomorrow Man Zarrko"
         };
     }
 }

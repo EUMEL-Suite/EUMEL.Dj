@@ -1,10 +1,9 @@
-﻿using Eumel.Dj.Mobile.Models;
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using Eumel.Dj.Mobile.Views;
+using Eumel.Dj.Mobile.Models;
 using Xamarin.Forms;
 
 namespace Eumel.Dj.Mobile.ViewModels
@@ -12,12 +11,6 @@ namespace Eumel.Dj.Mobile.ViewModels
     public class SongsViewModel : BaseViewModel
     {
         private SongItem _selectedSongItem;
-
-        public ObservableCollection<SongItem> Items { get; }
-        public Command LoadItemsCommand { get; }
-        public Command<SongItem> ItemTapped { get; }
-
-        public Command<SongItem> VoteUpDownCommand { get; }
 
         public SongsViewModel()
         {
@@ -27,6 +20,22 @@ namespace Eumel.Dj.Mobile.ViewModels
 
             ItemTapped = new Command<SongItem>(OnItemSelected);
             VoteUpDownCommand = new Command<SongItem>(OnItemUpDownVote);
+        }
+
+        public ObservableCollection<SongItem> Items { get; }
+        public Command LoadItemsCommand { get; }
+        public Command<SongItem> ItemTapped { get; }
+
+        public Command<SongItem> VoteUpDownCommand { get; }
+
+        public SongItem SelectedSongItem
+        {
+            get => _selectedSongItem;
+            set
+            {
+                SetProperty(ref _selectedSongItem, value);
+                OnItemSelected(value);
+            }
         }
 
         private async Task ExecuteLoadItemsCommand()
@@ -56,16 +65,6 @@ namespace Eumel.Dj.Mobile.ViewModels
             SelectedSongItem = null;
         }
 
-        public SongItem SelectedSongItem
-        {
-            get => _selectedSongItem;
-            set
-            {
-                SetProperty(ref _selectedSongItem, value);
-                OnItemSelected(value);
-            }
-        }
-
         private void OnItemUpDownVote(SongItem song)
         {
             TryOrRedirectToLoginAsync(async () =>
@@ -75,7 +74,7 @@ namespace Eumel.Dj.Mobile.ViewModels
             });
         }
 
-        async void OnItemSelected(SongItem songItem)
+        private async void OnItemSelected(SongItem songItem)
         {
             if (songItem == null)
                 return;

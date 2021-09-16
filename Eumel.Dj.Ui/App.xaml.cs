@@ -7,19 +7,20 @@ namespace Eumel.Dj.Ui
 {
     public partial class App : Application
     {
+        private TinyMessengerHub _hub;
+
         // ReSharper disable once NotAccessedField.Local
         private LoggingService _loggingService;
-        private TinyMessengerHub _hub;
 
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
 
             // todo: there is a class with system settings we needs to inject
-            var loggerSettings = new LoggerSettings()
+            var loggerSettings = new LoggerSettings
             {
-                Filelog = new FilelogSettings() { EnableFileLogging = false },
-                Syslog = new SyslogSettings() { EnableSyslogLogging = true, SysLogServerIp = "192.168.178.37", UseUdp = true },
+                Filelog = new FilelogSettings { EnableFileLogging = false },
+                Syslog = new SyslogSettings { EnableSyslogLogging = true, SysLogServerIp = "192.168.178.37", UseUdp = true },
                 DeviceName = "EUMEL DJ"
             };
             var logger = new SerilogFactory().Build(loggerSettings);

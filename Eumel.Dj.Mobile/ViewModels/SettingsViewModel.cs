@@ -7,9 +7,32 @@ namespace Eumel.Dj.Mobile.ViewModels
     {
         private string _eumelServer;
         private string _syslogServer;
-        private string _username;
         private string _token;
         private bool _userIsAdmin;
+        private string _username;
+
+        public SettingsViewModel()
+        {
+            SyslogServer = Settings.SyslogServer;
+            EumelServer = Settings.RestEndpoint;
+            Username = Settings.Username;
+            Token = Settings.Token;
+            UserIsAdmin = false;
+
+            PlayCommand = new Command(() => TryOrRedirectToLoginAsync(() => PlayerService.Play()));
+            PauseCommand = new Command(() => TryOrRedirectToLoginAsync(() => PlayerService.Pause()));
+            RestartCommand = new Command(() => TryOrRedirectToLoginAsync(() => PlayerService.Restart()));
+            StopCommand = new Command(() => TryOrRedirectToLoginAsync(() => PlayerService.Stop()));
+            NextCommand = new Command(() => TryOrRedirectToLoginAsync(() => PlayerService.Next()));
+
+            ClearSettingsCommand = new Command(async () =>
+            {
+                await PlaylistService.ClearMyVotes();
+                await Settings.Logout();
+                Settings.Reset();
+                Application.Current.MainPage = new LoginPage { BackgroundColor = Color.White };
+            });
+        }
 
         public Command ClearSettingsCommand { get; }
 
@@ -49,28 +72,6 @@ namespace Eumel.Dj.Mobile.ViewModels
         public Command StopCommand { get; set; }
         public Command NextCommand { get; set; }
 
-        public SettingsViewModel()
-        {
-            SyslogServer = Settings.SyslogServer;
-            EumelServer = Settings.RestEndpoint;
-            Username = Settings.Username;
-            Token = Settings.Token;
-            UserIsAdmin = false;
-
-            PlayCommand = new Command(() => TryOrRedirectToLoginAsync(() => PlayerService.Play()));
-            PauseCommand = new Command(() => TryOrRedirectToLoginAsync(() => PlayerService.Pause()));
-            RestartCommand = new Command(() => TryOrRedirectToLoginAsync(() => PlayerService.Restart()));
-            StopCommand = new Command(() => TryOrRedirectToLoginAsync(() => PlayerService.Stop()));
-            NextCommand = new Command(() => TryOrRedirectToLoginAsync(() => PlayerService.Next()));
-
-            ClearSettingsCommand = new Command(async () =>
-            {
-                await PlaylistService.ClearMyVotes();
-                await Settings.Logout();
-                Settings.Reset();
-                Application.Current.MainPage = new LoginPage() { BackgroundColor = Color.White };
-            });
-        }
         public async void OnAppearing()
         {
             IsBusy = true;

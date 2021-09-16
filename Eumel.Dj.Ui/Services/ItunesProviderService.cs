@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Eumel.Dj.WebServer;
 using Eumel.Dj.WebServer.Exceptions;
 using Eumel.Dj.WebServer.Messages;
 using Eumel.Dj.WebServer.Models;
