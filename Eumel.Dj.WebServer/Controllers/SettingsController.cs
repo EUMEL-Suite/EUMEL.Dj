@@ -88,9 +88,12 @@ namespace Eumel.Dj.WebServer.Controllers
         [HttpGet("Logout")]
         public void Logout()
         {
+            if (!string.IsNullOrWhiteSpace(Username))
+            {
+                _hub.Publish(new ClearMyVotesMessage(this, Username));
+                _hub.Publish(new UserRemovedMessage(this, Username));
+            }
             _tokenService.DisposeUserToken(Token);
-
-            _hub.Publish(new UserRemovedMessage(this, Username));
         }
     }
 }

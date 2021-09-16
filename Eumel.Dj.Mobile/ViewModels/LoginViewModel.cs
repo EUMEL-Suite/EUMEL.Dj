@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Eumel.Dj.Mobile.Data;
 using Eumel.Dj.Mobile.Services;
 using Eumel.Dj.Mobile.Views;
@@ -11,6 +12,7 @@ namespace Eumel.Dj.Mobile.ViewModels
     {
         private string _userHint;
         private string _username = string.Empty;
+        private bool _isProcessingScan;
 
         public LoginViewModel()
         {
@@ -38,6 +40,8 @@ namespace Eumel.Dj.Mobile.ViewModels
 
         private async void ScanResult(object scan)
         {
+            if (_isProcessingScan) return;
+
             // dont care what you scan, username must be filled
             if (string.IsNullOrWhiteSpace(Username))
             {
@@ -62,30 +66,41 @@ namespace Eumel.Dj.Mobile.ViewModels
             var server = scanResult.Text;
             // todo validate that this is a proper url
 
-            if (!GetSettingsForServer(server).Result)
+            try
             {
-                UserHint = "Cannot get settings from server";
-                return;
+                _isProcessingScan = true;
+
+                if (!GetSettingsForServer(server).Result)
+                {
+                    UserHint = "Cannot get settings from server";
+                    return;
+                }
+
+                Username = Settings.Username;
+
+                Application.Current.Dispatcher.BeginInvokeOnMainThread(() =>
+                {
+                    if (Shell.Current == null)
+                        Application.Current.MainPage = new AppShell();
+
+                    // ReSharper disable once PossibleNullReferenceException
+                    Shell.Current.GoToAsync(nameof(PlaylistPage));
+                });
             }
-
-            Username = Settings.Username;
-
-            Application.Current.Dispatcher.BeginInvokeOnMainThread(() =>
+            finally
             {
-                if (Shell.Current == null)
-                    Application.Current.MainPage = new AppShell();
-
-                // ReSharper disable once PossibleNullReferenceException
-                Shell.Current.GoToAsync(nameof(PlaylistPage));
-            });
+                _isProcessingScan = false;
+            }
         }
 
         private async Task<bool> GetSettingsForServer(string server)
         {
+            SyslogService.Information($"Request token for user {Username}");
             var client = new EumelRestServiceFactory(server).Build();
             var token = await client.RequestSettingsAndTokenAsync(Username);
 
             Settings.Change(server, token.Username, token.SyslogServer, token.Usertoken, token.MinimumLogLevel);
+            SyslogService.Information($"Received token for user {token.Username}");
             return true;
         }
 

@@ -27,7 +27,6 @@ namespace Eumel.Dj.Mobile.ViewModels
 
             ClearSettingsCommand = new Command(async () =>
             {
-                await PlaylistService.ClearMyVotes();
                 await Settings.Logout();
                 Settings.Reset();
                 Application.Current.MainPage = new LoginPage { BackgroundColor = Color.White };

@@ -14,6 +14,7 @@ namespace Eumel.Dj.Mobile.Services
         private LoggingModule GetLogger()
         {
             if (_syslogger != null) return _syslogger;
+            // this makes sure we don't send information to non-set server
             if (string.IsNullOrEmpty(_settings?.SyslogServer))
                 return null;
 

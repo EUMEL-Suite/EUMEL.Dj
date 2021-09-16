@@ -53,9 +53,12 @@ namespace Eumel.Dj.Mobile.ViewModels
 
         private async void SendMessageAsync()
         {
+            if (string.IsNullOrWhiteSpace(Message)) return;
+
             try
             {
                 await _hub.InvokeAsync(Constants.ChatHub.SendChat, Settings.Username, Message);
+                Message = String.Empty;
             }
             catch (Exception ex)
             {

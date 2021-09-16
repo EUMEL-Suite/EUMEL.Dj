@@ -35,6 +35,7 @@ namespace Eumel.Dj.Ui
             _hub = TinyMessengerHub.DefaultHub;
             _appSettings = new AppSettings
             {
+                // TODO SUCKS
                 RestEndpoint = "https://192.168.178.37:443",
                 SyslogServer = "192.168.178.37",
                 MinimumLogLevel = Constants.EumelLogLevel.Information
@@ -172,7 +173,7 @@ namespace Eumel.Dj.Ui
         private void SendChatMessage(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(ChatMessage.Text)) return;
-            _hub.Publish(new ChatSendingMessage(this, "[Server]", ChatMessage.Text));
+            _hub.Publish(new ChatSendingMessage(this, Constants.SystemChatName, ChatMessage.Text));
             ChatMessage.Text = string.Empty;
         }
     }
