@@ -7,34 +7,14 @@ namespace Eumel.Dj.Ui.Core.ViewModels
 {
     public class ShellViewModel : PropertyChangedBase, IShellViewModel
     {
+        public ILogOutputViewModel LogWindow { get; }
         private readonly ITinyMessengerHub _hub;
 
-        public ShellViewModel(ITinyMessengerHub hub)
+        public ShellViewModel(ITinyMessengerHub hub, ILogOutputViewModel logWindow)
         {
+            LogWindow = logWindow;
             _hub = hub ?? throw new ArgumentNullException(nameof(hub));
         }
 
-        string name;
-
-        public string Name
-        {
-            get { return name; }
-            set
-            {
-                name = value;
-                NotifyOfPropertyChange(() => Name);
-                NotifyOfPropertyChange(() => CanSayHello);
-            }
-        }
-
-        public bool CanSayHello
-        {
-            get { return !string.IsNullOrWhiteSpace(Name); }
-        }
-
-        public void SayHello()
-        {
-            Console.WriteLine($"Hello {name}");
-        }
     }
 }

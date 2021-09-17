@@ -9,6 +9,7 @@ namespace Eumel.Dj.Ui.Bootstrapper
         public ViewModelsRegistry()
         {
             _ = For<IShellViewModel>().Use<ShellViewModel>().AlwaysUnique();
+            _ = For<ILogOutputViewModel>().Use<LogOutputViewModel>().AlwaysUnique();
         }
     }
 }
