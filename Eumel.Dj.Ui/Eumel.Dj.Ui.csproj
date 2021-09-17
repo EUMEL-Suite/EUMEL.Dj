@@ -4,6 +4,7 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net5.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
+    <StartupObject>Eumel.Dj.Ui.App</StartupObject>
   </PropertyGroup>
 
   <ItemGroup>
@@ -25,11 +26,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Caliburn.Micro" Version="4.0.173" />
+    <PackageReference Include="Caliburn.Micro.Core" Version="4.0.173" />
     <PackageReference Include="iTunesLibraryParser" Version="1.1.27" />
     <PackageReference Include="TinyMessengerStandard" Version="1.0.2" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Eumel.Dj.Ui.Core\Eumel.Dj.Ui.Core.csproj" />
     <ProjectReference Include="..\Eumel.Dj.WebServer\Eumel.Dj.WebServer.csproj" />
   </ItemGroup>
 

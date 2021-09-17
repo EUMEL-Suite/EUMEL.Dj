@@ -23,7 +23,7 @@ namespace Eumel.Dj.Ui
     {
         private readonly IAppSettings _appSettings;
         private readonly DjService _djService;
-        private readonly TinyMessengerHub _hub;
+        private readonly ITinyMessengerHub _hub;
         private readonly List<TinyMessageSubscriptionToken> _tinyMessageSubscriptions;
         private readonly IList<ChatEntry> _chats = new List<ChatEntry>();
         private IWebHost _host;
