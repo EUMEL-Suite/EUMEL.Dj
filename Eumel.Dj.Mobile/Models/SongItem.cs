@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using Eumel.Dj.Mobile.Annotations;
 
 namespace Eumel.Dj.Mobile.Models
 {

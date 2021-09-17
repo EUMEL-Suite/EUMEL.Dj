@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Eumel.Dj.WebServer.Models;
+using Eumel.Dj.Core.Messages;
+using Eumel.Dj.Core.Models;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.SignalR.Client;
 using TinyMessenger;

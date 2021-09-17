@@ -1,4 +1,4 @@
-﻿namespace Eumel.Dj.WebServer.Models
+﻿namespace Eumel.Dj.Core.Models
 {
     public class UserToken
     {

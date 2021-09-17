@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace Eumel.Dj.WebServer.Models
+namespace Eumel.Dj.Core.Models
 {
     public interface IQrCodeService
     {

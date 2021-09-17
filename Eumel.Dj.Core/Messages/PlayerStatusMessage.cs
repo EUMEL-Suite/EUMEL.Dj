@@ -1,6 +1,4 @@
-﻿using Eumel.Dj.WebServer.Controllers;
-
-namespace Eumel.Dj.WebServer.Messages
+﻿namespace Eumel.Dj.Core.Messages
 {
     public class PlayerStatusMessage : MessageRequest<PlayerStatus>
     {

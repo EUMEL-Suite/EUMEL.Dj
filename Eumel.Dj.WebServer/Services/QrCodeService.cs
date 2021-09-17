@@ -1,5 +1,5 @@
 ﻿using System.Drawing;
-using Eumel.Dj.WebServer.Models;
+using Eumel.Dj.Core.Models;
 using QRCoder;
 
 namespace Eumel.Dj.WebServer.Services

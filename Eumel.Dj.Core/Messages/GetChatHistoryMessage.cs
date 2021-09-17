@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using Eumel.Dj.WebServer.Controllers;
+using Eumel.Dj.Core.Models;
 
-namespace Eumel.Dj.WebServer.Messages
+namespace Eumel.Dj.Core.Messages
 {
     public class GetChatHistoryMessage : MessageRequest<IEnumerable<ChatEntry>>
     {

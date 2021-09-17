@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Eumel.Dj.WebServer.Models;
+using Eumel.Dj.Core.Models;
 
 namespace Eumel.Dj.Ui.Services
 {

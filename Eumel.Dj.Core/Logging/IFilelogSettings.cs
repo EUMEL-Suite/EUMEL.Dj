@@ -1,4 +1,4 @@
-﻿namespace Eumel.Dj.WebServer.Logging
+﻿namespace Eumel.Dj.Core.Logging
 {
     public interface IFilelogSettings
     {

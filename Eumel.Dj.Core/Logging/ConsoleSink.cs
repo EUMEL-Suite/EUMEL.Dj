@@ -2,7 +2,7 @@
 using Serilog.Core;
 using Serilog.Events;
 
-namespace Eumel.Dj.WebServer.Logging
+namespace Eumel.Dj.Core.Logging
 {
     internal class ConsoleSink : ILogEventSink
     {

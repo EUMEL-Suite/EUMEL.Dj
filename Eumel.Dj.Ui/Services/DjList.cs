@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Eumel.Dj.WebServer.Models;
+using Eumel.Dj.Core.Models;
 using TinyMessenger;
 
 namespace Eumel.Dj.Ui.Services

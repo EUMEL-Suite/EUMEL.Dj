@@ -1,4 +1,4 @@
-﻿namespace Eumel.Dj.WebServer.Messages
+﻿namespace Eumel.Dj.Core.Messages
 {
     public class ClearMyVotesMessage : MessageRequest
     {

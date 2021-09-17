@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace Eumel.Dj.WebServer.Exceptions
+namespace Eumel.Dj.Core.Exceptions
 {
     public class InvalidTokenException : EumelDjException
     {

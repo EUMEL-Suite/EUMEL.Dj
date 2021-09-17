@@ -1,8 +1,8 @@
 ﻿using System;
 using System.ComponentModel;
-using Eumel.Dj.WebServer.Exceptions;
-using Eumel.Dj.WebServer.Messages;
-using Eumel.Dj.WebServer.Models;
+using Eumel.Dj.Core.Exceptions;
+using Eumel.Dj.Core.Messages;
+using Eumel.Dj.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using TinyMessenger;

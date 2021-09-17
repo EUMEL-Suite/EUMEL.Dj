@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Eumel.Dj.WebServer.Logging
+namespace Eumel.Dj.Core.Logging
 {
     public class EmptyLogger : IEumelLogger
     {

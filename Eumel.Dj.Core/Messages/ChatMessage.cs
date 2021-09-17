@@ -1,6 +1,4 @@
-﻿using Eumel.Dj.WebServer.Messages;
-
-namespace Eumel.Dj.WebServer.Hubs
+﻿namespace Eumel.Dj.Core.Messages
 {
     public class ChatSendingMessage : MessageRequest
     {

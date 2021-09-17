@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using System.Threading.Tasks;
-using Eumel.Dj.WebServer.Exceptions;
 using Microsoft.AspNetCore.SignalR;
 
 namespace Eumel.Dj.WebServer.Hubs

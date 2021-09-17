@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Media;
+using Eumel.Dj.Core.Exceptions;
+using Eumel.Dj.Core.Messages;
+using Eumel.Dj.Core.Models;
 using Eumel.Dj.WebServer.Controllers;
-using Eumel.Dj.WebServer.Exceptions;
-using Eumel.Dj.WebServer.Messages;
-using Eumel.Dj.WebServer.Models;
 using Microsoft.Extensions.Logging;
 using TinyMessenger;
 
@@ -19,7 +19,7 @@ namespace Eumel.Dj.Ui.Services
         private readonly IPlaylistProviderService _playlistService;
         private readonly List<TinyMessageSubscriptionToken> _tinyMessageSubscriptions;
         private VotedSong _currentSong;
-        private PlayerStatus _playerStatus = WebServer.Controllers.PlayerStatus.Stopped;
+        private PlayerStatus _playerStatus = Dj.Core.Messages.PlayerStatus.Stopped;
 
         public DjService(ITinyMessengerHub hub, IPlaylistProviderService playlistService)
         {
@@ -145,16 +145,16 @@ namespace Eumel.Dj.Ui.Services
                 {
                     case PlayerMessage.PlayerControl.Play:
                         ContinueOrNext();
-                        _playerStatus = WebServer.Controllers.PlayerStatus.Playing;
+                        _playerStatus = Dj.Core.Messages.PlayerStatus.Playing;
                         break;
                     case PlayerMessage.PlayerControl.Pause:
                         _mediaPlayer.Pause();
-                        _playerStatus = WebServer.Controllers.PlayerStatus.Paused;
+                        _playerStatus = Dj.Core.Messages.PlayerStatus.Paused;
                         break;
                     case PlayerMessage.PlayerControl.Stop:
                         _mediaPlayer.Stop();
                         _mediaPlayer.Position = TimeSpan.Zero;
-                        _playerStatus = WebServer.Controllers.PlayerStatus.Stopped;
+                        _playerStatus = Dj.Core.Messages.PlayerStatus.Stopped;
                         break;
                     case PlayerMessage.PlayerControl.Next:
                         PlayNextSong();

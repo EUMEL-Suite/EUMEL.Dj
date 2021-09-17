@@ -1,4 +1,4 @@
-﻿using Eumel.Dj.WebServer.Models;
+﻿using Eumel.Dj.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Eumel.Dj.WebServer.Controllers

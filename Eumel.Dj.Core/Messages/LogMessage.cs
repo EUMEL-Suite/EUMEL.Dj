@@ -1,7 +1,7 @@
-﻿using Eumel.Dj.WebServer.Exceptions;
+﻿using Eumel.Dj.Core.Exceptions;
 using Microsoft.Extensions.Logging;
 
-namespace Eumel.Dj.WebServer.Messages
+namespace Eumel.Dj.Core.Messages
 {
     public class LogMessage : MessageRequest
     {

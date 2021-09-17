@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Drawing.Imaging;
 using System.IO;
-using Eumel.Dj.WebServer.Exceptions;
-using Eumel.Dj.WebServer.Messages;
-using Eumel.Dj.WebServer.Models;
+using Eumel.Dj.Core.Exceptions;
+using Eumel.Dj.Core.Messages;
+using Eumel.Dj.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 using TinyMessenger;
 

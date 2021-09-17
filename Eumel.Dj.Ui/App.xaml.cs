@@ -1,6 +1,6 @@
 ﻿using System.Windows;
+using Eumel.Dj.Core.Logging;
 using Eumel.Dj.Ui.Services;
-using Eumel.Dj.WebServer.Logging;
 using TinyMessenger;
 
 namespace Eumel.Dj.Ui

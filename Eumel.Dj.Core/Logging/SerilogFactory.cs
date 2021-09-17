@@ -5,7 +5,7 @@ using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.Syslog;
 
-namespace Eumel.Dj.WebServer.Logging
+namespace Eumel.Dj.Core.Logging
 {
     public class SerilogFactory : ILoggerFactory
     {

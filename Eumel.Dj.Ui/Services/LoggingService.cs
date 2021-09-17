@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Eumel.Dj.Core.Logging;
+using Eumel.Dj.Core.Messages;
 using Eumel.Dj.WebServer.Hubs;
-using Eumel.Dj.WebServer.Logging;
-using Eumel.Dj.WebServer.Messages;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 using TinyMessenger;

@@ -1,9 +1,9 @@
 ﻿using System;
-using Eumel.Dj.WebServer.Exceptions;
+using Eumel.Dj.Core.Exceptions;
 using Serilog;
 using Serilog.Context;
 
-namespace Eumel.Dj.WebServer.Logging
+namespace Eumel.Dj.Core.Logging
 {
     public class SerilogAdapter : IEumelLogger
     {

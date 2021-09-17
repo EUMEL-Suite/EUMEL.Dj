@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using Eumel.Dj.WebServer.Messages;
-using Eumel.Dj.WebServer.Models;
+using Eumel.Dj.Core.Messages;
+using Eumel.Dj.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 using TinyMessenger;
 

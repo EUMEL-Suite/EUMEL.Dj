@@ -1,4 +1,4 @@
-﻿namespace Eumel.Dj.WebServer.Controllers
+﻿namespace Eumel.Dj.Core.Models
 {
     public class ChatEntry
     {
