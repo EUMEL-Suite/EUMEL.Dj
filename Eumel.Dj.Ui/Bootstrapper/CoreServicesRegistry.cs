@@ -22,6 +22,7 @@ namespace Eumel.Dj.Ui.Bootstrapper
             };
             _ = For<IAppSettings>().Use(appSettings);
             _ = For<IWebServiceHost>().Use<WebServiceHost>().Singleton();
+            Forward<IWebServiceHost, IAutoStart>();
         }
     }
 }

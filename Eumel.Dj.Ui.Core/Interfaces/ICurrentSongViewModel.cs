@@ -2,7 +2,7 @@
 
 namespace Eumel.Dj.Ui.Core.Interfaces
 {
-    public interface ILogOutputViewModel : INotifyPropertyChangedEx, IScreen
+    public interface ICurrentSongViewModel : INotifyPropertyChangedEx, IScreen
     {
     }
 }

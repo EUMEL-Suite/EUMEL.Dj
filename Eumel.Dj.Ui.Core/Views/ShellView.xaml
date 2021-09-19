@@ -4,16 +4,23 @@
                        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
                        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
                        xmlns:fluent="urn:fluent-ribbon"
-                       mc:Ignorable="d" 
+                       mc:Ignorable="d" Title="{Binding Title}"
                        d:DesignHeight="450" d:DesignWidth="800">
 
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <fluent:Ribbon Grid.Row="0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.4*"></ColumnDefinition>
+            <ColumnDefinition Width="0.6*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <fluent:Ribbon Grid.ColumnSpan="2">
+
             <!--Backstage-->
             <fluent:Ribbon.Menu>
                 <fluent:Backstage>
@@ -36,33 +43,32 @@
                                LargeIcon="Resource-Path to your large icon for this button" />-->
                 </fluent:RibbonGroupBox>
             </fluent:RibbonTabItem>
+
         </fluent:Ribbon>
 
-        <DockingManager Grid.Row="1">
+        <Grid Grid.Row="1" Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="250" />
+            </Grid.RowDefinitions>
+          
+            <ContentControl Name="ChatWindow" VerticalAlignment="Stretch"/>
+            <ContentControl Grid.Row="1" Name="LogWindow" />
+        </Grid>
 
-            <LayoutRoot>
+        <Grid Grid.Row="1" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+          
+            <ContentControl Name="CurrentSongWindow"/>
+            <ContentControl Grid.Row="1" Name="PlayerWindow"/>
+            <ContentControl Grid.Row="2" Name="PlaylistWindow" VerticalAlignment="Stretch" />
+        </Grid>
 
-                <LayoutPanel Orientation="Vertical">
-                    <LayoutAnchorablePane DockWidth="50">
-                        <LayoutAnchorable x:Name="WinFormsWindow"
-                                          Title="WinForms Window"
-                                          CanClose="False"
-                                          CanHide="False"
-                                          ContentId="WinFormsWindow"
-                                          ToolTip="My WinForms Tool">
-                            <ContentControl Name="LogWindow"></ContentControl>
-                        </LayoutAnchorable>
-                    </LayoutAnchorablePane>
-
-                    <LayoutDocumentPane />
-                    <LayoutDocumentPane>
-                    </LayoutDocumentPane>
-                    <LayoutAnchorablePane Name="ToolsPane" DockHeight="150">
-                    </LayoutAnchorablePane>
-                </LayoutPanel>
-            </LayoutRoot>
-        </DockingManager>
-
+        <ContentControl Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Name="StatusWindow" />
     </Grid>
 
 </fluent:RibbonWindow>

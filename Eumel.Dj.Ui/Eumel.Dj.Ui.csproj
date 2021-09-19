@@ -38,4 +38,8 @@
     <ProjectReference Include="..\Eumel.Dj.WebServer\Eumel.Dj.WebServer.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="AutoStartServices\" />
+  </ItemGroup>
+
 </Project>

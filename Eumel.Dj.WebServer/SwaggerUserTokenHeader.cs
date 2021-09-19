@@ -4,7 +4,7 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Eumel.Dj.WebServer
 {
-    public class UserTokenHeaderSwaggerAttribute : IOperationFilter
+    public class SwaggerUserTokenHeader : IOperationFilter
     {
 
         public void Apply(OpenApiOperation operation, OperationFilterContext context)

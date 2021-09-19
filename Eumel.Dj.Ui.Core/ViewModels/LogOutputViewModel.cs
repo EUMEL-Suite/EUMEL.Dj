@@ -7,7 +7,7 @@ using TinyMessenger;
 
 namespace Eumel.Dj.Ui.Core.ViewModels
 {
-    public class LogOutputViewModel : PropertyChangedBase, ILogOutputViewModel, IDisposable
+    public class LogOutputViewModel : Screen, ILogOutputViewModel, IDisposable
     {
         private readonly ITinyMessengerHub _hub;
         private readonly List<TinyMessageSubscriptionToken> _tinyMessageSubscriptions;

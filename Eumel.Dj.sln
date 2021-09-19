@@ -19,7 +19,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eumel.Dj.Mobile", "Eumel.Dj
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eumel.Dj.Core", "Eumel.Dj.Core\Eumel.Dj.Core.csproj", "{36CEC15B-A6B4-4459-B4C7-AA9AB881676F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eumel.Dj.Ui.Core", "Eumel.Dj.Ui.Core\Eumel.Dj.Ui.Core.csproj", "{6ADC8AC5-1725-434D-BA24-6F97F1A8E624}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eumel.Dj.Ui.Core", "Eumel.Dj.Ui.Core\Eumel.Dj.Ui.Core.csproj", "{6ADC8AC5-1725-434D-BA24-6F97F1A8E624}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{9C2BDFC2-E6C2-484C-911D-1CA068091C9D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

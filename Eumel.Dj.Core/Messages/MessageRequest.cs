@@ -1,4 +1,5 @@
-﻿using TinyMessenger;
+﻿using System.Transactions;
+using TinyMessenger;
 
 namespace Eumel.Dj.Core.Messages
 {
@@ -9,9 +10,23 @@ namespace Eumel.Dj.Core.Messages
             Sender = sender;
         }
 
-        public MessageResponse Response { get; set; }
-
         public object Sender { get; }
+    }
+
+    public class ServiceStatusChangedMessage : MessageRequest
+    {
+        public ServiceStatus Status { get; }
+
+        public ServiceStatusChangedMessage(object sender, ServiceStatus serviceStatus) : base(sender)
+        {
+            Status = serviceStatus;
+        }
+
+        public enum ServiceStatus
+        {
+            Started,
+            Stopped
+        }
     }
 
     public abstract class MessageRequest<TResponse> : ITinyMessage

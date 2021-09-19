@@ -54,8 +54,6 @@ namespace Eumel.Dj.Ui.Services
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-
-            message.Response ??= new MessageResponse();
         }
 
         public void Dispose()

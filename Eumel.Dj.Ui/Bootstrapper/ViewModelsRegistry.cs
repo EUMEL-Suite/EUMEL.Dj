@@ -8,8 +8,13 @@ namespace Eumel.Dj.Ui.Bootstrapper
     {
         public ViewModelsRegistry()
         {
-            _ = For<IShellViewModel>().Use<ShellViewModel>().AlwaysUnique();
-            _ = For<ILogOutputViewModel>().Use<LogOutputViewModel>().AlwaysUnique();
+            _ = For<IShellViewModel>().Use<ShellViewModel>();
+            _ = For<ILogOutputViewModel>().Use<LogOutputViewModel>();
+            _ = For<ICurrentSongViewModel>().Use<CurrentSongViewModel>();
+            _ = For<IChatViewModel>().Use<ChatViewModel>();
+            _ = For<IStatusViewModel>().Use<StatusViewModel>();
+            _ = For<IPlaylistViewModel>().Use<PlaylistViewModel>();
+            _ = For<IPlayerViewModel>().Use<PlayerViewModel>();
         }
     }
 }
