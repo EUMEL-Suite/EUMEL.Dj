@@ -9,6 +9,6 @@ namespace Eumel.Dj.Ui
         public string ItunesLibrary { get; } =
             @$"{Environment.GetEnvironmentVariable("USERPROFILE")}\Music\iTunes\iTunes Music Library.xml";
 
-        public string SelectedPlaylist { get; } = "Loved";
+        public string SelectedPlaylist { get; } = "Eumel";
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace Eumel.Dj.Ui.Bootstrapper
+﻿namespace Eumel.Dj.Ui.AutoStartServices
 {
     public interface IAutoStart
     {

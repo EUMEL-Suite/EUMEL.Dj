@@ -19,14 +19,8 @@ namespace Eumel.Dj.Ui.Core.ViewModels
 
             _tinyMessageSubscriptions = new List<TinyMessageSubscriptionToken>(new[]
             {
-                _hub.Subscribe((Action<ITinyMessage>)LogAll),
                 _hub.Subscribe((Action<LogMessage>)Log)
             });
-        }
-
-        public void LogAll(ITinyMessage message)
-        {
-            LogMessages = LogMessages + message.GetType().Name + Environment.NewLine;
         }
 
         public void Log(LogMessage message)

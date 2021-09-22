@@ -4,13 +4,13 @@ using System.Windows.Media;
 using Eumel.Dj.Core.Exceptions;
 using Eumel.Dj.Core.Messages;
 using Eumel.Dj.Core.Models;
-using Eumel.Dj.WebServer.Controllers;
+using Eumel.Dj.Ui.Services;
 using Microsoft.Extensions.Logging;
 using TinyMessenger;
 
-namespace Eumel.Dj.Ui.Services
+namespace Eumel.Dj.Ui.AutoStartServices
 {
-    public class DjService : IDisposable
+    public class DjService : IAutoStart, IDisposable
     {
         private readonly DjList _djList;
         private readonly ITinyMessengerHub _hub;
@@ -168,6 +168,18 @@ namespace Eumel.Dj.Ui.Services
 
                 message.Response = new MessageResponse<bool>(true);
             });
+        }
+
+        public void Start()
+        {
+            _hub.Publish(new LogMessage(this, $"Starting service {GetType().Name} as auto start service", LogLevel.Information));
+
+        }
+
+        public void Stop()
+        {
+            _mediaPlayer.Stop();
+            _mediaPlayer.Close();
         }
     }
 }

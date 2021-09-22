@@ -1,6 +1,7 @@
-﻿using Accessibility;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Eumel.Dj.Core.Models;
+using Eumel.Dj.Ui.AutoStartServices;
+using Eumel.Dj.Ui.Services;
 using StructureMap;
 using TinyMessenger;
 
@@ -21,8 +22,13 @@ namespace Eumel.Dj.Ui.Bootstrapper
                 MinimumLogLevel = Constants.EumelLogLevel.Information
             };
             _ = For<IAppSettings>().Use(appSettings);
-            _ = For<IWebServiceHost>().Use<WebServiceHost>().Singleton();
-            Forward<IWebServiceHost, IAutoStart>();
+
+            _ = For<IAutoStart>().Use<WebServiceHost>().Singleton();
+            _ = For<IAutoStart>().Use<DjService>().Singleton();
+            _ = For<IAutoStart>().Use<UserService>().Singleton();
+
+            _ = For<IPlaylistProviderService>().Use<ItunesProviderService>().Singleton();
+
         }
     }
 }

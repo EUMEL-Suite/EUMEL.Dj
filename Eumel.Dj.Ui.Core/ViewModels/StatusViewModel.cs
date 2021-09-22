@@ -56,7 +56,6 @@ namespace Eumel.Dj.Ui.Core.ViewModels
             {
                 _hub.Subscribe((Action<ServiceStatusChangedMessage>)ServiceStatusChanged)
             });
-
         }
 
         private void ServiceStatusChanged(ServiceStatusChangedMessage message)

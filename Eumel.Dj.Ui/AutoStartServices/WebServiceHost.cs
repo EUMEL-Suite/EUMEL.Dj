@@ -11,9 +11,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using TinyMessenger;
 
-namespace Eumel.Dj.Ui.Bootstrapper
+namespace Eumel.Dj.Ui.AutoStartServices
 {
-    public class WebServiceHost : IWebServiceHost, IDisposable
+    public class WebServiceHost : IDisposable, IAutoStart
     {
         private readonly ITinyMessengerHub _hub;
         private readonly IAppSettings _settings;
@@ -26,6 +26,8 @@ namespace Eumel.Dj.Ui.Bootstrapper
         }
         public void Start()
         {
+            _hub.Publish(new LogMessage(this, $"Starting service {GetType().Name} as auto start service", LogLevel.Information));
+
             try
             {
                 _host = new WebHostBuilder()

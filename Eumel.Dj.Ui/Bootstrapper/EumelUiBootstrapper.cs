@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Windows;
 using Caliburn.Micro;
+using Eumel.Dj.Ui.AutoStartServices;
 using Eumel.Dj.Ui.Core.ViewModels;
 using StructureMap;
 

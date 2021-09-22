@@ -22,6 +22,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eumel.Dj.Ui.Core", "Eumel.Dj.Ui.Core\Eumel.Dj.Ui.Core.csproj", "{6ADC8AC5-1725-434D-BA24-6F97F1A8E624}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{9C2BDFC2-E6C2-484C-911D-1CA068091C9D}"
+	ProjectSection(SolutionItems) = preProject
+		MARPME.md = MARPME.md
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
