@@ -2,8 +2,8 @@
 {
     public interface ILoggerSettings
     {
-        ISyslogSettings Syslog { get; set; }
-        IFilelogSettings Filelog { get; set; }
+        SyslogSettings Syslog { get; }
+        FilelogSettings Filelog { get; }
         string DeviceName { get; set; }
     }
 }

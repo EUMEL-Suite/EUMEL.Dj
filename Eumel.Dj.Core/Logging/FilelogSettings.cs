@@ -1,6 +1,6 @@
 ﻿namespace Eumel.Dj.Core.Logging
 {
-    public class FilelogSettings : IFilelogSettings
+    public class FilelogSettings
     {
         public bool EnableFileLogging { get; set; }
         public string FilePath { get; set; }

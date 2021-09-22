@@ -21,7 +21,7 @@ namespace Eumel.Dj.Core.Logging
             // TODO RENEW WITH CDS
 
             //Use syslog over tcp for logging if enabled
-            if (settings.Syslog.EnableSyslogLogging)
+            if (settings.Syslog != null && settings.Syslog.EnableSyslogLogging)
             {
 
                 if (settings.Syslog.UseUdp)
@@ -52,7 +52,7 @@ namespace Eumel.Dj.Core.Logging
                 }
             }
 
-            if (settings.Filelog.EnableFileLogging)
+            if (settings.Filelog != null && settings.Filelog.EnableFileLogging)
                 builder = builder.WriteTo.File(
                     settings.Filelog.FilePath,
                     GetLevel(settings.Filelog.MinimumLevel),

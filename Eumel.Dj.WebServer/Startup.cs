@@ -36,7 +36,7 @@ namespace Eumel.Dj.WebServer
             services.AddSingleton<ChatAdapterService>();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = Constants.ApplicationName, Version = $"v{GetMajorMinorVersion()}" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = Constants.ApplicationTitle, Version = $"v{GetMajorMinorVersion()}" });
                 c.UseAllOfToExtendReferenceSchemas();
                 c.OperationFilter<SwaggerUserTokenHeader>();
             });
@@ -49,7 +49,7 @@ namespace Eumel.Dj.WebServer
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint($"{Constants.Swagger.JsonEndpoint}", $"{Constants.ApplicationName} v{GetMajorMinorVersion()}"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint($"{Constants.Swagger.JsonEndpoint}", $"{Constants.ApplicationTitle} v{GetMajorMinorVersion()}"));
             }
 
             app.UseRouting();

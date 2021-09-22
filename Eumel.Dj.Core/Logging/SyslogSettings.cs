@@ -1,6 +1,6 @@
 ﻿namespace Eumel.Dj.Core.Logging
 {
-    public class SyslogSettings : ISyslogSettings
+    public class SyslogSettings
     {
         public bool EnableSyslogLogging { get; set; }
 

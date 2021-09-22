@@ -24,11 +24,6 @@ namespace Eumel.Dj.Core.Logging
             _serilogLogger.Debug(message);
         }
 
-        public void Information(string message, params object[] propertyValues)
-        {
-            _serilogLogger.Information(message, propertyValues);
-        }
-
         public void Information(string message)
         {
             _serilogLogger.Information(message);
@@ -44,26 +39,9 @@ namespace Eumel.Dj.Core.Logging
             _serilogLogger.Error(ex, message);
         }
 
-        [Obsolete("this method is not longer supported, please use Method with (message, exception) ")]
-        public void Error(string message)
-        {
-            _serilogLogger.Error(new EumelDjException(message), message);
-        }
-
-        [Obsolete("this method is not longer supported, please use Method with (message, exception) ")]
-        public void Fatal(string message)
-        {
-            _serilogLogger.Fatal(new EumelDjException(message), message);
-        }
-
         public void Fatal(string message, Exception ex)
         {
             _serilogLogger.Fatal(ex, message);
-        }
-
-        public void Fatal(string message, Exception ex, params object[] propertyValues)
-        {
-            _serilogLogger.Fatal(ex, message, propertyValues);
         }
 
         public IDisposable PushProperty(string name, object value)

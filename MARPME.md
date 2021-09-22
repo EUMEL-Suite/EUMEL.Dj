@@ -51,7 +51,8 @@ paginate: true
 
 * WPF-based desktop app
 * Xamarin-based client
-* ASP.NET core-based REST backend.
+* ASP.NET core-based REST backend
+* Syslog logging server.
 
 ---
 ## Secondary Technologies
@@ -66,7 +67,6 @@ paginate: true
 ---
 # Implementation details.
 
-<!-- IM AM HERE WITH MY DOCUMENTATION-->
 ---
 ## TinyMessageBus Overview
 
@@ -100,6 +100,32 @@ paginate: true
 * Strong references can causes memory leaks (caching)
 * TinyMessageBus uses WeakReference internally.
 
+<!-- THOMAS, you are here with your documentation -->
+---
+## Syslog Overview
+
+* TCP or UDP service to aggregate error message
+* Network-wide single point of logging
+...
+
+
+---
+## Syslog Implementation
+
+* Desktop app uses serilog for logging
+* Mobile app uses serilog client
+
+---
+## Demo
+
+----
+## Jaunt: Nuget commandline
+
+* Install packages from packages.config
+* Download packages into dedicated folder
+* Get tools without need of .NET or Visual Studio
+* `nuget install syslog-server`
+* _Issue_: Dependencies
 
 ---
 # Thank you for listening
@@ -107,3 +133,10 @@ paginate: true
 * [Thomas Ley](https://www.linkedin.com/in/thomas-ley/)
 * [codequalitycoach@outlook.de](mailto:codequalitycoach@outlook.de)
 * [@CleanCodeCoach](https://twitter.com/CleanCodeCoach).
+
+
+# Missing Topics
+
+* Additional swagger header for token
+* TinyMessageBus to SignalR adapter
+* Mesage bixo 2 Log adapter

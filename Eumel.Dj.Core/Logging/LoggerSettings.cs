@@ -2,8 +2,8 @@
 {
     public class LoggerSettings : ILoggerSettings
     {
-        public ISyslogSettings Syslog { get; set; }
-        public IFilelogSettings Filelog { get; set; }
+        public SyslogSettings Syslog { get; set; }
+        public FilelogSettings Filelog { get; set; }
         public string DeviceName { get; set; }
     }
 }

@@ -2,26 +2,23 @@
 using System.Collections.Generic;
 using Eumel.Dj.Core.Logging;
 using Eumel.Dj.Core.Messages;
+using Eumel.Dj.Ui.AutoStartServices;
 using Microsoft.Extensions.Logging;
 using TinyMessenger;
 
 namespace Eumel.Dj.Ui.Services
 {
-    public class LoggingService : IDisposable
+    public class LoggingService : IAutoStart
     {
         private readonly ITinyMessengerHub _hub;
         private readonly IEumelLogger _logger;
-        private readonly List<TinyMessageSubscriptionToken> _tinyMessageSubscriptions;
+        private readonly List<TinyMessageSubscriptionToken> _tinyMessageSubscriptions = new();
 
         public LoggingService(ITinyMessengerHub hub, IEumelLogger logger)
         {
             _hub = hub ?? throw new ArgumentNullException(nameof(hub));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
-            _tinyMessageSubscriptions = new List<TinyMessageSubscriptionToken>(new[]
-            {
-                hub.Subscribe((Action<LogMessage>)Log),
-            });
         }
 
         private void Log(LogMessage message)
@@ -53,7 +50,15 @@ namespace Eumel.Dj.Ui.Services
             }
         }
 
-        public void Dispose()
+        public void Start()
+        {
+            _tinyMessageSubscriptions.AddRange(new List<TinyMessageSubscriptionToken>(new[]
+            {
+                _hub.Subscribe((Action<LogMessage>)Log),
+            }));
+        }
+
+        public void Stop()
         {
             _tinyMessageSubscriptions.ForEach(x => _hub.Unsubscribe(x));
         }

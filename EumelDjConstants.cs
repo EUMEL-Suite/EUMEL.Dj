@@ -12,10 +12,13 @@ namespace Eumel.Dj
         }
 
         public const string SystemChatName = "Eumel";
-        public const string ApplicationName = "EUMEL Dj";
+        public const string ApplicationTitle = "EUMEL Dj";
+        public const string ApplicationName = "Eumel.Dj";
         public const string UserToken = "usertoken";
         public const string InvalidTokenException = "InvalidTokenException";
         public const string UnauthorizedEumelException = "UnauthorizedEumelException";
+
+        public const string EumelSuiteAppData = @"%localappdata%\Eumel Suite";
 
         // naming conventions for Hub messages:
         //

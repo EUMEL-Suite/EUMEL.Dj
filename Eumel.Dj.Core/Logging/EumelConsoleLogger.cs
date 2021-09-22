@@ -14,24 +14,14 @@ namespace Eumel.Dj.Core.Logging
             Console.WriteLine($"Debug: {message}");
         }
 
-        public void Information(string message, params object[] propertyValues)
-        {
-            // TODO a method should have an implementation
-        }
-
         public void Information(string message)
         {
-            // TODO a method should have an implementation
+            Console.WriteLine($"Information: {message}");
         }
 
         public void Warning(string message)
         {
-            // TODO a method should have an implementation
-        }
-
-        public void Error(string message)
-        {
-            Console.WriteLine($"Error: {message}");
+            Console.WriteLine($"Warning: {message}");
         }
 
         public void Error(string message, Exception ex)
@@ -39,19 +29,9 @@ namespace Eumel.Dj.Core.Logging
             Console.WriteLine($"Error: {message} [{ex.Message}]");
         }
 
-        public void Fatal(string message)
-        {
-            // TODO a method should have an implementation
-        }
-
         public void Fatal(string message, Exception ex)
         {
-            // TODO a method should have an implementation
-        }
-
-        public void Fatal(string message, Exception ex, params object[] propertyValues)
-        {
-            // TODO a method should have an implementation
+            Console.WriteLine($"Fatal: {message} [{ex.Message}]");
         }
 
         public IDisposable PushProperty(string name, object value)
