@@ -149,6 +149,8 @@ paginate: true
 * WPF ui design :-)
 * docking support for WPF ui
 * Logging in a proper way
+* Test iPhone
+* Fix issues UWP (e.g. theming)
 * Push to 
 	* Play Store
 	* App Store

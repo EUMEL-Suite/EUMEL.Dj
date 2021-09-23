@@ -13,10 +13,10 @@ namespace Eumel.Dj.Ui.Services
     {
         private readonly ITinyMessengerHub _hub;
         private readonly ITunesLibrary _itunes;
-        private readonly Settings _settings;
+        private readonly IAppSettings _settings;
         private readonly List<TinyMessageSubscriptionToken> _tinyMessageSubscriptions;
 
-        public ItunesProviderService(Settings settings, ITinyMessengerHub hub)
+        public ItunesProviderService(IAppSettings settings, ITinyMessengerHub hub)
         {
             _settings = settings;
             _hub = hub;
