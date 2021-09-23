@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net.Http;
 using System.Threading.Tasks;
 using Eumel.Dj.Core.Messages;
 using Eumel.Dj.Core.Models;

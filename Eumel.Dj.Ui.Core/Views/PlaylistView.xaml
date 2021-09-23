@@ -4,9 +4,20 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Eumel.Dj.Ui.Core.Views"
-             mc:Ignorable="d" 
+             xmlns:viewModels="clr-namespace:Eumel.Dj.Ui.Core.ViewModels"
+             mc:Ignorable="d" d:DataContext="{d:DesignInstance Type=viewModels:PlaylistViewModel}"
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-           <Label Content="Here comes the playlist"></Label> 
-    </Grid>
+    <ListView ItemsSource="{Binding Path=Songs}">
+        <ListView.View>
+            <GridView>
+                <GridViewColumn Header="Album" Width="Auto" 
+                                DisplayMemberBinding="{Binding Album}" >
+                </GridViewColumn>
+                <GridViewColumn DisplayMemberBinding="{Binding AlbumArtist}" 
+                                Header="Album Artist" Width="Auto"/>
+                <GridViewColumn DisplayMemberBinding="{Binding Voters}" 
+                                Header="Voters" Width="Auto"/>
+            </GridView>
+        </ListView.View>
+    </ListView>
 </UserControl>

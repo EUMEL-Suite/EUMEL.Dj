@@ -1,5 +1,4 @@
-﻿using Eumel.Dj.Mobile.Services;
-using Eumel.Dj.Mobile.ViewModels;
+﻿using Eumel.Dj.Mobile.ViewModels;
 using Xamarin.Forms;
 
 namespace Eumel.Dj.Mobile.Views

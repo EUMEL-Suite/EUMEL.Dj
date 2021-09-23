@@ -3,11 +3,11 @@
 namespace Eumel.Dj.Ui.Core.Views
 {
     /// <summary>
-    /// Interaction logic for PlaylistView.xaml
+    /// Interaction logic for PlayerView.xaml
     /// </summary>
-    public partial class PlaylistView : UserControl
+    public partial class PlayerView : UserControl
     {
-        public PlaylistView()
+        public PlayerView()
         {
             InitializeComponent();
         }

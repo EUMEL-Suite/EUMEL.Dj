@@ -1,5 +1,4 @@
-﻿using System.Transactions;
-using TinyMessenger;
+﻿using TinyMessenger;
 
 namespace Eumel.Dj.Core.Messages
 {

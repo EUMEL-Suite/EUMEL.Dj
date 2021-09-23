@@ -38,6 +38,8 @@ namespace Eumel.Dj.Ui.AutoStartServices
 
             _mediaPlayer = new MediaPlayer();
             _mediaPlayer.MediaEnded += (_, _) => PlayNextSong();
+
+            _hub.Publish(new PlaylistChangedMessage(this, _djList.GetPlaylist()));
         }
 
         public void Dispose()

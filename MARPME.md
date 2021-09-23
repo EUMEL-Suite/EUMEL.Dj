@@ -1,15 +1,15 @@
----
+7---
 theme: gaia
 class: invert
 paginate: true
 ---
 # EUMEL DJ Party Suite
 
-### Open Source on [github](https://github.com/EUMEL-Suite)
+### Open source on [github](https://github.com/EUMEL-Suite)
 
-### Technology proof of concept
+### Goal is learning new things
 
-### Solves my party music problem.
+### And it solves my party music problem.
 
 ---
 # Overview
@@ -22,7 +22,7 @@ paginate: true
 ---
 ## User's Interface
 
-* Desktop app as server
+* Desktop app as music player
 * Mobile app for guests (iPhone, Android, UWP)
 * Qrcode-based login.
 
@@ -135,8 +135,25 @@ paginate: true
 * [@CleanCodeCoach](https://twitter.com/CleanCodeCoach).
 
 
-# Missing Topics
+# Missing topics
 
 * Additional swagger header for token
 * TinyMessageBus to SignalR adapter
-* Mesage bixo 2 Log adapter
+* Message Hub to Log Adapter
+* Create a sink on serilog could be another option
+
+
+
+# Missing features
+
+* WPF ui design :-)
+* docking support for WPF ui
+* Logging in a proper way
+* Push to 
+	* Play Store
+	* App Store
+	* Microsoft Store
+* Logging settings from serilog library settings file
+* DjList should be smarter
+* Configuration settings e.g. backend
+* youtube playlist/music requests

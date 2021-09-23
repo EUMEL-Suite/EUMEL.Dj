@@ -4,7 +4,6 @@ using Eumel.Dj.Core.Exceptions;
 using Eumel.Dj.Core.Messages;
 using Eumel.Dj.Core.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using TinyMessenger;
 
 namespace Eumel.Dj.WebServer.Controllers

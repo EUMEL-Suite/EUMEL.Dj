@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Eumel.Dj.Mobile.Data;
 using Eumel.Dj.Mobile.Services;
 using Eumel.Dj.Mobile.Views;

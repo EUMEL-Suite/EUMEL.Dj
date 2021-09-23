@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Eumel.Dj.Mobile.Services;
 using Microsoft.AspNetCore.SignalR.Client;
 using Xamarin.Forms;
 
