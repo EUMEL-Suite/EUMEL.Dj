@@ -27,13 +27,6 @@ namespace Eumel.Dj.Ui.Bootstrapper
             _ = For<IEumelLogger>().Use((c) => c.GetInstance<ILoggerFactory>().Build(c.GetInstance<ILoggerSettings>()));
 
 
-            // register all these fancy auto-start services
-            _ = For<IAutoStart>().Use<WebServiceHost>().Singleton();
-            _ = For<IAutoStart>().Use<DjService>().Singleton();
-            _ = For<IAutoStart>().Use<UserService>().Singleton();
-            _ = For<IAutoStart>().Use<LoggingService>().Singleton();
-            _ = For<IAutoStart>().Use<ChatCacheService>().Singleton();
-
             // now we have the plugins and extensions which are registered
             // todo: use a class which takes config and implementations
             _ = For<IPlaylistProviderService>().Use<ItunesProviderService>().Singleton();

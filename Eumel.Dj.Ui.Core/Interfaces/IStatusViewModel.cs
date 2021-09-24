@@ -2,7 +2,7 @@
 
 namespace Eumel.Dj.Ui.Core.Interfaces
 {
-    public interface IStatusViewModel : INotifyPropertyChangedEx, IScreen
+    public interface IStatusViewModel : IScreen
     {
     }
 }
