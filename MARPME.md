@@ -159,3 +159,9 @@ paginate: true
 * DjList should be smarter
 * Configuration settings e.g. backend
 * youtube playlist/music requests
+
+* implementation resolver `ImplementationResolver<T>`
+
+* C# features
+	* Discrds (aka. underscore)
+	* `FileSystemMp3Searcher` has a record `private record SongWrapper(Song Song, string Id, Uri Location)`
