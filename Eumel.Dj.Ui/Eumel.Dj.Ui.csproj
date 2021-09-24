@@ -28,13 +28,13 @@
   <ItemGroup>
     <PackageReference Include="Caliburn.Micro" Version="4.0.173" />
     <PackageReference Include="Caliburn.Micro.Core" Version="4.0.173" />
-    <PackageReference Include="iTunesLibraryParser" Version="1.1.27" />
     <PackageReference Include="StructureMap" Version="4.7.1" />
     <PackageReference Include="TinyMessengerStandard" Version="1.0.2" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Eumel.Dj.Ui.Core\Eumel.Dj.Ui.Core.csproj" />
+    <ProjectReference Include="..\Eumel.Dj.Ui.Extensions\Eumel.Dj.Ui.Extensions.csproj" />
     <ProjectReference Include="..\Eumel.Dj.WebServer\Eumel.Dj.WebServer.csproj" />
   </ItemGroup>
 

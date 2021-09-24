@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Media;
 using Eumel.Dj.Core.Exceptions;
 using Eumel.Dj.Core.Messages;
@@ -33,7 +34,9 @@ namespace Eumel.Dj.Ui.AutoStartServices
                 hub.Subscribe((Action<ClearMyVotesMessage>)ClearMyVotes),
                 hub.Subscribe((Action<GetPlaylistMessage>)GetPlaylist),
                 hub.Subscribe((Action<GetMyVotesMessage>)GetMyVotes),
-                hub.Subscribe((Action<PlayerStatusMessage>)PlayerStatus)
+                hub.Subscribe((Action<PlayerStatusMessage>)PlayerStatus),
+                hub.Subscribe((Action<GetSongsMessage>)GetSongs),
+                hub.Subscribe((Action<GetSongsSourceMessage>)GetSongsSource)
             });
 
             _mediaPlayer = new MediaPlayer();
@@ -58,6 +61,18 @@ namespace Eumel.Dj.Ui.AutoStartServices
         private void PlayerStatus(PlayerStatusMessage message)
         {
             message.Response = new MessageResponse<PlayerStatus>(_playerStatus);
+        }
+
+        private void GetSongsSource(GetSongsSourceMessage message)
+        {
+            message.Response=new MessageResponse<SongsSource>(_playlistService.GetSourceInfo());
+        }
+
+        private void GetSongs(GetSongsMessage message)
+        {
+            var songs = _playlistService.GetSongs(message.Skip, message.Take);
+
+            message.Response = new MessageResponse<IEnumerable<Song>>(songs.ToArray());
         }
 
         private void ContinueOrNext()

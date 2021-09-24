@@ -2,7 +2,7 @@
 using Caliburn.Micro;
 using Eumel.Dj.Core.Logging;
 using Eumel.Dj.Core.Models;
-using Eumel.Dj.Ui.AutoStartServices;
+using Eumel.Dj.Ui.Extensions.Apple;
 using Eumel.Dj.Ui.Services;
 using StructureMap;
 using TinyMessenger;
