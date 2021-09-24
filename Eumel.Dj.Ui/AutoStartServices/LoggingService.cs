@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using Eumel.Dj.Core.Logging;
 using Eumel.Dj.Core.Messages;
-using Eumel.Dj.Ui.AutoStartServices;
 using Microsoft.Extensions.Logging;
 using TinyMessenger;
 
-namespace Eumel.Dj.Ui.Services
+namespace Eumel.Dj.Ui.AutoStartServices
 {
     public class LoggingService : IAutoStart
     {

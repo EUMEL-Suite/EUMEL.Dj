@@ -1,7 +1,6 @@
-﻿using Eumel.Dj.Ui.AutoStartServices;
-using StructureMap;
+﻿using StructureMap;
 
-namespace Eumel.Dj.Ui.Bootstrapper
+namespace Eumel.Dj.Ui.AutoStartServices
 {
     public class AutoStartRegistry : Registry
     {

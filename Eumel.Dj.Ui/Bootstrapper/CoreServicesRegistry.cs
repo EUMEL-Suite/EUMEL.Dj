@@ -3,6 +3,7 @@ using Caliburn.Micro;
 using Eumel.Dj.Core.Logging;
 using Eumel.Dj.Core.Models;
 using Eumel.Dj.Ui.Extensions.Apple;
+using Eumel.Dj.Ui.Extensions.FileSystem;
 using Eumel.Dj.Ui.Services;
 using StructureMap;
 using TinyMessenger;
@@ -29,7 +30,8 @@ namespace Eumel.Dj.Ui.Bootstrapper
 
             // now we have the plugins and extensions which are registered
             // todo: use a class which takes config and implementations
-            _ = For<IPlaylistProviderService>().Use<ItunesProviderService>().Singleton();
+            //_ = For<IPlaylistProviderService>().Use<ItunesProviderService>().Singleton();
+            _ = For<IPlaylistProviderService>().Use<FileSystemMp3Searcher>().Singleton();
         }
     }
 }

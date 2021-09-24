@@ -17,6 +17,7 @@ namespace Eumel.Dj
         public const string UserToken = "usertoken";
         public const string InvalidTokenException = "InvalidTokenException";
         public const string UnauthorizedEumelException = "UnauthorizedEumelException";
+        public const int RequiredSearchLimit = 500; // if songs exceed this limit, a search on the client is required
 
         public const string EumelSuiteAppData = @"%localappdata%\Eumel Suite";
 

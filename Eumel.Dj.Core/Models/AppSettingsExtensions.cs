@@ -9,7 +9,7 @@ namespace Eumel.Dj.Core.Models
 {
     public static class AppSettingsExtensions
     {
-        public static string GetLocalIpAddress()
+        private static string GetLocalIpAddress()
         {
             var host = Dns.GetHostEntry(Dns.GetHostName());
             foreach (var ip in host.AddressList)
@@ -46,6 +46,7 @@ namespace Eumel.Dj.Core.Models
             {
                 SelectedPlaylist = "Eumel",
                 ItunesLibrary = @$"{Environment.GetEnvironmentVariable("USERPROFILE")}\Music\iTunes\iTunes Music Library.xml",
+                SongsPath = @$"{Environment.GetEnvironmentVariable("USERPROFILE")}\Music\iTunes\iTunes Media\Music",
                 RestEndpoint = $"https://{GetLocalIpAddress()}:443",
                 SyslogServer = GetLocalIpAddress(),
                 MinimumLogLevel = Constants.EumelLogLevel.Information,

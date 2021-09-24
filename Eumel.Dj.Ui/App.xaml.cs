@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using Eumel.Dj.Core.Logging;
+using Eumel.Dj.Ui.AutoStartServices;
 using Eumel.Dj.Ui.Services;
 using TinyMessenger;
 

@@ -1,9 +1,10 @@
-﻿using System.Collections.Concurrent;
+﻿using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 
 namespace Eumel.Dj.Ui.Services
 {
-    public class FixedSizedQueue<T>
+    public class FixedSizedQueue<T> : IReadOnlyCollection<T>
     {
         private readonly object _lockObject = new();
         private readonly ConcurrentQueue<T> _q = new();
@@ -26,9 +27,16 @@ namespace Eumel.Dj.Ui.Services
             }
         }
 
-        public IEnumerable<T> ToArray()
+        public IEnumerator<T> GetEnumerator()
         {
-            return _q.ToArray();
+            return _q.GetEnumerator();
         }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        public int Count => _q.Count;
     }
 }

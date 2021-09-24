@@ -10,5 +10,6 @@ namespace Eumel.Dj.Core.Models
         string ItunesLibrary { get; }
         string SelectedPlaylist { get; }
         LoggerSettings LoggerSettings { get; set; }
+        string SongsPath { get; set; }
     }
 }

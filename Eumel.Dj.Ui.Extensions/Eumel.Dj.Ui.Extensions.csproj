@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="iTunesLibraryParser" Version="1.1.27" />
+    <PackageReference Include="TagLibSharp" Version="2.2.0" />
   </ItemGroup>
 
   <ItemGroup>
