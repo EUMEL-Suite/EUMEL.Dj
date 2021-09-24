@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="iTunesLibraryParser" Version="1.1.27" />
+    <PackageReference Include="StructureMap" Version="4.7.1" />
     <PackageReference Include="TagLibSharp" Version="2.2.0" />
   </ItemGroup>
 

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using Eumel.Dj.Core.Models;
 
-namespace Eumel.Dj.Ui.Services
+namespace Eumel.Dj.Core
 {
-    public interface IPlaylistProviderService
+    public interface ISongsProviderService
     {
         IEnumerable<Song> GetSongs(int skip = 0, int take = int.MaxValue);
         Uri GetLocationOfSongById(string songId);

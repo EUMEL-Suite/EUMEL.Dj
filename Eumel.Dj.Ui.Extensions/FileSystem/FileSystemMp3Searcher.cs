@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using Eumel.Dj.Core;
 using Eumel.Dj.Core.Messages;
 using Eumel.Dj.Core.Models;
-using Eumel.Dj.Ui.Services;
 using Microsoft.Extensions.Logging;
 using TinyMessenger;
 
 namespace Eumel.Dj.Ui.Extensions.FileSystem
 {
-    public class FileSystemMp3Searcher : IPlaylistProviderService
+    internal class FileSystemMp3Searcher : ISongsProviderService
     {
         private record SongWrapper(Song Song, string Id, Uri Location);
 

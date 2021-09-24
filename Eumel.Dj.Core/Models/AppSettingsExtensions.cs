@@ -55,6 +55,11 @@ namespace Eumel.Dj.Core.Models
                     DeviceName = Environment.MachineName,
                     Filelog = null,
                     Syslog = new SyslogSettings() { EnableSyslogLogging = true, UseUdp = true, SysLogServerIp = GetLocalIpAddress() }
+                },
+                ImplementationSettings = new ImplementationSettings()
+                {
+                    ISongsProviderService = "FileSystemMp3Searcher",
+                    IDjPlaylistManager = "SimplePlaylistManager"
                 }
             };
     }

@@ -8,6 +8,7 @@ using Eumel.Dj.Ui.AutoStartServices;
 using Eumel.Dj.Ui.Core;
 using Eumel.Dj.Ui.Core.Interfaces;
 using Eumel.Dj.Ui.Core.ViewModels;
+using Eumel.Dj.Ui.Extensions;
 using StructureMap;
 
 namespace Eumel.Dj.Ui.Bootstrapper
@@ -26,7 +27,7 @@ namespace Eumel.Dj.Ui.Bootstrapper
         {
             DisplayRootViewFor<IShellViewModel>();
 
-            // here we start all services which implement the autostart interface
+            // here we start all services which implement the auto-start interface
             _autoStartupServices = GetAllInstances(typeof(IAutoStart)).Cast<IAutoStart>();
             _autoStartupServices.ToList().ForEach(x => x.Start());
         }
@@ -44,6 +45,7 @@ namespace Eumel.Dj.Ui.Bootstrapper
                 _.AddRegistry<CoreServicesRegistry>();
                 _.AddRegistry<AutoStartRegistry>();
                 _.AddRegistry<ViewModelsRegistry>();
+                _.AddRegistry<ExtensionsServicesRegistry>();
             });
         }
 

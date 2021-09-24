@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Eumel.Dj.Core;
 using Eumel.Dj.Core.Exceptions;
 using Eumel.Dj.Core.Models;
-using Eumel.Dj.Ui.Services;
 using ITunesLibraryParser;
 
 namespace Eumel.Dj.Ui.Extensions.Apple
 {
-    public class ItunesProviderService : IPlaylistProviderService
+    internal class ItunesProviderService : ISongsProviderService
     {
         private readonly ITunesLibrary _itunes;
         private readonly IAppSettings _settings;

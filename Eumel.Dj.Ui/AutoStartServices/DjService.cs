@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Media;
+using Eumel.Dj.Core;
 using Eumel.Dj.Core.Exceptions;
 using Eumel.Dj.Core.Messages;
 using Eumel.Dj.Core.Models;
+using Eumel.Dj.Ui.Bootstrapper;
 using Eumel.Dj.Ui.Services;
 using Microsoft.Extensions.Logging;
 using TinyMessenger;
@@ -13,20 +15,27 @@ namespace Eumel.Dj.Ui.AutoStartServices
 {
     public class DjService : IAutoStart, IDisposable
     {
-        private readonly DjList _djList;
         private readonly ITinyMessengerHub _hub;
+        private readonly IDjPlaylistManager _djList;
         private readonly MediaPlayer _mediaPlayer;
         private readonly FixedSizedQueue<VotedSong> _pastSongs = new(3);
-        private readonly IPlaylistProviderService _playlistService;
+        private readonly ISongsProviderService _songsService;
         private readonly List<TinyMessageSubscriptionToken> _tinyMessageSubscriptions;
         private VotedSong _currentSong;
         private PlayerStatus _playerStatus = Dj.Core.Messages.PlayerStatus.Stopped;
 
-        public DjService(ITinyMessengerHub hub, IPlaylistProviderService playlistService)
+        public DjService(
+            ITinyMessengerHub hub, 
+            IImplementationResolver<ISongsProviderService> playlistService, 
+            IImplementationResolver<IDjPlaylistManager> djList)
         {
-            _hub = hub;
-            _playlistService = playlistService;
-            _djList = new DjList(playlistService, hub);
+            if (playlistService == null) throw new ArgumentNullException(nameof(playlistService));
+            if (djList == null) throw new ArgumentNullException(nameof(djList));
+            _hub = hub ?? throw new ArgumentNullException(nameof(hub));
+
+            _djList = djList.Resolve();
+            _songsService = playlistService.Resolve();
+
             _tinyMessageSubscriptions = new List<TinyMessageSubscriptionToken>(new[]
             {
                 hub.Subscribe((Action<PlayerMessage>)PlayerRequest),
@@ -65,12 +74,12 @@ namespace Eumel.Dj.Ui.AutoStartServices
 
         private void GetSongsSource(GetSongsSourceMessage message)
         {
-            message.Response=new MessageResponse<SongsSource>(_playlistService.GetSourceInfo());
+            message.Response = new MessageResponse<SongsSource>(_songsService.GetSourceInfo());
         }
 
         private void GetSongs(GetSongsMessage message)
         {
-            var songs = _playlistService.GetSongs(message.Skip, message.Take);
+            var songs = _songsService.GetSongs(message.Skip, message.Take);
 
             message.Response = new MessageResponse<IEnumerable<Song>>(songs.ToArray());
         }
@@ -80,7 +89,7 @@ namespace Eumel.Dj.Ui.AutoStartServices
             if (_mediaPlayer.Source == null)
             {
                 _currentSong = _djList.GetTakeSong();
-                var location = _playlistService.GetLocationOfSongById(_currentSong.Id);
+                var location = _songsService.GetLocationOfSongById(_currentSong.Id);
                 _mediaPlayer.Open(location);
 
                 var playlist = _djList.GetPlaylist();
@@ -104,7 +113,7 @@ namespace Eumel.Dj.Ui.AutoStartServices
                 try
                 {
                     _currentSong = _djList.GetTakeSong() ?? throw new Exception("cannot take song from list");
-                    songLocation = _playlistService.GetLocationOfSongById(_currentSong.Id);
+                    songLocation = _songsService.GetLocationOfSongById(_currentSong.Id);
                 }
                 catch (SongNotFoundDjException ex)
                 {

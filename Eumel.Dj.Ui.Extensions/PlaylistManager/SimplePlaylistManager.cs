@@ -1,25 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Eumel.Dj.Core;
 using Eumel.Dj.Core.Models;
 using TinyMessenger;
 
-namespace Eumel.Dj.Ui.Services
+namespace Eumel.Dj.Ui.Extensions.PlaylistManager
 {
-    public class DjList
+    internal class SimplePlaylistManager : IDjPlaylistManager
     {
         private readonly IEnumerable<Song> _availableSongs;
         private readonly ITinyMessengerHub _hub;
-        private readonly IPlaylistProviderService _playlistService;
+        private readonly ISongsProviderService _songsService;
         private readonly Random _random;
         private readonly IList<VotedSong> _unvotedNext;
         private readonly IList<VotedSong> _votedSongs;
 
-        public DjList(IPlaylistProviderService playlistService, ITinyMessengerHub hub)
+        public SimplePlaylistManager(IImplementationResolver<ISongsProviderService> playlistService, ITinyMessengerHub hub)
         {
-            _playlistService = playlistService;
-            _hub = hub;
-            _availableSongs = playlistService.GetSongs();
+            if (playlistService == null) throw new ArgumentNullException(nameof(playlistService));
+            _hub = hub ?? throw new ArgumentNullException(nameof(hub));
+
+            _songsService = playlistService.Resolve();
+            _availableSongs = _songsService.GetSongs();
             _votedSongs = new List<VotedSong>();
             _random = new Random();
             _unvotedNext = Enumerable.Range(1, 10).Select(x =>
