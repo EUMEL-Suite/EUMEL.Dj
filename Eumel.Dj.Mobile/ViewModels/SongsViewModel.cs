@@ -11,43 +11,40 @@ namespace Eumel.Dj.Mobile.ViewModels
     public class SongsViewModel : BaseViewModel
     {
         private SongItem _selectedSongItem;
+        private string _searchText;
 
         public SongsViewModel()
         {
-            Title = "Browse";
+            Title = "Browse/Find songs";
             Items = new ObservableCollection<SongItem>();
             LoadItemsCommand = new Command(async () => { await ExecuteLoadItemsCommand(); });
 
-            ItemTapped = new Command<SongItem>(OnItemSelected);
             VoteUpDownCommand = new Command<SongItem>(OnItemUpDownVote);
-        }
-
-        public ObservableCollection<SongItem> Items { get; }
-        public Command LoadItemsCommand { get; }
-        public Command<SongItem> ItemTapped { get; }
-
-        public Command<SongItem> VoteUpDownCommand { get; }
-
-        public SongItem SelectedSongItem
-        {
-            get => _selectedSongItem;
-            set
+            PerformSearchCommand = new Command<string>(async x =>
             {
-                SetProperty(ref _selectedSongItem, value);
-                OnItemSelected(value);
-            }
+                SyslogService.Information($"Executing a search for '{x}'");
+                OnPropertyChanged(nameof(Items));
+                await DoExecuteSearch(x);
+                return;
+            });
         }
 
-        private async Task ExecuteLoadItemsCommand()
+        private async Task DoExecuteSearch(string searchText)
         {
             IsBusy = true;
 
             try
             {
-                Items.Clear();
-                var source = await SongService.GetSongsAsync(true);
-                source.Songs.Where(x => x?.Id != null).ToList().ForEach(Items.Add);
-                Title = $"Browse Playlist '{source.Name}' [{source.NumberOfSongs} Songs]";
+                var source = string.IsNullOrWhiteSpace(searchText)
+                    ? await SongService.GetSongsAsync()
+                    : await SongService.SearchSongsAsync(searchText);
+
+                lock (Items) // the refresh thing is executing it twice and it runs into a race condition
+                // probably we can store the "result is for search xy" in a field and abort if the result is already shown for a specific search
+                {
+                    Items.Clear();
+                    source.Songs.Where(x => x?.Id != null).ToList().ForEach(Items.Add);
+                }
             }
             catch (Exception ex)
             {
@@ -57,6 +54,32 @@ namespace Eumel.Dj.Mobile.ViewModels
             {
                 IsBusy = false;
             }
+        }
+
+        public ObservableCollection<SongItem> Items { get; }
+        public Command LoadItemsCommand { get; }
+        public Command<SongItem> VoteUpDownCommand { get; }
+        public Command<string> PerformSearchCommand { get; }
+
+        public string SearchText
+        {
+            get => _searchText; 
+            set => SetProperty(ref _searchText, value, onChanged: async() =>
+            {
+                if (string.IsNullOrWhiteSpace(_searchText)) await DoExecuteSearch(_searchText);
+            });
+        }
+
+        public SongItem SelectedSongItem
+        {
+            get => _selectedSongItem;
+            set => SetProperty(ref _selectedSongItem, value);
+        }
+
+        private async Task ExecuteLoadItemsCommand()
+        {
+            SyslogService.Information($"Executing a song list ('{SearchText}')");
+            await DoExecuteSearch(SearchText);
         }
 
         public void OnAppearing()
@@ -72,14 +95,6 @@ namespace Eumel.Dj.Mobile.ViewModels
                 var hasMyVote = await SongService.Vote(song.Id);
                 song.HasMyVote = hasMyVote;
             }, "Vote song");
-        }
-
-        private async void OnItemSelected(SongItem songItem)
-        {
-            if (songItem == null)
-                return;
-
-            // we don't show a detail page any longer
         }
     }
 }

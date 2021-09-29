@@ -10,6 +10,8 @@ namespace Eumel.Dj.Mobile.ViewModels
         private string _token;
         private bool _userIsAdmin;
         private string _username;
+        private string _playlistSongCount;
+        private string _playlistName;
 
         public SettingsViewModel()
         {
@@ -59,6 +61,18 @@ namespace Eumel.Dj.Mobile.ViewModels
             set => SetProperty(ref _token, value);
         }
 
+        public string PlaylistName
+        {
+            get => _playlistName;
+            set => SetProperty(ref _playlistName, value);
+        }
+
+        public string PlaylistSongCount
+        {
+            get => _playlistSongCount;
+            set => SetProperty(ref _playlistSongCount, value);
+        }
+
         public bool UserIsAdmin
         {
             get => _userIsAdmin;
@@ -76,6 +90,10 @@ namespace Eumel.Dj.Mobile.ViewModels
             IsBusy = true;
 
             UserIsAdmin = await Settings.CheckUserIsAdmin();
+
+            var source = await SongService.GetSongsAsync(true);
+            PlaylistName = source.Name;
+            PlaylistSongCount = source.NumberOfSongs.ToString();
         }
     }
 }

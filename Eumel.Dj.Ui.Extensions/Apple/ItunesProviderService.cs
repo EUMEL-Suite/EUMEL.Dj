@@ -79,6 +79,15 @@ namespace Eumel.Dj.Ui.Extensions.Apple
             return new SongsSource(playlist.Name, playlist.Tracks.Count());
         }
 
+        public IEnumerable<Song> SearchSongs(string query, int limit, out int numberOfSongs)
+        {
+            var found = GetSongs().Where(song => song.Album.StartsWith(query, StringComparison.CurrentCultureIgnoreCase) ||
+                                                 song.Artist.StartsWith(query, StringComparison.CurrentCultureIgnoreCase) ||
+                                                 song.Name.StartsWith(query, StringComparison.CurrentCultureIgnoreCase)).ToArray();
+            numberOfSongs = found.Length;
+            return found.Take(limit).ToArray();
+        }
+
         private Playlist SelectedPlaylist => _itunes.Playlists.SingleOrDefault(x => string.Compare(x.Name, _settings.SelectedPlaylist, StringComparison.InvariantCultureIgnoreCase) == 0) ?? _itunes.Playlists.First();
     }
 }

@@ -8,5 +8,6 @@ namespace Eumel.Dj.Mobile.Services
         Task<SongListItem> GetSongsAsync(bool forceRefresh = false);
         Task<bool> Vote(string id);
         Task<SongItem> GetItemAsync(string id);
+        Task<SongListItem> SearchSongsAsync(string searchText);
     }
 }

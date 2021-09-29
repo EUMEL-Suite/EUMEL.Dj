@@ -10,5 +10,6 @@ namespace Eumel.Dj.Core
         Uri GetLocationOfSongById(string songId);
         Song FindSongById(string songId);
         SongsSource GetSourceInfo();
+        IEnumerable<Song> SearchSongs(string query, int limit, out int numberOfSongs);
     }
 }

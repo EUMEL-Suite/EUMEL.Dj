@@ -45,6 +45,7 @@ namespace Eumel.Dj.Ui.AutoStartServices
                 hub.Subscribe((Action<GetMyVotesMessage>)GetMyVotes),
                 hub.Subscribe((Action<PlayerStatusMessage>)PlayerStatus),
                 hub.Subscribe((Action<GetSongsMessage>)GetSongs),
+                hub.Subscribe((Action<SearchSongsMessage>)SearchSongs),
                 hub.Subscribe((Action<GetSongsSourceMessage>)GetSongsSource)
             });
 
@@ -79,7 +80,14 @@ namespace Eumel.Dj.Ui.AutoStartServices
 
         private void GetSongs(GetSongsMessage message)
         {
-            var songs = _songsService.GetSongs(message.Skip, message.Take);
+            var songs = _songsService.GetSongs(message.Skip, message.Take.WithMax(Constants.RequiredSearchLimit));
+
+            message.Response = new MessageResponse<IEnumerable<Song>>(songs.ToArray());
+        }
+
+        private void SearchSongs(SearchSongsMessage message)
+        {
+            var songs = _songsService.SearchSongs(message.SearchText, Constants.RequiredSearchLimit, out var numberOfSongs);
 
             message.Response = new MessageResponse<IEnumerable<Song>>(songs.ToArray());
         }

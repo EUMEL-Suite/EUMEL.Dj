@@ -30,7 +30,7 @@ namespace Eumel.Dj.Ui.Extensions.FileSystem
         {
             if (_cache == null) InitSongCache();
 
-            return _cache.Select(x => x.Song).ToArray();
+            return _cache.Skip(skip).Take(take).Select(x => x.Song).ToArray();
         }
 
         public Uri GetLocationOfSongById(string songId)
@@ -54,6 +54,16 @@ namespace Eumel.Dj.Ui.Extensions.FileSystem
             return new SongsSource(new DirectoryInfo(_settings.SongsPath).Name, _cache.Count);
         }
 
+        public IEnumerable<Song> SearchSongs(string query, int limit, out int totalNumberOfSongs)
+        {
+            var found = GetSongs().Where(song => song.Album.StartsWith(query, StringComparison.CurrentCultureIgnoreCase) ||
+                                                 song.Artist.StartsWith(query, StringComparison.CurrentCultureIgnoreCase) ||
+                                                 song.Name.StartsWith(query, StringComparison.CurrentCultureIgnoreCase)).ToArray();
+            totalNumberOfSongs = found.Length;
+            return found.Take(limit).ToArray();
+        }
+
+
         [MethodImpl(MethodImplOptions.Synchronized)]
         private void InitSongCache()
         {
@@ -67,10 +77,10 @@ namespace Eumel.Dj.Ui.Extensions.FileSystem
                 var id = Guid.NewGuid().ToString();
                 _cache.Add(new SongWrapper(new Song
                 {
-                    Name = mp3.Tag.Title,
-                    Album = mp3.Tag.Album,
-                    Artist = mp3.Tag.JoinedPerformers,
-                    AlbumArtist = mp3.Tag.JoinedAlbumArtists ?? mp3.Tag.JoinedPerformers,
+                    Name = mp3.Tag.Title ?? string.Empty,
+                    Album = mp3.Tag.Album ?? string.Empty,
+                    Artist = mp3.Tag.JoinedPerformers?? mp3.Tag.JoinedAlbumArtists ?? string.Empty,
+                    AlbumArtist = mp3.Tag.JoinedAlbumArtists ?? mp3.Tag.JoinedPerformers ?? string.Empty,
                     Id = id
                 }, id, new Uri(item.FullName)));
             }

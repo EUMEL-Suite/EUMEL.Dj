@@ -18,7 +18,6 @@ namespace Eumel.Dj.WebServer.Controllers
             _hub = hub ?? throw new ArgumentNullException(nameof(hub));
         }
 
-        // GET: api/<SongController>
         [HttpGet("GetSongsSource")]
         public SongsSource GetSongsSource()
         {
@@ -27,11 +26,18 @@ namespace Eumel.Dj.WebServer.Controllers
             return plm.Response.Response;
         }
 
-        // GET: api/<SongController>
         [HttpGet("GetSongs")]
         public IEnumerable<Song> GetSongs(int skip, int take)
         {
             var plm = new GetSongsMessage(this, skip, take);
+            _hub.Publish(plm);
+            return plm.Response.Response;
+        }
+
+        [HttpGet("SearchSongs")]
+        public IEnumerable<Song> SearchSongs(string searchText)
+        {
+            var plm = new SearchSongsMessage(this, searchText);
             _hub.Publish(plm);
             return plm.Response.Response;
         }

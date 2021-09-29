@@ -61,5 +61,17 @@ namespace Eumel.Dj.Mobile.Services
         {
             return _songCache[id];
         }
+
+        public async Task<SongListItem> SearchSongsAsync(string searchText)
+        {
+            Log.Debug($"Calling [SearchSongsAsync] for searchText {searchText}");
+            var myVotes = await Service.GetMyVotesAsync();
+            var songs = await Service.SearchSongsAsync(searchText);
+
+            return new SongListItem()
+            {
+                Songs = songs.Select(x => x.ToSongItem(myVotes.Any(y => y.Id == x.Id)))
+            };
+        }
     }
 }

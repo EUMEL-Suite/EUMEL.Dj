@@ -38,6 +38,7 @@ namespace Eumel.Dj.WebServer
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = Constants.ApplicationTitle, Version = $"v{GetMajorMinorVersion()}" });
                 c.UseAllOfToExtendReferenceSchemas();
+                // hack: this needs to be commented out in case the json contract is written.
                 c.OperationFilter<SwaggerUserTokenHeader>();
             });
         }
