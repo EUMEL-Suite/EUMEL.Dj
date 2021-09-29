@@ -72,7 +72,7 @@ paginate: true
 
 * Message bus for communication between components
 * `Hub` is a context for all-to-all communication.
-* Uses a publish/subscribe pattern
+* Uses a publish/subscribe pattern.
 
 ---
 ## TinyMessageBus Implementation
@@ -165,3 +165,19 @@ paginate: true
 * C# features
 	* Discrds (aka. underscore)
 	* `FileSystemMp3Searcher` has a record `private record SongWrapper(Song Song, string Id, Uri Location)`
+
+* Logging
+	* Serilog with trace
+	* different config for different "apps"
+
+* UpVote/DownVote with ID only, no additional song info
+
+
+* HUGE feature: download and queue youtube
+	* different implementation
+	* ìmplement "share with Eumel DJ"
+	* another handler to download and add (if backend/playlist provider supports "download") or provider is wrapped/decorated with youtube downloader
+
+* Settings per "subclass" which means a more generic "send parts of config to subclass"
+	* section name == class name
+	* send as config string to provider or dynamic?
