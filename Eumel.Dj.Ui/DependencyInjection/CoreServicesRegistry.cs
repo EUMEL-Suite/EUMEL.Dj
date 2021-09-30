@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using Caliburn.Micro;
 using Castle.DynamicProxy;
 using Eumel.Core.Logging;
@@ -17,7 +16,6 @@ namespace Eumel.Dj.Ui.DependencyInjection
     {
         public CoreServicesRegistry()
         {
-
             // we need to register some core infrastructure
             _ = For<IWindowManager>().Use(new WindowManager());
             _ = For<ITinyMessengerHub>().Use(TinyMessengerHub.DefaultHub);
@@ -28,57 +26,22 @@ namespace Eumel.Dj.Ui.DependencyInjection
             var appSettings = AppSettingsExtensions.FromFile(Environment.ExpandEnvironmentVariables(Constants.EumelSuiteAppData) + "\\" + Constants.ApplicationName + ".settings.json");
             _ = For<IAppSettings>().Use(appSettings);
             _ = For<LoggerSettings>().Use(appSettings.LoggerSettings);
-            _ = For<IImplementationSettings>().Use(appSettings.ImplementationSettings);
+            _ = For<ImplementationSettings>().Use(appSettings.ImplementationSettings);
 
             // register the logger
             _ = For<ILoggerFactory>().Use<SerilogFactory>();
             _ = For<IEumelLogger>().Use((c) => c.GetInstance<ILoggerFactory>().Build(c.GetInstance<LoggerSettings>()));
+            EnableInterceptor(appSettings.LoggerSettings, new SerilogFactory().Build(appSettings.LoggerSettings));
+        }
+
+        private void EnableInterceptor(LoggerSettings settings, IEumelLogger logger)
+        {
+            if (!settings.EnableInterceptor) return;
 
             var proxyGenerator = new ProxyGenerator();
-            var loggingInterceptor = new LoggingInterceptor(new EumelConsoleLogger(appSettings.LoggerSettings));
+            var loggingInterceptor = new LoggingInterceptor(logger);
 
-            For<ITinyMessengerHub>().DecorateAllWith(targetInterface =>
-                proxyGenerator.CreateInterfaceProxyWithTargetInterface(targetInterface, loggingInterceptor));
-        }
-    }
-
-
-    public class LoggingInterceptor : Castle.DynamicProxy.IInterceptor
-    {
-        private readonly IEumelLogger _logger;
-
-        public LoggingInterceptor(IEumelLogger logger)
-        {
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        }
-
-        public void Intercept(IInvocation invocation)
-        {
-            var watch = Stopwatch.StartNew();
-            var enteringLogMessage = "Entering Method: " + invocation.Method.Name;
-
-            if (invocation.Arguments.Length > 0)
-                enteringLogMessage += " with Arguments: " + string.Join(",", invocation.Arguments);
-            _logger.Verbose(enteringLogMessage);
-
-            try
-            {
-                //Run the actual Invocation
-                invocation.Proceed();
-            }
-            catch (Exception ex)
-            {
-                var exceptionLogMessage = "Caught Exception of type: " + ex.GetType() + " in Method: " +
-                                          invocation.Method.Name;
-                _logger.Error(exceptionLogMessage, ex);
-                throw;
-            }
-            finally
-            {
-                watch.Stop();
-                _logger.Verbose("Leaving: " + invocation.Method.Name + " after " + watch.ElapsedMilliseconds +
-                                " Milliseconds");
-            }
+            For<ITinyMessengerHub>().DecorateAllWith(targetInterface => proxyGenerator.CreateInterfaceProxyWithTargetInterface(targetInterface, loggingInterceptor));
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace Eumel.Dj.Core.Models
 {
-    public class ImplementationSettings : IImplementationSettings
+    public class ImplementationSettings
     {
         // ReSharper disable InconsistentNaming
         public string ISongsProviderService { get; set; }

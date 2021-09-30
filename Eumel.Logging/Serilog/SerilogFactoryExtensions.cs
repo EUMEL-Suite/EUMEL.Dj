@@ -27,6 +27,11 @@ namespace Eumel.Logging.Serilog
             return builder;
         }
 
+        public static LoggerConfiguration WithLogLevel(this LoggerConfiguration builder, LoggerSettings settings)
+        {
+            var level = Enum.Parse<LogEventLevel>(settings?.ServerLogLevel ?? LogEventLevel.Information.ToString());
+            return builder.MinimumLevel.Is(level);
+        }
 
         public static LoggerConfiguration AddConsole(this LoggerConfiguration builder, LoggerSettings settings)
         {

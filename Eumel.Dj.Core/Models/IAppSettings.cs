@@ -6,7 +6,7 @@ namespace Eumel.Dj.Core.Models
     {
         string RestEndpoint { get; set; }
         string SyslogServer { get; set; }
-        Constants.EumelLogLevel MinimumLogLevel { get; set; }
+        Constants.EumelLogLevel ClientLogLevel { get; set; }
         string ItunesLibrary { get; }
         string SelectedPlaylist { get; }
         LoggerSettings LoggerSettings { get; set; }

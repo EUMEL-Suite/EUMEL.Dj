@@ -77,7 +77,7 @@ namespace Eumel.Dj.WebServer.Controllers
                 Usertoken = userToken.Usertoken,
 
                 SyslogServer = _settings.SyslogServer,
-                MinimumLogLevel = _settings.MinimumLogLevel
+                MinimumLogLevel = _settings.ClientLogLevel
             };
 
             _hub.Publish(new UserAddedMessage(this, settings.Username));

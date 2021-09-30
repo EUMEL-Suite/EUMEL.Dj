@@ -4,6 +4,7 @@ namespace Eumel.Dj
     {
         public enum EumelLogLevel
         {
+            Verbose = 0,
             Debug = 1,
             Information = 2,
             Warn = 3,

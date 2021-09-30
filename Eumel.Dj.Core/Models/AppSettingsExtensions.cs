@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Sockets;
 using Eumel.Core.Logging;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace Eumel.Dj.Core.Models
 {
@@ -30,14 +31,14 @@ namespace Eumel.Dj.Core.Models
 
             // Load configuration from json
             var settingsJson = File.ReadAllText(jsonSettingsPath);
-            var appSettings = JsonConvert.DeserializeObject<AppSettings>(settingsJson);
+            var appSettings = JsonConvert.DeserializeObject<AppSettings>(settingsJson,new StringEnumConverter());
 
             return appSettings;
         }
 
         public static void SaveAs(this AppSettings settings, string jsonSettingsPath)
         {
-            var json = JsonConvert.SerializeObject(settings, Formatting.Indented);
+            var json = JsonConvert.SerializeObject(settings, Formatting.Indented, new StringEnumConverter());
             File.WriteAllText(jsonSettingsPath, json);
         }
 
@@ -49,9 +50,13 @@ namespace Eumel.Dj.Core.Models
                 SongsPath = @$"{Environment.GetEnvironmentVariable("USERPROFILE")}\Music\iTunes\iTunes Media\Music",
                 RestEndpoint = $"https://{GetLocalIpAddress()}:443",
                 SyslogServer = GetLocalIpAddress(),
-                MinimumLogLevel = Constants.EumelLogLevel.Information,
+                ClientLogLevel = Constants.EumelLogLevel.Verbose,
                 LoggerSettings = new LoggerSettings()
                 {
+                    ServerLogLevel = Constants.EumelLogLevel.Verbose.ToString(),
+                    UseDebug = false,
+                    UseConsole = true,
+                    UseExtendedDebug = false,
                     Filelog = null,
                     Syslog = new SyslogSettings() { EnableSyslogLogging = true, UseUdp = true, SysLogServerIp = GetLocalIpAddress() }
                 },

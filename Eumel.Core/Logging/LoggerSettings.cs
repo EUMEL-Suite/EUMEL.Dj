@@ -7,5 +7,7 @@
         public bool UseConsole { get; set; }
         public bool UseDebug { get; set; }
         public bool UseExtendedDebug { get; set; }
+        public bool EnableInterceptor { get; set; }
+        public string ServerLogLevel { get; set; }
     }
 }

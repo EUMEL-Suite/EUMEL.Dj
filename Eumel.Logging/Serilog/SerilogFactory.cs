@@ -23,8 +23,10 @@ namespace Eumel.Logging.Serilog
         private static LoggerConfiguration CreateBuilder(LoggerSettings settings)
         {
             var builder = new LoggerConfiguration()
+                .WithLogLevel(settings)
                 .Enrich.FromLogContext()
                 .Enrich.WithProcessId();
+
 
             if (settings.AtLeastOneVerbose()) builder = builder.MinimumLevel.Verbose();
 
