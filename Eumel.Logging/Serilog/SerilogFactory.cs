@@ -1,5 +1,4 @@
-﻿using Eumel.Core;
-using Eumel.Core.Logging;
+﻿using Eumel.Core.Logging;
 using Serilog;
 using Serilog.Exceptions;
 

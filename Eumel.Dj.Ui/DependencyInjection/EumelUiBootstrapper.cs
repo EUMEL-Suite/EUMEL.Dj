@@ -11,7 +11,7 @@ using Eumel.Dj.Ui.Core.ViewModels;
 using Eumel.Dj.Ui.Extensions;
 using StructureMap;
 
-namespace Eumel.Dj.Ui.Bootstrapper
+namespace Eumel.Dj.Ui.DependencyInjection
 {
     public class EumelUiBootstrapper : BootstrapperBase
     {

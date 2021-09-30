@@ -6,7 +6,6 @@ using Eumel.Dj.Core;
 using Eumel.Dj.Core.Exceptions;
 using Eumel.Dj.Core.Messages;
 using Eumel.Dj.Core.Models;
-using Eumel.Dj.Ui.Bootstrapper;
 using Eumel.Dj.Ui.Services;
 using Microsoft.Extensions.Logging;
 using TinyMessenger;
