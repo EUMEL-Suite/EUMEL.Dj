@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Eumel.Dj.Core.Logging;
+using Eumel.Core.Logging;
 using Eumel.Dj.Core.Messages;
 using Microsoft.Extensions.Logging;
 using TinyMessenger;

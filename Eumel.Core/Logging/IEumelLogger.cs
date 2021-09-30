@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Eumel.Dj.Core.Logging
+namespace Eumel.Core.Logging
 {
     public interface IEumelLogger
     {

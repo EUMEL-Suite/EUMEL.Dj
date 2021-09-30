@@ -1,7 +1,8 @@
 ﻿using System.Windows;
-using Eumel.Dj.Core.Logging;
+using Eumel.Core.Logging;
 using Eumel.Dj.Ui.AutoStartServices;
 using Eumel.Dj.Ui.Services;
+using Eumel.Logging.Serilog;
 using TinyMessenger;
 
 namespace Eumel.Dj.Ui
@@ -22,7 +23,6 @@ namespace Eumel.Dj.Ui
             {
                 Filelog = new FilelogSettings { EnableFileLogging = false },
                 Syslog = new SyslogSettings { EnableSyslogLogging = true, SysLogServerIp = "192.168.178.37", UseUdp = true },
-                DeviceName = "EUMEL DJ"
             };
             var logger = new SerilogFactory().Build(loggerSettings);
 

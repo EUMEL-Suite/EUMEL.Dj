@@ -1,8 +1,9 @@
 ﻿using System;
+using Eumel.Core.Logging;
 using Serilog;
 using Serilog.Context;
 
-namespace Eumel.Dj.Core.Logging
+namespace Eumel.Logging.Serilog
 {
     public class SerilogAdapter : IEumelLogger
     {

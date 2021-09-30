@@ -1,4 +1,4 @@
-﻿using Eumel.Dj.Core.Logging;
+﻿using Eumel.Core.Logging;
 
 namespace Eumel.Dj.Core.Models
 {

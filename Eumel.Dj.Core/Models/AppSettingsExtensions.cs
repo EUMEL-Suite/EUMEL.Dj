@@ -2,7 +2,7 @@
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
-using Eumel.Dj.Core.Logging;
+using Eumel.Core.Logging;
 using Newtonsoft.Json;
 
 namespace Eumel.Dj.Core.Models
@@ -52,7 +52,6 @@ namespace Eumel.Dj.Core.Models
                 MinimumLogLevel = Constants.EumelLogLevel.Information,
                 LoggerSettings = new LoggerSettings()
                 {
-                    DeviceName = Environment.MachineName,
                     Filelog = null,
                     Syslog = new SyslogSettings() { EnableSyslogLogging = true, UseUdp = true, SysLogServerIp = GetLocalIpAddress() }
                 },
