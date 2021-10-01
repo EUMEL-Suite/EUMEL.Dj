@@ -14,7 +14,6 @@ namespace Eumel.Core.Logging
 
         void Error(string message, Exception ex);
 
-
         void Fatal(string message, Exception ex);
 
         IDisposable PushProperty(string name, object value);

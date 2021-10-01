@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using Caliburn.Micro;
+using Eumel.Core.Extensions;
 using Eumel.Dj.Core.Messages;
 using Eumel.Dj.Core.Models;
 using Eumel.Dj.Ui.Core.Interfaces;
@@ -26,14 +27,12 @@ namespace Eumel.Dj.Ui.Core.ViewModels
         private void PlaylistChanged(PlaylistChangedMessage message)
         {
             Songs.Clear();
-            if (message.Playlist.PastSongs != null)
-                message.Playlist.PastSongs.ToList().ForEach(Songs.Add);
+            message.Playlist.PastSongs?.ForEach(Songs.Add);
 
             if (message.Playlist.CurrentSong != null)
                 Songs.Add(message.Playlist.CurrentSong);
 
-            if (message.Playlist.UpcomingSongs != null)
-                message.Playlist.UpcomingSongs.ToList().ForEach(Songs.Add);
+            message.Playlist.UpcomingSongs?.ForEach(Songs.Add);
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Windows;
 using Caliburn.Micro;
+using Eumel.Core.Extensions;
 using Eumel.Dj.Ui.AutoStartServices;
 using Eumel.Dj.Ui.Core;
 using Eumel.Dj.Ui.Core.Interfaces;
@@ -29,7 +30,7 @@ namespace Eumel.Dj.Ui.DependencyInjection
 
             // here we start all services which implement the auto-start interface
             _autoStartupServices = GetAllInstances(typeof(IAutoStart)).Cast<IAutoStart>();
-            _autoStartupServices.ToList().ForEach(x => x.Start());
+            _autoStartupServices.ForEach(x => x.Start());
         }
 
         protected override IEnumerable<Assembly> SelectAssemblies()
@@ -63,8 +64,8 @@ namespace Eumel.Dj.Ui.DependencyInjection
 
         protected override void OnExit(object sender, EventArgs e)
         {
-            _autoStartupServices.ToList().ForEach(x => x.Stop());
-            _autoStartupServices.OfType<IDisposable>().ToList().ForEach(x => x.Dispose());
+            _autoStartupServices.ForEach(x => x.Stop());
+            _autoStartupServices.OfType<IDisposable>().ForEach(x => x.Dispose());
 
             base.OnExit(sender, e);
         }

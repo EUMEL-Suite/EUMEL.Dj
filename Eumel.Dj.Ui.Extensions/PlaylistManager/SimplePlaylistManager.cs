@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Eumel.Core.Extensions;
 using Eumel.Dj.Core;
 using Eumel.Dj.Core.Models;
 using TinyMessenger;
@@ -83,10 +84,10 @@ namespace Eumel.Dj.Ui.Extensions.PlaylistManager
 
         public void ClearVotesFor(string votersName)
         {
-            var votedSongs = _votedSongs.Where(x => x.Voters.Contains(votersName)).ToArray();
-            if (!votedSongs.Any()) return;
+            var votedSongs = _votedSongs.Where(x => x.Voters.Contains(votersName));
+            if (votedSongs.IsNullOrEmpty()) return;
 
-            votedSongs.ToList().ForEach(x => x.Voters = x.Voters.Where(y => y != votersName).ToArray());
+            votedSongs.ForEach(x => x.Voters = x.Voters.Where(y => y != votersName).ToArray());
         }
     }
 }
