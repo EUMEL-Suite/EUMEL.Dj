@@ -2,6 +2,7 @@
 {
     public interface ISyslogService
     {
+        void Verbose(string msg);
         void Debug(string msg);
         void Information(string msg);
         void Error(string msg);

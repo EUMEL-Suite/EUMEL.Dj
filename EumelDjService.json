@@ -720,6 +720,7 @@
       },
       "EumelLogLevel": {
         "enum": [
+          "Verbose",
           "Debug",
           "Information",
           "Warn",

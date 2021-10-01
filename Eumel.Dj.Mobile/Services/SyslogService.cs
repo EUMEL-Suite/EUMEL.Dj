@@ -24,9 +24,17 @@ namespace Eumel.Dj.Mobile.Services
             return _syslogger;
         }
 
+        public void Verbose(string msg)
+        {
+            if (_settings.MinimumLogLevel == EumelLogLevel.Verbose)
+
+                GetLogger()?.Debug(msg);
+        }
+
         public void Debug(string msg)
         {
-            if (_settings.MinimumLogLevel == EumelLogLevel.Debug)
+            if (_settings.MinimumLogLevel == EumelLogLevel.Debug ||
+                _settings.MinimumLogLevel == EumelLogLevel.Verbose)
 
                 GetLogger()?.Debug(msg);
         }
@@ -34,7 +42,8 @@ namespace Eumel.Dj.Mobile.Services
         public void Information(string msg)
         {
             if (_settings.MinimumLogLevel == EumelLogLevel.Information ||
-                _settings.MinimumLogLevel == EumelLogLevel.Debug)
+                _settings.MinimumLogLevel == EumelLogLevel.Debug ||
+                _settings.MinimumLogLevel == EumelLogLevel.Verbose)
 
                 GetLogger()?.Info(msg);
         }
@@ -43,7 +52,8 @@ namespace Eumel.Dj.Mobile.Services
         {
             if (_settings.MinimumLogLevel == EumelLogLevel.Warn ||
                 _settings.MinimumLogLevel == EumelLogLevel.Information ||
-                _settings.MinimumLogLevel == EumelLogLevel.Debug)
+                _settings.MinimumLogLevel == EumelLogLevel.Debug ||
+                _settings.MinimumLogLevel == EumelLogLevel.Verbose)
 
                 GetLogger()?.Warn(msg);
         }
@@ -53,7 +63,8 @@ namespace Eumel.Dj.Mobile.Services
             if (_settings.MinimumLogLevel == EumelLogLevel.Error ||
                 _settings.MinimumLogLevel == EumelLogLevel.Warn ||
                 _settings.MinimumLogLevel == EumelLogLevel.Information ||
-                _settings.MinimumLogLevel == EumelLogLevel.Debug)
+                _settings.MinimumLogLevel == EumelLogLevel.Debug ||
+                _settings.MinimumLogLevel == EumelLogLevel.Verbose)
 
                 GetLogger()?.Error(msg);
         }
@@ -64,7 +75,8 @@ namespace Eumel.Dj.Mobile.Services
                 _settings.MinimumLogLevel == EumelLogLevel.Error ||
                 _settings.MinimumLogLevel == EumelLogLevel.Warn ||
                 _settings.MinimumLogLevel == EumelLogLevel.Information ||
-                _settings.MinimumLogLevel == EumelLogLevel.Debug)
+                _settings.MinimumLogLevel == EumelLogLevel.Debug ||
+                _settings.MinimumLogLevel == EumelLogLevel.Verbose)
 
                 GetLogger()?.Critical(msg);
         }
