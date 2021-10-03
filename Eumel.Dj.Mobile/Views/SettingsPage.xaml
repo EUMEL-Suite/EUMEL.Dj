@@ -4,9 +4,10 @@
              Title="{Binding Title}"
              x:DataType="viewModels:SettingsViewModel"
              xmlns:viewModels="clr-namespace:Eumel.Dj.Mobile.ViewModels;assembly=Eumel.Dj.Mobile"
-             xmlns:data="clr-namespace:Eumel.Dj.Mobile.Data"  
+             xmlns:data="clr-namespace:Eumel.Dj.Mobile.Data"
              x:Class="Eumel.Dj.Mobile.Views.SettingsPage">
     <ContentPage.Content>
+        <ScrollView VerticalOptions="FillAndExpand">
         <StackLayout x:DataType="viewModels:SettingsViewModel" Padding="4">
             <Label Text="Username"  Style="{DynamicResource ListItemDetailTextStyle}"/>
             <Label Text="{Binding Username}" Style="{DynamicResource ListItemTextStyle}"/>
@@ -61,6 +62,9 @@
 
             </StackLayout>
 
+            <Label Text="Privacy Policy" />
+                <Label Text="{Binding PrivacyStatement}" />
         </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>
