@@ -8,7 +8,7 @@ This project was initially planned as a side project for state-of-the-art techno
 a detailed documentation of the users interface can be found there.
 
 
-The implementation details can be found in a separate [marp](https://marpit.marp.app/)-based [presentation](marpme.md).
+The implementation details can be found in a separate [marp](https://marpit.marp.app/)-based [presentation](MARPME.md).
 
 
 # Create latest documentation
