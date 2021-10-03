@@ -1,22 +1,18 @@
 # EUMEL.Dj
-A remote DJ application which plays songs on a party and guests can vote on songs to play.
 
-## Mobile App
-
-The mobile app uses a QR Code to connect to the application and get a token for communication. 
-
-![](Assets/Screenshot_1631782287.png)
-
-![](Assets/Screenshot_1631782200.png)
-
-![](Assets/Screenshot_1631782214.png)
-
-![](Assets/Screenshot_1631782249.png)
+A remote DJ application which plays songs on a party and guests can vote on songs to play. The user documentation moved to the
+[https://eumel-suite.github.io/](EUMEL Suite project site).
 
 
-# Implementation Details
+This project was initially planned as a side project for state-of-the-art technologies. This project now a part of the EUMEL Suite and 
+a detailed documentation of the users interface can be found there.
 
-The implementation details can be found in a separate [https://marpit.marp.app/](marp)-based [marpme.md](presentation).
 
-A [marpme.pdf](pdf document) is available but not always up to date.
+The implementation details can be found in a separate [https://marpit.marp.app/](marp)-based [marpme.md](presentation). A [marpme.pdf](pdf document) 
+is available but can be behind the most revend documentation.
 
+
+# Create latest documentation
+
+    marp --title "EUMEL Dj Technical Description" --html .\MARPME.md
+    marp --title "EUMEL Dj Technical Description" --pdf .\MARPME.md

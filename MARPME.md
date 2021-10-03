@@ -5,7 +5,9 @@ paginate: true
 ---
 # EUMEL DJ Party Suite
 
-### Open source on [github](https://github.com/EUMEL-Suite)
+### Open source on [github](https://github.com/EUMEL-Suite/EUMEL.Dj)
+
+### User documentation at [EUMEL Suite](https://eumel-suite.github.io/)
 
 ### Goal is learning new things
 

@@ -9,18 +9,21 @@ namespace Eumel.Dj.Mobile.Services
         private ISettingsService _settings => DependencyService.Get<ISettingsService>();
 
         private LoggingModule _syslogger;
-        private readonly string _deviceName = DeviceInfo.Name;
 
         private LoggingModule GetLogger()
         {
+#if RELEASE
+            return null;
+#endif
+
             if (_syslogger != null) return _syslogger;
             // this makes sure we don't send information to non-set server
             if (string.IsNullOrEmpty(_settings?.SyslogServer))
                 return null;
-
+            var deviceName = _settings.Username ?? "<anonymous>";
             _syslogger = new LoggingModule(_settings.SyslogServer, 514);
-            _syslogger.Settings.HeaderFormat = "{ts}\t" + _deviceName.PadRight(18).Substring(0, 18) + "\t{sev}\t";
-            _syslogger.Info($"Syslogger started on device {_deviceName}");
+            _syslogger.Settings.HeaderFormat = "{ts}\t" + deviceName.PadRight(18).Substring(0, 18) + "\t{sev}\t";
+            _syslogger.Info($"Syslogger started on device {deviceName}");
             return _syslogger;
         }
 
