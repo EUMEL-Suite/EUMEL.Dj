@@ -4,7 +4,7 @@ A remote DJ application which plays songs on a party and guests can vote on song
 [EUMEL Suite project site](https://eumel-suite.github.io/).
 
 
-<a href='https://play.google.com/store/apps/details?id=de.eumel.dj.mobile&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png' width='300'/></a>
+<a href='https://play.google.com/store/apps/details?id=de.eumel.dj.mobile&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png' width='250'/></a>
 
 
 This project was initially planned as a side project for state-of-the-art technologies. This project now a part of the EUMEL Suite and 
