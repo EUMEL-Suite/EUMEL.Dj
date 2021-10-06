@@ -96,11 +96,20 @@ namespace Eumel.Dj.Mobile.ViewModels
         {
             SyslogService.Information($"Request token for user {Username}");
             var client = new EumelRestServiceFactory(server).Build();
-            var token = await client.RequestSettingsAndTokenAsync(Username);
+            try
+            {
+                var token = await client.RequestSettingsAndTokenAsync(Username);
+                Settings.Change(server, token.Username, token.SyslogServer, token.Usertoken, token.MinimumLogLevel);
+                SyslogService.Information($"Received token for user {token.Username}");
+                return true;
+            }
+            catch (System.Exception ex)
+            {
+                SyslogService.Warn("Cannot access server backend. Check the qr-code and connected wifi.");
+                UserHint = "Please check your WIFI. Cannot connect to desktop app.";
+                return false;
+            }
 
-            Settings.Change(server, token.Username, token.SyslogServer, token.Usertoken, token.MinimumLogLevel);
-            SyslogService.Information($"Received token for user {token.Username}");
-            return true;
         }
 
 
