@@ -23,6 +23,9 @@ namespace Eumel.Dj.Mobile.iOS
             Forms.Init();
             LoadApplication(new App());
 
+            NSUrlSessionConfiguration.DefaultSessionConfiguration.TimeoutIntervalForRequest = 10.0;
+            NSUrlSessionConfiguration.DefaultSessionConfiguration.TimeoutIntervalForResource = 10.0;
+
             return base.FinishedLaunching(app, options);
         }
     }

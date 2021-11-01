@@ -35,7 +35,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Eumel.Dj.Ui.Core\Eumel.Dj.Ui.Core.csproj" />
-    <ProjectReference Include="..\Eumel.Dj.Ui.Extensions\Eumel.Dj.Ui.Extensions.csproj" />
+    <ProjectReference Include="..\Eumel.Dj.Ui.Extensions\Eumel.Dj.Extensions.csproj" />
     <ProjectReference Include="..\Eumel.Dj.WebServer\Eumel.Dj.WebServer.csproj" />
     <ProjectReference Include="..\Eumel.Logging\Eumel.Logging.csproj" />
   </ItemGroup>

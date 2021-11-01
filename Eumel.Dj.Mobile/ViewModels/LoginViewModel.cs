@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Eumel.Dj.Mobile.Data;
 using Eumel.Dj.Mobile.Services;
 using Eumel.Dj.Mobile.Views;
@@ -103,9 +104,9 @@ namespace Eumel.Dj.Mobile.ViewModels
                 SyslogService.Information($"Received token for user {token.Username}");
                 return true;
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
-                SyslogService.Warn("Cannot access server backend. Check the qr-code and connected wifi.");
+                SyslogService.Warn($"Cannot access server backend. Check the qr-code and connected wifi. [{ex.Message}]");
                 UserHint = "Please check your WIFI. Cannot connect to desktop app.";
                 return false;
             }

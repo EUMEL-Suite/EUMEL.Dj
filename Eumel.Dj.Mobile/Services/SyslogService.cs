@@ -13,6 +13,7 @@ namespace Eumel.Dj.Mobile.Services
         private LoggingModule GetLogger()
         {
 #if RELEASE
+            // in case we are on release mode (publish on store) we don't support logging information
             return null;
 #endif
 

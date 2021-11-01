@@ -9,12 +9,22 @@ namespace Eumel.Dj.Mobile.Services
     {
         private ISyslogService Log => DependencyService.Get<ISyslogService>();
         private EumelDjServiceClient Service => DependencyService.Get<IEumelRestServiceFactory>().Build();
-        private ISettingsService Settings =>DependencyService.Get<ISettingsService>();
+        private ISettingsService Settings => DependencyService.Get<ISettingsService>();
 
         public async Task<PlaylistItem> Get()
         {
             Log.Debug("Getting playlist");
-            var serverPlaylist = await Service.GetPlaylistAsync();
+
+            DjPlaylist serverPlaylist;
+            try
+            {
+                 serverPlaylist = await Service.GetPlaylistAsync();
+            }
+            catch (System.Exception ex)
+            {
+                Log.Error(ex.Message);
+                throw new EumelDjMobileException("Cannot execute GetPlaylistAsync", ex);
+            }
 
             var songs = serverPlaylist.PastSongs.Select(x => x.ToPlaylistSongItem(SongType.Past, Settings))
                 .Append(serverPlaylist.CurrentSong.ToPlaylistSongItem(SongType.Current, Settings))

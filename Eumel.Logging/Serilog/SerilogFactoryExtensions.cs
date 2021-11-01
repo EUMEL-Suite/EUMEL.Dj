@@ -35,10 +35,8 @@ namespace Eumel.Logging.Serilog
 
         public static LoggerConfiguration AddConsole(this LoggerConfiguration builder, LoggerSettings settings)
         {
-            if (!settings.UseConsole)
-                return builder;
-
-            builder.WriteTo.Console();
+            if (settings.UseConsole)
+                builder.WriteTo.Console();
 
             return builder;
         }

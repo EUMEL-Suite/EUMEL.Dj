@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Net;
+using System.Security.Cryptography.X509Certificates;
 using Eumel.Dj.Core.Messages;
 using Eumel.Dj.Core.Models;
 using Eumel.Dj.WebServer;
@@ -34,7 +35,8 @@ namespace Eumel.Dj.Ui.AutoStartServices
                     .UseEnvironment(GetEnvironment())
                     .UseKestrel(options =>
                     {
-                        options.Listen(IPAddress.Any, 443, listenOptions => { listenOptions.UseHttps(); });
+                        //options.Listen(IPAddress.Any, 443, listenOptions => { listenOptions.UseHttps("cerfiticate.pfx", "password01"); });
+                        options.Listen(IPAddress.Any, _settings.Port);
                     })
                     .UseContentRoot(Directory.GetCurrentDirectory())
                     .UseIISIntegration()
@@ -56,7 +58,7 @@ namespace Eumel.Dj.Ui.AutoStartServices
             catch (Exception ex)
             {
                 Debug.WriteLine(ex);
-                _hub.PublishAsync(new LogMessage(this, ex.Message, LogLevel.Error));
+                _hub.Publish(new LogMessage(this, ex.Message, LogLevel.Error));
             }
         }
 
@@ -64,7 +66,7 @@ namespace Eumel.Dj.Ui.AutoStartServices
         {
             await _host.StopAsync();
             await _host.WaitForShutdownAsync();
-            _hub.PublishAsync(new ServiceStatusChangedMessage(this, ServiceStatusChangedMessage.ServiceStatus.Stopped));
+            _hub.Publish(new ServiceStatusChangedMessage(this, ServiceStatusChangedMessage.ServiceStatus.Stopped));
         }
 
         private string GetEnvironment()

@@ -34,8 +34,11 @@ namespace Eumel.Dj.Mobile.ViewModels
             try
             {
                 Items.Clear();
-                var playlist = await PlaylistService.Get();
-                playlist.Songs.Where(x => x?.Id != null).ToList().ForEach(Items.Add);
+                TryOrRedirectToLoginAsync(async () =>
+                {
+                    var playlist = await PlaylistService.Get();
+                    playlist.Songs.Where(x => x?.Id != null).ToList().ForEach(Items.Add);
+                });
             }
             catch (Exception ex)
             {
@@ -53,6 +56,7 @@ namespace Eumel.Dj.Mobile.ViewModels
             if (string.IsNullOrWhiteSpace(Settings.RestEndpoint))
                 return;
 
+            // todo this needs to be refactored so it is available centrally
             if (_hub == null)
             {
                 _hub = new HubConnectionBuilder()

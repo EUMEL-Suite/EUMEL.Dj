@@ -49,7 +49,6 @@ namespace Eumel.Dj.Mobile.Services
             // the client needs to send a token to identify himself
             var client = new HttpClient(cl);
             client.DefaultRequestHeaders.Add(Constants.UserToken, settings.Token);
-            client.Timeout = TimeSpan.FromSeconds(10);
 
             return new EumelDjServiceClient(settings.RestEndpoint, client);
         }

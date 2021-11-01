@@ -11,6 +11,7 @@ namespace Eumel.Dj.Core.Models
         public Constants.EumelLogLevel ClientLogLevel { get; set; }
         public LoggerSettings LoggerSettings { get; set; }
         public string SongsPath { get; set; }
+        public int Port { get; set; }
         public ImplementationSettings ImplementationSettings { get; set; }
     }
 }
